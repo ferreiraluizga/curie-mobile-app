@@ -6,16 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "assinatura")
+@Table(name = "tipo_assinatura")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Assinatura {
 
+public class Tipo_Assinatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -26,23 +24,11 @@ public class Assinatura {
     private User user;
 
     @Column(nullable = false)
-    private String cpf;
+    private String tipo;
 
     @Column(nullable = false)
-    private LocalDateTime data_compra;
+    private String desc;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Pagamento pagamento;
-
-    @ManyToOne
-    @JoinColumn(name = "tipo_id", nullable = false)
-    private Tipo_Assinatura tipo_assinatura;
-
-    public enum Pagamento {
-        cartão, boleto, pix
-    }
-
-
-
+    private Double valor;
 }
