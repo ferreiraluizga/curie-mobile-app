@@ -1,5 +1,7 @@
 package com.curie.curieapp.entities;
 
+import com.curie.curieapp.entities.enums.Prioridade;
+import com.curie.curieapp.entities.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Meta {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -26,7 +27,7 @@ public class Meta {
     private User user;
 
     @Column(nullable = false)
-    private String nome;
+    private String objetivo;
 
     @Column(nullable = false)
     private String descricao;
@@ -39,18 +40,9 @@ public class Meta {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Tarefa.Prioridade prioridade;
+    private Prioridade prioridade;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Tarefa.Status status;
-
-    public enum Prioridade {
-        baixa, media, alta
-    }
-
-    public enum Status {
-        pendente, concluida
-    }
-
+    private Status status;
 }

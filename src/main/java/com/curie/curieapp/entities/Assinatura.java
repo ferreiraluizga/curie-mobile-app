@@ -1,18 +1,20 @@
 package com.curie.curieapp.entities;
 
+import com.curie.curieapp.entities.enums.Pagamento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Entity
-@Table(name = "assinatura")
+@Table(name = "assinaturas")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Assinatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +26,14 @@ public class Assinatura {
     private User user;
 
     @Column(nullable = false)
-    private String tipo;
+    private String cpf;
 
     @Column(nullable = false)
-    private String desc;
+    private Instant dataCompra;
 
     @Column(nullable = false)
-    private Double valor;
+    private Pagamento pagamento;
+
+    @Column(nullable = false)
+    private TipoAssinatura tipoAssinatura;
 }
