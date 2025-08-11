@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "assinaturas")
@@ -29,7 +30,7 @@ public class Assinatura {
     private String cpf;
 
     @Column(nullable = false)
-    private Instant dataCompra;
+    private LocalDateTime dataCompra;
 
     @Column(nullable = false)
     private Pagamento pagamento;

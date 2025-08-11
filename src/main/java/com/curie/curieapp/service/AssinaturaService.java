@@ -5,6 +5,7 @@ import com.curie.curieapp.dto.request.AssinaturaRequest;
 import com.curie.curieapp.dto.response.AssinaturaResponse;
 import com.curie.curieapp.entities.Assinatura;
 import com.curie.curieapp.entities.TipoAssinatura;
+import com.curie.curieapp.entities.enums.Pagamento;
 import com.curie.curieapp.mapper.AssinaturaMapper;
 import com.curie.curieapp.repository.AssinaturaRepository;
 import lombok.AllArgsConstructor;
@@ -43,13 +44,13 @@ public class AssinaturaService {
 
     public  AssinaturaResponse update(Long id, AssinaturaRequest dto) {
         Assinatura assinatura = assinaturaRepository.findById(id).orElseThrow(() -> new RuntimeException("Assinatura não encontrada"));
-        TipoAssinatura tipo_assinatura = new TipoAssinatura();
-        tipo_assinatura.setId(dto.tipoId());
+        TipoAssinatura tipoAssinatura = new TipoAssinatura();
+        tipoAssinatura.setId(dto.tipoAssinatura().getId());
 
         assinatura.setCpf(dto.cpf());
-        assinatura.setData_compra(dto.data_compra());
-        assinatura.setPagamento(Assinatura.Pagamento.valueOf(dto.pagamento().toLowerCase()));
-        assinatura.setTipo_assinatura(tipo_assinatura);
+        assinatura.setDataCompra(dto.dataCompra());
+        assinatura.setPagamento(Pagamento.valueOf(dto.pagamento().toLowerCase()));
+        assinatura.setTipoAssinatura(tipoAssinatura);
         return assinaturaMapper.toResponseDTO(assinaturaRepository.save(assinatura));
     }
 
