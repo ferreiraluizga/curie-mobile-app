@@ -12,12 +12,16 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TipoAssinatura {
 
+public class TipoAssinatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private String nome;
@@ -27,5 +31,4 @@ public class TipoAssinatura {
 
     @Column(nullable = false)
     private Double valor;
-
 }

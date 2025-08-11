@@ -3,7 +3,7 @@ package com.curie.curieapp.mapper;
 import com.curie.curieapp.dto.request.AssinaturaRequest;
 import com.curie.curieapp.dto.response.AssinaturaResponse;
 import com.curie.curieapp.entities.Assinatura;
-import com.curie.curieapp.entities.Tipo_Assinatura;
+import com.curie.curieapp.entities.TipoAssinatura;
 import com.curie.curieapp.entities.User;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class AssinaturaMapper {
         User user = new User();
         user.setId(dto.userId());
 
-        Tipo_Assinatura tipo_assinatura = new Tipo_Assinatura();
+        TipoAssinatura tipo_assinatura = new TipoAssinatura();
         tipo_assinatura.setId(dto.tipoId());
 
         assinatura.setUser(user);
