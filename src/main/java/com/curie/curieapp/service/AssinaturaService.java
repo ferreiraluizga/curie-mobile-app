@@ -42,7 +42,7 @@ public class AssinaturaService {
         return assinaturaMapper.toResponseDTO(assinatura);
     }
 
-    public  AssinaturaResponse update(Long id, AssinaturaRequest dto) {
+    public AssinaturaResponse update(Long id, AssinaturaRequest dto) {
         Assinatura assinatura = assinaturaRepository.findById(id).orElseThrow(() -> new RuntimeException("Assinatura não encontrada"));
         TipoAssinatura tipoAssinatura = new TipoAssinatura();
         tipoAssinatura.setId(dto.tipoAssinatura().getId());
@@ -57,5 +57,4 @@ public class AssinaturaService {
     public void delete(Long id) {
         assinaturaRepository.deleteById(id);
     }
-
 }

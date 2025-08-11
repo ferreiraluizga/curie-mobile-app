@@ -16,6 +16,7 @@ import java.util.List;
 public class AssinaturaController {
     
     private final AssinaturaService assinaturaService;
+
     @PostMapping("/save")
     public ResponseEntity<AssinaturaResponse> save(@RequestBody AssinaturaRequest dto) {
         AssinaturaResponse response = assinaturaService.save(dto);
@@ -38,7 +39,7 @@ public class AssinaturaController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> assinatura(Long id) {
+    public ResponseEntity<Void> delete(Long id) {
         assinaturaService.delete(id);
         return ResponseEntity.noContent().build();
     }
