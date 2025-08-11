@@ -1,10 +1,10 @@
 package com.curie.curieapp.service;
 
 import com.curie.curieapp.dto.request.EquipeRequest;
-import com.curie.curieapp.dto.response.AssinaturaResponse;
 import com.curie.curieapp.dto.response.EquipeResponse;
 import com.curie.curieapp.entities.Assinatura;
 import com.curie.curieapp.entities.Equipe;
+import com.curie.curieapp.entities.MembroEquipe;
 import com.curie.curieapp.mapper.EquipeMapper;
 import com.curie.curieapp.repository.EquipeRepository;
 import lombok.AllArgsConstructor;
@@ -52,5 +52,10 @@ public class EquipeService {
 
     public void delete(Long id) {
         equipeRepository.deleteById(id);
+    }
+
+    public boolean atingiuLimiteMembros(Long equipeId) {
+        int quantidadeMembros = equipeRepository.quantidadeMembros(equipeId);
+        return quantidadeMembros >= 4;
     }
 }
