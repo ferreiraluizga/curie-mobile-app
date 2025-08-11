@@ -2,9 +2,7 @@ package com.curie.curieapp.service;
 
 import com.curie.curieapp.dto.request.EquipeRequest;
 import com.curie.curieapp.dto.response.EquipeResponse;
-import com.curie.curieapp.entities.Assinatura;
 import com.curie.curieapp.entities.Equipe;
-import com.curie.curieapp.entities.MembroEquipe;
 import com.curie.curieapp.mapper.EquipeMapper;
 import com.curie.curieapp.repository.EquipeRepository;
 import lombok.AllArgsConstructor;
@@ -24,9 +22,16 @@ public class EquipeService {
     @Autowired
     private final EquipeMapper equipeMapper;
 
+    @Autowired
+    private final AssinaturaService assinaturaService;
+
     public EquipeResponse save(EquipeRequest dto) {
-        Equipe equipe = equipeMapper.toEntity(dto);
-        return equipeMapper.toResponseDTO(equipeRepository.save(equipe));
+        if (assinaturaService.isAssinaturaValida(dto.assinatura().getId().longValue())) {
+            Equipe equipe = equipeMapper.toEntity(dto);
+            return equipeMapper.toResponseDTO(equipeRepository.save(equipe));
+        } else {
+            throw new RuntimeException("Assinatura inválida");
+        }
     }
 
     public List<EquipeResponse> getAll() {
@@ -41,20 +46,11 @@ public class EquipeService {
         return equipeMapper.toResponseDTO(equipe);
     }
 
-    public EquipeResponse update(Long id, EquipeRequest dto) {
-        Equipe equipe = equipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipe não encontrada"));
-        Assinatura assinatura = new Assinatura();
-        assinatura.setId(dto.assinatura().getId());
-
-        equipe.setAssinatura(assinatura);
-        return equipeMapper.toResponseDTO(equipeRepository.save(equipe));
-    }
-
     public void delete(Long id) {
         equipeRepository.deleteById(id);
     }
 
-    public boolean atingiuLimiteMembros(Long equipeId) {
+    public boolean isEquipeCheia(Long equipeId) {
         int quantidadeMembros = equipeRepository.quantidadeMembros(equipeId);
         return quantidadeMembros >= 4;
     }

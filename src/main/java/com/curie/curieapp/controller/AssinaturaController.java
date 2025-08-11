@@ -43,5 +43,11 @@ public class AssinaturaController {
         assinaturaService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/validade/{id}")
+    public ResponseEntity<Boolean> isAssinaturaValida(@PathVariable Long id) {
+        boolean assinaturaValida = assinaturaService.isAssinaturaValida(id);
+        return ResponseEntity.ok(assinaturaValida);
+    }
     
 }

@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,5 +57,13 @@ public class AssinaturaService {
 
     public void delete(Long id) {
         assinaturaRepository.deleteById(id);
+    }
+
+    public boolean isAssinaturaValida(Long id) {
+        Assinatura assinatura = assinaturaRepository.findById(id).orElseThrow(() -> new RuntimeException("Assinatura não encontrada"));
+        LocalDateTime dataCompra = assinatura.getDataCompra();
+        LocalDateTime dataLimite = dataCompra.plusDays(30);
+        LocalDateTime dataAtual = LocalDateTime.now();
+        return dataAtual.isBefore(dataLimite);
     }
 }

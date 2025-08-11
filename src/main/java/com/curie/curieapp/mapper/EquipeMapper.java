@@ -4,7 +4,9 @@ import com.curie.curieapp.dto.request.EquipeRequest;
 import com.curie.curieapp.dto.response.EquipeResponse;
 import com.curie.curieapp.entities.Assinatura;
 import com.curie.curieapp.entities.Equipe;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EquipeMapper {
 
     public EquipeResponse toResponseDTO(Equipe equipe) {
