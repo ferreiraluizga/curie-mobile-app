@@ -6,6 +6,8 @@ import com.curie.curieapp.dto.response.MetaResponse;
 import com.curie.curieapp.entities.Meta;
 import com.curie.curieapp.entities.Tarefa;
 import com.curie.curieapp.entities.User;
+import com.curie.curieapp.entities.enums.Prioridade;
+import com.curie.curieapp.entities.enums.Status;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +17,7 @@ public class MetaMapper {
         return new MetaResponse(
                 meta.getId(),
                 meta.getUser().getId(),
-                meta.getNome(),
+                meta.getObjetivo(),
                 meta.getDescricao(),
                 meta.getInicio(),
                 meta.getFim(),
@@ -31,12 +33,12 @@ public class MetaMapper {
         user.setId(dto.userId());
 
         meta.setUser(user);
-        meta.setNome(dto.nome());
+        meta.setObjetivo(dto.objetivo());
         meta.setDescricao(dto.descricao());
         meta.setInicio(dto.inicio());
         meta.setFim(dto.fim());
-        meta.setPrioridade(Tarefa.Prioridade.valueOf(dto.prioridade().toLowerCase()));
-        meta.setStatus(Tarefa.Status.valueOf(dto.status().toLowerCase()));
+        meta.setPrioridade(Prioridade.valueOf(dto.prioridade().toLowerCase()));
+        meta.setStatus(Status.valueOf(dto.status().toLowerCase()));
 
         return meta;
     }

@@ -4,6 +4,8 @@ import com.curie.curieapp.dto.request.TarefaRequest;
 import com.curie.curieapp.dto.response.TarefaResponse;
 import com.curie.curieapp.entities.Tarefa;
 import com.curie.curieapp.entities.User;
+import com.curie.curieapp.entities.enums.Prioridade;
+import com.curie.curieapp.entities.enums.Status;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,8 +31,8 @@ public class TarefaMapper {
         tarefa.setUser(user);
         tarefa.setNome(dto.nome());
         tarefa.setPrazo(dto.prazo());
-        tarefa.setPrioridade(Tarefa.Prioridade.valueOf(dto.prioridade().toLowerCase()));
-        tarefa.setStatus(Tarefa.Status.valueOf(dto.status().toLowerCase()));
+        tarefa.setPrioridade(Prioridade.valueOf(dto.prioridade().toLowerCase()));
+        tarefa.setStatus(Status.valueOf(dto.status().toLowerCase()));
 
         return tarefa;
     }

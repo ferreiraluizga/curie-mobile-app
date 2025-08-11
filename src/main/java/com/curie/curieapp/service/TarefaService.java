@@ -3,6 +3,8 @@ package com.curie.curieapp.service;
 import com.curie.curieapp.dto.request.TarefaRequest;
 import com.curie.curieapp.dto.response.TarefaResponse;
 import com.curie.curieapp.entities.Tarefa;
+import com.curie.curieapp.entities.enums.Prioridade;
+import com.curie.curieapp.entities.enums.Status;
 import com.curie.curieapp.mapper.TarefaMapper;
 import com.curie.curieapp.repository.TarefaRepository;
 import lombok.AllArgsConstructor;
@@ -43,8 +45,8 @@ public class TarefaService {
         Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
         tarefa.setNome(dto.nome());
         tarefa.setPrazo(dto.prazo());
-        tarefa.setPrioridade(Tarefa.Prioridade.valueOf(dto.prioridade().toLowerCase()));
-        tarefa.setStatus(Tarefa.Status.valueOf(dto.status().toLowerCase()));
+        tarefa.setPrioridade(Prioridade.valueOf(dto.prioridade().toLowerCase()));
+        tarefa.setStatus(Status.valueOf(dto.status().toLowerCase()));
         return tarefaMapper.toResponseDTO(tarefaRepository.save(tarefa));
     }
 

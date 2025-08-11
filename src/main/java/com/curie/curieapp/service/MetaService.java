@@ -5,6 +5,8 @@ import com.curie.curieapp.dto.response.MetaResponse;
 import com.curie.curieapp.dto.response.TarefaResponse;
 import com.curie.curieapp.entities.Meta;
 import com.curie.curieapp.entities.Tarefa;
+import com.curie.curieapp.entities.enums.Prioridade;
+import com.curie.curieapp.entities.enums.Status;
 import com.curie.curieapp.mapper.MetaMapper;
 import com.curie.curieapp.repository.MetaRepository;
 import lombok.AllArgsConstructor;
@@ -43,12 +45,12 @@ public class MetaService {
 
     public MetaResponse update(Long id, MetaRequest dto) {
         Meta meta = metaRepository.findById(id).orElseThrow(() -> new RuntimeException("Meta não encontrada"));
-        meta.setNome(dto.nome());
+        meta.setObjetivo(dto.objetivo());
         meta.setDescricao(dto.descricao());
         meta.setInicio(dto.inicio());
         meta.setFim(dto.fim());
-        meta.setPrioridade(Tarefa.Prioridade.valueOf(dto.prioridade().toLowerCase()));
-        meta.setStatus(Tarefa.Status.valueOf(dto.status().toLowerCase()));
+        meta.setPrioridade(Prioridade.valueOf(dto.prioridade().toLowerCase()));
+        meta.setStatus(Status.valueOf(dto.status().toLowerCase()));
         return metaMapper.toResponseDTO(metaRepository.save(meta));
     }
 
