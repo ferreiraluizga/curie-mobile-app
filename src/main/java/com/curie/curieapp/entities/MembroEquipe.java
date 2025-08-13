@@ -14,10 +14,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MembroEquipe {
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "equipe_id", nullable = false)
     private Equipe equipe;
 
 }

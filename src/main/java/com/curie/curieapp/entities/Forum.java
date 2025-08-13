@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "forum")
+@Table(name = "foruns")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,14 +21,14 @@ public class Forum {
     @Column(nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "categorias_id", nullable = false)
-    private Categorias categorias;
-
     @Column(nullable = false)
     private String nome;
 
     @Column(nullable = false)
     private LocalDateTime criacao;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
 
 }

@@ -1,17 +1,18 @@
 package com.curie.curieapp.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table(name = "categorias")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,18 +23,6 @@ public class User {
     private String nome;
 
     @Column(nullable = false)
-    private String telefone;
-
-    @Column(nullable = false)
     private String descricao;
-
-    @Column(nullable = false)
-    private LocalDateTime nascimento;
-
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private String senha;
 
 }

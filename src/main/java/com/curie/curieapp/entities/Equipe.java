@@ -19,7 +19,8 @@ public class Equipe {
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "assinatura_id", nullable = false)
     private Assinatura assinatura;
 
 }

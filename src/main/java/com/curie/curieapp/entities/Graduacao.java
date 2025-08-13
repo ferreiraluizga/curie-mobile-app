@@ -29,7 +29,7 @@ public class Graduacao {
     private int duracao;
 
     @ManyToOne
-    @JoinColumn(name = "area_id", nullable = false)
+    @JoinColumn(name = "area_carreira_id", nullable = false)
     private AreaCarreira areaCarreira;
 
 }

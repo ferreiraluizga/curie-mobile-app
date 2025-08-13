@@ -29,6 +29,7 @@ public class Profissao {
     @Column(nullable = false)
     private Double salario;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Demanda demanda;
 

@@ -26,13 +26,16 @@ public class Carreira {
     @Column(nullable = false)
     private String descricao;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "profissao_id", nullable = false)
     private Profissao profissao;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "graduacao_id", nullable = false)
     private Graduacao graduacao;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "pos_graduacao_id", nullable = false)
     private PosGraduacao posGraduacao;
 
 }

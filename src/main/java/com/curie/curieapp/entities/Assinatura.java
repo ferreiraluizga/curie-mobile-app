@@ -26,15 +26,17 @@ public class Assinatura {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String cpf;
 
     @Column(nullable = false)
     private LocalDateTime dataCompra;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Pagamento pagamento;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "tipo_assinatura_id", nullable = false)
     private TipoAssinatura tipoAssinatura;
 }
