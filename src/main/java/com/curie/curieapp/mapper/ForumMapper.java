@@ -1,15 +1,18 @@
 package com.curie.curieapp.mapper;
 
 
-import com.curie.curieapp.controller.ForumResponse;
 import com.curie.curieapp.dto.request.ForumRequest;
+import com.curie.curieapp.dto.response.ForumResponse;
+import com.curie.curieapp.entities.Categoria;
 import com.curie.curieapp.entities.Forum;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ForumMapper {
     public ForumResponse toResponseDTO(Forum forum) {
         return new ForumResponse(
                 forum.getId(),
-                forum.getCategorias().getId(),
+                forum.getCategoria().getId(),
                 forum.getNome(),
                 forum.getCriacao()
         );
@@ -18,10 +21,10 @@ public class ForumMapper {
     public Forum toEntity(ForumRequest dto) {
         Forum forum = new Forum();
 
-        Categorias categorias = new Categorias();
-        categorias.setId(dto.userId());
+        Categoria categoria = new Categoria();
+        categoria.setId(dto.categoriasId());
 
-        forum.setCategorias(categorias);
+        forum.setCategoria(categoria);
         forum.setNome(dto.nome());
         forum.setCriacao(dto.criacao());
 
