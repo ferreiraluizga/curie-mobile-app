@@ -32,12 +32,6 @@ public class EquipeController {
     @GetMapping("/{id}")
     public ResponseEntity<EquipeResponse> getById(Long id) {return ResponseEntity.ok(equipeService.getById(id));}
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<EquipeResponse> update(Long id, @RequestBody EquipeRequest dto) {
-        EquipeResponse response = equipeService.update(id, dto);
-        return ResponseEntity.ok(response);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(Long id) {
         equipeService.delete(id);
