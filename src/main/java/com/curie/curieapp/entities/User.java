@@ -34,6 +34,6 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String senha;
+    private String password;
 
 }
