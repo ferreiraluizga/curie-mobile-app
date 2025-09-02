@@ -1,9 +1,15 @@
 package com.curie.curieapp.entities;
 
+import com.curie.curieapp.dto.request.LoginRequest;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -35,5 +41,27 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
+
+    @CreationTimestamp
+    @Column(name = "createdAt", updatable = false, nullable = false,
+            columnDefinition = "DATETIME(6) DEFAULT CURRENT_TIMESTAMP")
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updatedAt", nullable = false,
+            columnDefinition = "DATETIME(6) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Instant updatedAt;
+
+    public boolean isLoginCorrect(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(loginRequest.password(), this.password);
+    }
 
 }
