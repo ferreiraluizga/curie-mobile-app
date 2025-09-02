@@ -2,12 +2,11 @@ package com.curie.curieapp.controller;
 
 import com.curie.curieapp.dto.request.LoginRequest;
 import com.curie.curieapp.dto.response.LoginResponse;
-import com.curie.curieapp.dto.response.RegisterRequest;
+import com.curie.curieapp.dto.request.RegisterRequest;
 import com.curie.curieapp.entities.User;
 import com.curie.curieapp.infra.security.TokenService;
 import com.curie.curieapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +44,9 @@ public class AuthController {
             newUser.setPassword(passwordEncoder.encode(body.password()));
             newUser.setEmail(body.email());
             newUser.setNome(body.name());
+            newUser.setDescricao(body.descricao());
+            newUser.setNascimento(body.nascimento());
+            newUser.setTelefone(body.telefone());
             this.repository.save(newUser);
 
             String token = this.tokenService.generateToken(newUser);

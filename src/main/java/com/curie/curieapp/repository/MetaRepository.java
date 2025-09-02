@@ -12,23 +12,23 @@ import java.util.List;
 @Repository
 public interface MetaRepository extends JpaRepository<Meta, Long> {
 
-    @Query("SELECT * FROM metas WHERE status = 'pendente' AND user_id = :userId")
+    @Query(value = "SELECT * FROM metas WHERE status = 'pendente' AND user_id = :userId", nativeQuery = true)
     List<Meta> buscarMetasPorUsuario(
             @Param("userId") Long userId
     );
 
-    @Query("SELECT * FROM metas WHERE nome = :nome AND user_id = :userId")
+    @Query(value = "SELECT * FROM metas WHERE nome = :nome AND user_id = :userId", nativeQuery = true)
     List<Meta> buscarMetasPorNome(
             @Param("nome") String nome,
             @Param("userId") Long userId
     );
 
-    @Query("SELECT * FROM metas WHERE user_id = :userId order by fim desc")
+    @Query(value = "SELECT * FROM metas WHERE user_id = :userId order by fim desc", nativeQuery = true)
     List<Meta> buscarMetasPorPrazo(
             @Param("userId") Long userId
     );
 
-    @Query("SELECT * FROM metas WHERE prioridade = :prioridade AND user_id = :userId")
+    @Query(value = "SELECT * FROM metas WHERE prioridade = :prioridade AND user_id = :userId", nativeQuery = true)
     List<Meta> buscarMetasPorPrioridade(
             @Param("prioridade") Prioridade prioridade,
             @Param("userId") Long userId

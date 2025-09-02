@@ -13,6 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MembroEquipe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
