@@ -51,11 +51,13 @@ public class User {
     private Set<Role> roles;
 
     @CreationTimestamp
-    @Column(name = "createdAt", updatable = false, nullable = false)
+    @Column(name = "createdAt", updatable = false, nullable = false,
+            columnDefinition = "DATETIME(6) DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updatedAt", nullable = false)
+    @Column(name = "updatedAt", nullable = false,
+            columnDefinition = "DATETIME(6) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant updatedAt;
 
     public boolean isLoginCorrect(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {

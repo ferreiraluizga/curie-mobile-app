@@ -27,7 +27,7 @@ public class AdminUserConfig implements CommandLineRunner {
 
         var roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name());
 
-        var userAdmin = userRepository.findByName("admin");
+        var userAdmin = userRepository.findByEmail("admin@admin.com");
 
         userAdmin.ifPresentOrElse(
                 user -> {
