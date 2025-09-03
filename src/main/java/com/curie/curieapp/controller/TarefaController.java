@@ -30,18 +30,18 @@ public class TarefaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TarefaResponse> getById(Long id) {
+    public ResponseEntity<TarefaResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(tarefaService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<TarefaResponse> update(Long id, @RequestBody TarefaRequest dto) {
+    public ResponseEntity<TarefaResponse> update(@PathVariable Long id, @RequestBody TarefaRequest dto) {
         TarefaResponse response = tarefaService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         tarefaService.delete(id);
         return ResponseEntity.noContent().build();
     }
