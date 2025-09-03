@@ -31,18 +31,18 @@ public class ForumController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ForumResponse> getById(Long id) {
+    public ResponseEntity<ForumResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(forumService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ForumResponse> update(Long id, @RequestBody ForumRequest dto) {
+    public ResponseEntity<ForumResponse> update(@PathVariable Long id, @RequestBody ForumRequest dto) {
         ForumResponse response = forumService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         forumService.delete(id);
         return ResponseEntity.noContent().build();
     }

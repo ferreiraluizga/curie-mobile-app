@@ -30,18 +30,18 @@ public class TipoTemperamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoTemperamentoResponse> getById(Long id) {
+    public ResponseEntity<TipoTemperamentoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(tipoTemperamentoService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<TipoTemperamentoResponse> update(Long id, @RequestBody TipoTemperamentoRequest dto) {
+    public ResponseEntity<TipoTemperamentoResponse> update(@PathVariable Long id, @RequestBody TipoTemperamentoRequest dto) {
         TipoTemperamentoResponse response = tipoTemperamentoService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         tipoTemperamentoService.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -30,10 +30,10 @@ public class EquipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EquipeResponse> getById(Long id) {return ResponseEntity.ok(equipeService.getById(id));}
+    public ResponseEntity<EquipeResponse> getById(@PathVariable Long id) {return ResponseEntity.ok(equipeService.getById(id));}
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         equipeService.delete(id);
         return ResponseEntity.noContent().build();
     }

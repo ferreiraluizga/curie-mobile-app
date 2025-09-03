@@ -30,18 +30,18 @@ public class MensagensController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MensagensResponse> getById(Long id) {
+    public ResponseEntity<MensagensResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(mensagensService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<MensagensResponse> update(Long id, @RequestBody MensagensRequest dto) {
+    public ResponseEntity<MensagensResponse> update(@PathVariable Long id, @RequestBody MensagensRequest dto) {
         MensagensResponse response = mensagensService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         mensagensService.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -30,18 +30,18 @@ public class AreaCarreiraController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AreaCarreiraResponse> getById(Long id) {
+    public ResponseEntity<AreaCarreiraResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(areaCarreiraService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AreaCarreiraResponse> update(Long id, @RequestBody AreaCarreiraRequest dto) {
+    public ResponseEntity<AreaCarreiraResponse> update(@PathVariable Long id, @RequestBody AreaCarreiraRequest dto) {
         AreaCarreiraResponse response = areaCarreiraService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         areaCarreiraService.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -30,18 +30,18 @@ public class ComportamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ComportamentoResponse> getById(Long id) {
+    public ResponseEntity<ComportamentoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(comportamentoService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ComportamentoResponse> update(Long id, @RequestBody ComportamentoRequest dto) {
+    public ResponseEntity<ComportamentoResponse> update(@PathVariable Long id, @RequestBody ComportamentoRequest dto) {
         ComportamentoResponse response = comportamentoService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         comportamentoService.delete(id);
         return ResponseEntity.noContent().build();
     }

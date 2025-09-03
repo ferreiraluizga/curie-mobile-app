@@ -30,18 +30,18 @@ public class ProfissaoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfissaoResponse> getById(Long id) {
+    public ResponseEntity<ProfissaoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(profissaoService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProfissaoResponse> update(Long id, @RequestBody ProfissaoRequest dto) {
+    public ResponseEntity<ProfissaoResponse> update(@PathVariable Long id, @RequestBody ProfissaoRequest dto) {
         ProfissaoResponse response = profissaoService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         profissaoService.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -32,18 +32,18 @@ public class MetaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MetaResponse> getById(Long id) {
+    public ResponseEntity<MetaResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(metaService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<MetaResponse> update(Long id, @RequestBody MetaRequest dto) {
+    public ResponseEntity<MetaResponse> update(@PathVariable Long id, @RequestBody MetaRequest dto) {
         MetaResponse response = metaService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         metaService.delete(id);
         return ResponseEntity.noContent().build();
     }

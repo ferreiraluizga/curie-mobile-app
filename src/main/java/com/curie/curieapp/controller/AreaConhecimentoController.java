@@ -30,18 +30,18 @@ public class AreaConhecimentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AreaConhecimentoResponse> getById(Long id) {
+    public ResponseEntity<AreaConhecimentoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(areaConhecimentoService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AreaConhecimentoResponse> update(Long id, @RequestBody AreaConhecimentoRequest dto) {
+    public ResponseEntity<AreaConhecimentoResponse> update(@PathVariable Long id, @RequestBody AreaConhecimentoRequest dto) {
         AreaConhecimentoResponse response = areaConhecimentoService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         areaConhecimentoService.delete(id);
         return ResponseEntity.noContent().build();
     }

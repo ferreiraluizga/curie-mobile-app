@@ -30,18 +30,18 @@ public class PosGraduacaoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PosGraduacaoResponse> getById(Long id) {
+    public ResponseEntity<PosGraduacaoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(posGraduacaoService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<PosGraduacaoResponse> update(Long id, @RequestBody PosGraduacaoRequest dto) {
+    public ResponseEntity<PosGraduacaoResponse> update(@PathVariable Long id, @RequestBody PosGraduacaoRequest dto) {
         PosGraduacaoResponse response = posGraduacaoService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         posGraduacaoService.delete(id);
         return ResponseEntity.noContent().build();
     }

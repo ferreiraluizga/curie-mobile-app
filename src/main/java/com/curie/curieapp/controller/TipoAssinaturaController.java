@@ -30,16 +30,16 @@ public class TipoAssinaturaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoAssinaturaResponse> getById(Long id) { return ResponseEntity.ok(tipoAssinaturaService.getById(id));}
+    public ResponseEntity<TipoAssinaturaResponse> getById(@PathVariable Long id) { return ResponseEntity.ok(tipoAssinaturaService.getById(id));}
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<TipoAssinaturaResponse> update(Long id, @RequestBody TipoAssinaturaRequest dto) {
+    public ResponseEntity<TipoAssinaturaResponse> update(@PathVariable Long id, @RequestBody TipoAssinaturaRequest dto) {
         TipoAssinaturaResponse response = tipoAssinaturaService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         tipoAssinaturaService.delete(id);
         return ResponseEntity.noContent().build();
     }
