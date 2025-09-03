@@ -14,11 +14,4 @@ public interface ForumRepository extends JpaRepository<Forum, Long> {
     List<Forum> buscarForumPorNome(
             @Param("nome") String nome
     );
-
-    @Query(value = "SELECT mensagens.data, mensagens.texto, mensagens.arquivo FROM mensagens INNER JOIN foruns ON mensagens.forum_id = foruns.forum_id WHERE forum_id = :forumId", nativeQuery = true)
-    List<Forum> buscarMensagensPorFurum(
-            @Param("forumId") Long forumId
-    );
-
-
 }

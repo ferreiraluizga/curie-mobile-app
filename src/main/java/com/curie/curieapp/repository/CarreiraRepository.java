@@ -14,5 +14,4 @@ public interface CarreiraRepository extends JpaRepository<Carreira, Long> {
     List<Carreira> buscarPlanoPorId(
             @Param("userId") Long userId
     );
-
 }
