@@ -31,18 +31,18 @@ public class TipoComportamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoComportamentoResponse> getById(Long id) {
+    public ResponseEntity<TipoComportamentoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(tipoComportamentoService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<TipoComportamentoResponse> update(Long id, @RequestBody TipoComportamentoRequest dto) {
+    public ResponseEntity<TipoComportamentoResponse> update(@PathVariable Long id, @RequestBody TipoComportamentoRequest dto) {
         TipoComportamentoResponse response = tipoComportamentoService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         tipoComportamentoService.delete(id);
         return ResponseEntity.noContent().build();
     }

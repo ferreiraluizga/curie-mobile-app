@@ -30,18 +30,18 @@ public class GraduacaoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GraduacaoResponse> getById(Long id) {
+    public ResponseEntity<GraduacaoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(graduacaoService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<GraduacaoResponse> update(Long id, @RequestBody GraduacaoRequest dto) {
+    public ResponseEntity<GraduacaoResponse> update(@PathVariable Long id, @RequestBody GraduacaoRequest dto) {
         GraduacaoResponse response = graduacaoService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         graduacaoService.delete(id);
         return ResponseEntity.noContent().build();
     }

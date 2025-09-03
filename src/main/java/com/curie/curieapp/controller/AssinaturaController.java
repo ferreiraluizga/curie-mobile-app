@@ -30,16 +30,16 @@ public class AssinaturaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AssinaturaResponse> getById(Long id) {return ResponseEntity.ok(assinaturaService.getById(id));}
+    public ResponseEntity<AssinaturaResponse> getById(@PathVariable Long id) {return ResponseEntity.ok(assinaturaService.getById(id));}
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AssinaturaResponse> update(Long id, @RequestBody AssinaturaRequest dto) {
+    public ResponseEntity<AssinaturaResponse> update(@PathVariable Long id, @RequestBody AssinaturaRequest dto) {
         AssinaturaResponse response = assinaturaService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         assinaturaService.delete(id);
         return ResponseEntity.noContent().build();
     }

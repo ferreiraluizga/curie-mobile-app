@@ -30,18 +30,18 @@ public class MembroForumController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MembroForumResponse> getById(Long id) {
+    public ResponseEntity<MembroForumResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(membroForumService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<MembroForumResponse> update(Long id, @RequestBody MembroForumRequest dto) {
+    public ResponseEntity<MembroForumResponse> update(@PathVariable Long id, @RequestBody MembroForumRequest dto) {
         MembroForumResponse response = membroForumService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         membroForumService.delete(id);
         return ResponseEntity.noContent().build();
     }

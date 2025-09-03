@@ -30,18 +30,18 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaResponse> getById(Long id) {
+    public ResponseEntity<CategoriaResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(categoriaService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CategoriaResponse> update(Long id, @RequestBody CategoriaRequest dto) {
+    public ResponseEntity<CategoriaResponse> update(@PathVariable Long id, @RequestBody CategoriaRequest dto) {
         CategoriaResponse response = categoriaService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoriaService.delete(id);
         return ResponseEntity.noContent().build();
     }

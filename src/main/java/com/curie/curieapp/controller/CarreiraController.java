@@ -30,18 +30,18 @@ public class CarreiraController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarreiraResponse> getById(Long id) {
+    public ResponseEntity<CarreiraResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(carreiraService.getById(id));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CarreiraResponse> update(Long id, @RequestBody CarreiraRequest dto) {
+    public ResponseEntity<CarreiraResponse> update(@PathVariable Long id, @RequestBody CarreiraRequest dto) {
         CarreiraResponse response = carreiraService.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         carreiraService.delete(id);
         return ResponseEntity.noContent().build();
     }
