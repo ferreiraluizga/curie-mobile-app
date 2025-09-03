@@ -27,8 +27,13 @@ public class AssinaturaService {
     private final AssinaturaMapper assinaturaMapper;
 
     public AssinaturaResponse save(AssinaturaRequest dto) {
-        Assinatura assinatura = assinaturaMapper.toEntity(dto);
-        return assinaturaMapper.toResponseDTO(assinaturaRepository.save(assinatura));
+        if (possuiAssinaturaAtiva(Long.valueOf(dto.userId()))) {
+            Assinatura assinatura = assinaturaMapper.toEntity(dto);
+            return assinaturaMapper.toResponseDTO(assinaturaRepository.save(assinatura));
+        } else {
+            new RuntimeException("O usuário possui uma assinatura válida");
+            return null;
+        }
     }
 
     public List<AssinaturaResponse> getAll() {
@@ -66,4 +71,17 @@ public class AssinaturaService {
         LocalDateTime dataAtual = LocalDateTime.now();
         return dataAtual.isBefore(dataLimite);
     }
+
+    public boolean possuiAssinaturaAtiva(Long usuarioId) {
+        List<Assinatura> assinaturas = assinaturaRepository.findAllByUsuarioId(usuarioId);
+        LocalDateTime agora = LocalDateTime.now();
+        for (Assinatura assinatura : assinaturas) {
+            LocalDateTime dataLimite = assinatura.getDataCompra().plusDays(30);
+            if (agora.isBefore(dataLimite)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
