@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,45 @@ public class TarefaService {
     public TarefaResponse getById(Long id) {
         Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
         return tarefaMapper.toResponseDTO(tarefa);
+    }
+
+    // listar tarefas de um usuário
+    public List<TarefaResponse> getByUsuario(Long userId) {
+        return tarefaRepository.getByUsuario(userId)
+                .stream()
+                .map(tarefaMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    // listar tarefas por nome e usuário
+    public List<TarefaResponse> getByNome(String nome, Long userId) {
+        return tarefaRepository.getByNome(nome, userId)
+                .stream()
+                .map(tarefaMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    // listar tarefas por prazo e usuário
+    public List<TarefaResponse> getByPrazo(Long userId) {
+        return tarefaRepository.getByPrazo(userId)
+                .stream()
+                .map(tarefaMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    // listar tarefas por prioridade e usuário
+    public List<TarefaResponse> getByPrioridade(Long userId) {
+        List<TarefaResponse> result = new ArrayList<>();
+
+        List<Tarefa> baixa = tarefaRepository.getByPrioridade("baixa", userId);
+        List<Tarefa> media = tarefaRepository.getByPrioridade("media", userId);
+        List<Tarefa> alta = tarefaRepository.getByPrioridade("alta", userId);
+
+        alta.forEach(tarefa -> result.add(tarefaMapper.toResponseDTO(tarefa)));
+        media.forEach(tarefa -> result.add(tarefaMapper.toResponseDTO(tarefa)));
+        baixa.forEach(tarefa -> result.add(tarefaMapper.toResponseDTO(tarefa)));
+
+        return result;
     }
 
     public TarefaResponse update(Long id, TarefaRequest dto) {
