@@ -23,11 +23,6 @@ public class AreaCarreiraService {
     @Autowired
     private final AreaCarreiraMapper areaCarreiraMapper;
 
-    public AreaCarreiraResponse save(AreaCarreiraRequest dto) {
-        AreaCarreira areaCarreira = areaCarreiraMapper.toEntity(dto);
-        return areaCarreiraMapper.toResponseDTO(areaCarreiraRepository.save(areaCarreira));
-    }
-
     public List<AreaCarreiraResponse> getAll() {
         return areaCarreiraRepository.findAll()
                 .stream()
@@ -38,16 +33,5 @@ public class AreaCarreiraService {
     public AreaCarreiraResponse getById(Long id) {
         AreaCarreira areaCarreira = areaCarreiraRepository.findById(id).orElseThrow(() -> new RuntimeException("Area de carreira não encontrada"));
         return areaCarreiraMapper.toResponseDTO(areaCarreira);
-    }
-
-    public AreaCarreiraResponse update(Long id, AreaCarreiraRequest dto) {
-        AreaCarreira areaCarreira = areaCarreiraRepository.findById(id).orElseThrow(() -> new RuntimeException("Area de carreira não encontrada"));
-        areaCarreira.setNome(dto.nome());
-        areaCarreira.setDescricao(dto.descricao());
-        return areaCarreiraMapper.toResponseDTO(areaCarreiraRepository.save(areaCarreira));
-    }
-
-    public void delete(Long id) {
-        areaCarreiraRepository.deleteById(id);
     }
 }

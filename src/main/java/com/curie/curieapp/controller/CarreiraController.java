@@ -23,21 +23,20 @@ public class CarreiraController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<CarreiraResponse>> getAll() {
-        List<CarreiraResponse> areaConhecimento = carreiraService.getAll();
-        return ResponseEntity.ok(areaConhecimento);
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<List<CarreiraResponse>> getByUsuario(@PathVariable Long id) {
+        List<CarreiraResponse> carreiras = carreiraService.getByUsuario(id);
+        return ResponseEntity.ok(carreiras);
+    }
+
+    @GetMapping("/usuario/{id}/mais-recente")
+    public ResponseEntity<CarreiraResponse> getMaisRecente(@PathVariable Long id) {
+        return ResponseEntity.ok(carreiraService.getMaisRecente(id));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CarreiraResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(carreiraService.getById(id));
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<CarreiraResponse> update(@PathVariable Long id, @RequestBody CarreiraRequest dto) {
-        CarreiraResponse response = carreiraService.update(id, dto);
-        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")

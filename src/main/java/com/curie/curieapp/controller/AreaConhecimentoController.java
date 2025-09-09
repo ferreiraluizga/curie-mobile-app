@@ -17,12 +17,6 @@ import java.util.List;
 public class AreaConhecimentoController {
     private final AreaConhecimentoService areaConhecimentoService;
 
-    @PostMapping("/save")
-    public ResponseEntity<AreaConhecimentoResponse> save(@RequestBody AreaConhecimentoRequest dto) {
-        AreaConhecimentoResponse response = areaConhecimentoService.save(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping()
     public ResponseEntity<List<AreaConhecimentoResponse>> getAll() {
         List<AreaConhecimentoResponse> areaConhecimento = areaConhecimentoService.getAll();
@@ -32,17 +26,5 @@ public class AreaConhecimentoController {
     @GetMapping("/{id}")
     public ResponseEntity<AreaConhecimentoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(areaConhecimentoService.getById(id));
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<AreaConhecimentoResponse> update(@PathVariable Long id, @RequestBody AreaConhecimentoRequest dto) {
-        AreaConhecimentoResponse response = areaConhecimentoService.update(id, dto);
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        areaConhecimentoService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

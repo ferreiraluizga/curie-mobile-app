@@ -22,11 +22,6 @@ public class PosGraduacaoService {
     @Autowired
     private final PosGraduacaoMapper posGraduacaoMapper;
 
-    public PosGraduacaoResponse save(PosGraduacaoRequest dto) {
-        PosGraduacao posGraduacao = posGraduacaoMapper.toEntity(dto);
-        return posGraduacaoMapper.toResponseDTO(posGraduacaoRepository.save(posGraduacao));
-    }
-
     public List<PosGraduacaoResponse> getAll() {
         return posGraduacaoRepository.findAll()
                 .stream()
@@ -37,19 +32,6 @@ public class PosGraduacaoService {
     public PosGraduacaoResponse getById(Long id) {
         PosGraduacao posGraduacao = posGraduacaoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pos Graduacao não encontrada"));
         return posGraduacaoMapper.toResponseDTO(posGraduacao);
-    }
-
-    public PosGraduacaoResponse update(Long id, PosGraduacaoRequest dto) {
-        PosGraduacao posGraduacao = posGraduacaoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pos Graduacao não encontrada"));
-        posGraduacao.setNome(dto.nome());
-        posGraduacao.setDescricao(dto.descricao());
-        posGraduacao.setDuracao(dto.duracao());
-        posGraduacao.setAreaCarreira(dto.areaCarreira());
-        return posGraduacaoMapper.toResponseDTO(posGraduacaoRepository.save(posGraduacao));
-    }
-
-    public void delete(Long id) {
-        posGraduacaoRepository.deleteById(id);
     }
 
 }

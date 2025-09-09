@@ -23,34 +23,41 @@ public class CarreiraService {
     private final CarreiraMapper carreiraMapper;
 
     public CarreiraResponse save(CarreiraRequest dto) {
+        if (isMaximoCarreiras(dto.user().getId().longValue())) {
+            carreiraRepository.deleteByUsuario(dto.user().getId().longValue());
+        }
         Carreira carreira = carreiraMapper.toEntity(dto);
         return carreiraMapper.toResponseDTO(carreiraRepository.save(carreira));
     }
 
-    public List<CarreiraResponse> getAll() {
-        return carreiraRepository.findAll()
+    public List<CarreiraResponse> getByUsuario(Long id) {
+        return carreiraRepository.getByUsuario(id)
                 .stream()
                 .map(carreiraMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public CarreiraResponse getById(Long id) {
-        Carreira areaCarreira = carreiraRepository.findById(id).orElseThrow(() -> new RuntimeException("Carreira não encontrada"));
-        return carreiraMapper.toResponseDTO(areaCarreira);
+    public CarreiraResponse getMaisRecente(Long id) {
+        Carreira carreira = carreiraRepository.getMaisRecente(id);
+        return carreiraMapper.toResponseDTO(carreira);
     }
 
-    public CarreiraResponse update(Long id, CarreiraRequest dto) {
+    public CarreiraResponse getById(Long id) {
         Carreira carreira = carreiraRepository.findById(id).orElseThrow(() -> new RuntimeException("Carreira não encontrada"));
-        carreira.setUser(dto.user());
-        carreira.setDescricao(dto.descricao());
-        carreira.setProfissao(dto.profissao());
-        carreira.setGraduacao(dto.graduacao());
-        carreira.setPosGraduacao(dto.posGraduacao());
-        return carreiraMapper.toResponseDTO(carreiraRepository.save(carreira));
+        return carreiraMapper.toResponseDTO(carreira);
     }
 
     public void delete(Long id) {
         carreiraRepository.deleteById(id);
+    }
+
+    private boolean isMaximoCarreiras(Long userId) {
+        int quant = carreiraRepository.getByUsuario(userId).size();
+        if (quant > 3) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

@@ -22,11 +22,6 @@ public class AreaConhecimentoService {
     @Autowired
     private final AreaConhecimentoMapper areaConhecimentoMapper;
 
-    public AreaConhecimentoResponse save(AreaConhecimentoRequest dto) {
-        AreaConhecimento areaConhecimento = areaConhecimentoMapper.toEntity(dto);
-        return areaConhecimentoMapper.toResponseDTO(areaConhecimentoRepository.save(areaConhecimento));
-    }
-
     public List<AreaConhecimentoResponse> getAll() {
         return areaConhecimentoRepository.findAll()
                 .stream()
@@ -37,16 +32,5 @@ public class AreaConhecimentoService {
     public AreaConhecimentoResponse getById(Long id) {
         AreaConhecimento areaConhecimento = areaConhecimentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Área de conhecimento não encontrado"));
         return areaConhecimentoMapper.toResponseDTO(areaConhecimento);
-    }
-
-    public AreaConhecimentoResponse update(Long id, AreaConhecimentoRequest dto) {
-        AreaConhecimento areaConhecimento = areaConhecimentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Área de conhecimento não encontrado"));
-        areaConhecimento.setNome(dto.nome());
-        areaConhecimento.setMaterias(dto.materias());
-        return areaConhecimentoMapper.toResponseDTO(areaConhecimentoRepository.save(areaConhecimento));
-    }
-
-    public void delete(Long id) {
-        areaConhecimentoRepository.deleteById(id);
     }
 }
