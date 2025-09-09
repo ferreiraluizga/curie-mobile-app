@@ -25,12 +25,6 @@ public class MetaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<MetaResponse>> getAll() {
-        List<MetaResponse> tarefas = metaService.getAll();
-        return ResponseEntity.ok(tarefas);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<MetaResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(metaService.getById(id));

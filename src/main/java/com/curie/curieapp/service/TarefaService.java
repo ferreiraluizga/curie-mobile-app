@@ -30,13 +30,6 @@ public class TarefaService {
         return tarefaMapper.toResponseDTO(tarefaRepository.save(tarefa));
     }
 
-    public List<TarefaResponse> getAll() {
-        return tarefaRepository.findAll()
-                .stream()
-                .map(tarefaMapper::toResponseDTO)
-                .collect(Collectors.toList());
-    }
-
     public TarefaResponse getById(Long id) {
         Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
         return tarefaMapper.toResponseDTO(tarefa);

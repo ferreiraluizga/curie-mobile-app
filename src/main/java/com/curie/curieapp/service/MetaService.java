@@ -32,13 +32,6 @@ public class MetaService {
         return metaMapper.toResponseDTO(metaRepository.save(meta));
     }
 
-    public List<MetaResponse> getAll() {
-        return metaRepository.findAll()
-                .stream()
-                .map(metaMapper::toResponseDTO)
-                .collect(Collectors.toList());
-    }
-
     public MetaResponse getById(Long id) {
         Meta meta = metaRepository.findById(id).orElseThrow(() -> new RuntimeException("Meta não encontrada"));
         return metaMapper.toResponseDTO(meta);

@@ -23,12 +23,6 @@ public class TarefaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<TarefaResponse>> getAll() {
-        List<TarefaResponse> tarefas = tarefaService.getAll();
-        return ResponseEntity.ok(tarefas);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<TarefaResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(tarefaService.getById(id));
