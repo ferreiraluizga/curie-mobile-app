@@ -22,11 +22,6 @@ public class TipoTemperamentoService {
     @Autowired
     private final TipoTemperamentoMapper tipoTemperamentoMapper;
 
-    public TipoTemperamentoResponse save(TipoTemperamentoRequest dto) {
-        TipoTemperamento tipoTemperamento = tipoTemperamentoMapper.toEntity(dto);
-        return tipoTemperamentoMapper.toResponseDTO(tipoTemperamentoRepository.save(tipoTemperamento));
-    }
-
     public List<TipoTemperamentoResponse> getAll() {
         return tipoTemperamentoRepository.findAll()
                 .stream()
@@ -37,16 +32,5 @@ public class TipoTemperamentoService {
     public TipoTemperamentoResponse getById(Long id) {
         TipoTemperamento tipoTemperamento = tipoTemperamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Tipo de temperamento não encontrado"));
         return tipoTemperamentoMapper.toResponseDTO(tipoTemperamento);
-    }
-
-    public TipoTemperamentoResponse update(Long id, TipoTemperamentoRequest dto) {
-        TipoTemperamento tipoTemperamento = tipoTemperamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Tipo de temperamento não encontrado"));
-        tipoTemperamento.setNome(dto.nome());
-        tipoTemperamento.setDescricao(dto.descricao());
-        return tipoTemperamentoMapper.toResponseDTO(tipoTemperamentoRepository.save(tipoTemperamento));
-    }
-
-    public void delete(Long id) {
-        tipoTemperamentoRepository.deleteById(id);
     }
 }

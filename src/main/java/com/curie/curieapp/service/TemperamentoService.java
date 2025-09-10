@@ -40,14 +40,11 @@ public class TemperamentoService {
         return temperamentoMapper.toResponseDTO(temperamento);
     }
 
-    public TemperamentoResponse update(Long id, TemperamentoRequest dto) {
-        Temperamento temperamento = temperamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Temperamento não encontrado"));
-        temperamento.setForcaAprendizado(dto.forcaAprendizado());
-        temperamento.setFraquezaAprendizado(dto.fraquezaAprendizado());
-        return temperamentoMapper.toResponseDTO(temperamentoRepository.save(temperamento));
-    }
-
     public void delete(Long id) {
         temperamentoRepository.deleteById(id);
+    }
+
+    public void deleteByUsuario(Long id) {
+        temperamentoRepository.deleteByUsuario(id);
     }
 }

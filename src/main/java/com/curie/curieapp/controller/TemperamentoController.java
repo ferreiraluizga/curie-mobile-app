@@ -34,12 +34,6 @@ public class TemperamentoController {
         return ResponseEntity.ok(temperamentoService.getById(id));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<TemperamentoResponse> update(@PathVariable Long id, @RequestBody TemperamentoRequest dto) {
-        TemperamentoResponse response = temperamentoService.update(id, dto);
-        return ResponseEntity.ok(response);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         temperamentoService.delete(id);

@@ -39,15 +39,11 @@ public class ComportamentoService {
         return comportamentoMapper.toResponseDTO(comportamento);
     }
 
-    public ComportamentoResponse update(Long id, ComportamentoRequest dto) {
-        Comportamento comportamento = comportamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Mensagem não encontrada"));
-        comportamento.setCaracteristicas(dto.caracteristicas());
-        comportamento.setAprendizagem(dto.aprendizagem());
-        comportamento.setDescricaoEstudo(dto.descricaoEstudo());
-        return comportamentoMapper.toResponseDTO(comportamentoRepository.save(comportamento));
-    }
-
     public void delete(Long id) {
         comportamentoRepository.deleteById(id);
+    }
+
+    public void deleteByUsuario(Long id) {
+        comportamentoRepository.deleteByUsuario(id);
     }
 }

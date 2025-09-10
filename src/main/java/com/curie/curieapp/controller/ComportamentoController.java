@@ -34,12 +34,6 @@ public class ComportamentoController {
         return ResponseEntity.ok(comportamentoService.getById(id));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ComportamentoResponse> update(@PathVariable Long id, @RequestBody ComportamentoRequest dto) {
-        ComportamentoResponse response = comportamentoService.update(id, dto);
-        return ResponseEntity.ok(response);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         comportamentoService.delete(id);

@@ -18,12 +18,6 @@ import java.util.List;
 public class TipoComportamentoController {
     private final TipoComportamentoService tipoComportamentoService;
 
-    @PostMapping("/save")
-    public ResponseEntity<TipoComportamentoResponse> save(@RequestBody TipoComportamentoRequest dto) {
-        TipoComportamentoResponse response = tipoComportamentoService.save(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping()
     public ResponseEntity<List<TipoComportamentoResponse>> getAll() {
         List<TipoComportamentoResponse> tipoComportamento = tipoComportamentoService.getAll();
@@ -33,17 +27,5 @@ public class TipoComportamentoController {
     @GetMapping("/{id}")
     public ResponseEntity<TipoComportamentoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(tipoComportamentoService.getById(id));
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<TipoComportamentoResponse> update(@PathVariable Long id, @RequestBody TipoComportamentoRequest dto) {
-        TipoComportamentoResponse response = tipoComportamentoService.update(id, dto);
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        tipoComportamentoService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

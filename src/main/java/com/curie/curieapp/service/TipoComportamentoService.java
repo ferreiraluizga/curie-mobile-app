@@ -21,11 +21,6 @@ public class TipoComportamentoService {
     @Autowired
     private final TipoComportamentoMapper tipoComportamentoMapper;
 
-    public TipoComportamentoResponse save(TipoComportamentoRequest dto) {
-        TipoComportamento tipoComportamento = tipoComportamentoMapper.toEntity(dto);
-        return tipoComportamentoMapper.toResponseDTO(tipoComportamentoRepository.save(tipoComportamento));
-    }
-
     public List<TipoComportamentoResponse> getAll() {
         return tipoComportamentoRepository.findAll()
                 .stream()
@@ -36,16 +31,5 @@ public class TipoComportamentoService {
     public TipoComportamentoResponse getById(Long id) {
         TipoComportamento tipoComportamento = tipoComportamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Tipo de comportamento não encontrado"));
         return tipoComportamentoMapper.toResponseDTO(tipoComportamento);
-    }
-
-    public TipoComportamentoResponse update(Long id, TipoComportamentoRequest dto) {
-        TipoComportamento tipoComportamento = tipoComportamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Tipo de comportamento não encontrado"));
-        tipoComportamento.setNome(dto.nome());
-        tipoComportamento.setDescricao(dto.descricao());
-        return tipoComportamentoMapper.toResponseDTO(tipoComportamentoRepository.save(tipoComportamento));
-    }
-
-    public void delete(Long id) {
-        tipoComportamentoRepository.deleteById(id);
     }
 }

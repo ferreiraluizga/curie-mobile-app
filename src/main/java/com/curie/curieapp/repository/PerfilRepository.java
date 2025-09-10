@@ -10,8 +10,18 @@ import java.util.List;
 
 @Repository
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
-    @Query(value = "SELECT * FROM perfil WHERE user_id = :userId", nativeQuery = true)
-    List<Perfil> buscarPerfilPorUsuario(
+    @Query(value = "SELECT * FROM perfis WHERE user_id = :userId", nativeQuery = true)
+    List<Perfil> getByUsuario(
+            @Param("userId") Long userId
+    );
+
+    @Query(value = "SELECT * FROM perfis WHERE user_id = :userId ORDER BY id DESC LIMIT 1", nativeQuery = true)
+    Perfil getMaisRecente(
+            @Param("userId") Long userId
+    );
+
+    @Query(value = "DELETE * FROM perfis where user_id = :userId", nativeQuery = true)
+    void deleteByUsuario (
             @Param("userId") Long userId
     );
 }

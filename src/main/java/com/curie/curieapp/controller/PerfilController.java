@@ -23,21 +23,20 @@ public class PerfilController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<PerfilResponse>> getAll() {
-        List<PerfilResponse> perfil = perfilService.getAll();
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<List<PerfilResponse>> getByUsuario(@PathVariable Long id) {
+        List<PerfilResponse> perfil = perfilService.getByUsuario(id);
         return ResponseEntity.ok(perfil);
+    }
+
+    @GetMapping("usuario/{id}/mais-recente")
+    public ResponseEntity<PerfilResponse> getMaisRecente(@PathVariable Long id) {
+        return ResponseEntity.ok(perfilService.getMaisRecente(id));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PerfilResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(perfilService.getById(id));
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<PerfilResponse> update(@PathVariable Long id, @RequestBody PerfilRequest dto) {
-        PerfilResponse response = perfilService.update(id, dto);
-        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
