@@ -50,7 +50,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     val nav_version = "2.9.4"
     implementation("androidx.navigation:navigation-compose:$nav_version")
-    implementation("com.squareup.retrofit2:retrofit:3.1.0-SNAPSHOT")
+    implementation("com.squareup.retrofit2:retrofit:3.1.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
