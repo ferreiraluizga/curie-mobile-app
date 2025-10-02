@@ -33,7 +33,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefaService.getByUsuario(userId));
     }
 
-    @GetMapping("/usuario/{userId}")
+    @GetMapping("/usuario/{nome}")
     public ResponseEntity<List<TarefaResponse>> getByNome(@PathVariable Long userId, @RequestParam String nome) {
         return ResponseEntity.ok(tarefaService.getByNome(nome, userId));
     }
