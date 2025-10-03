@@ -133,7 +133,7 @@ class TarefaViewModel : ViewModel() {
         }
     }
 
-    fun update(id: Long, tarefa: Tarefa) {
+    fun update(id: Long?, tarefa: Tarefa) {
         _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
