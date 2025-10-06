@@ -34,8 +34,8 @@ interface TarefaApi {
     fun getByPrioridade(@Path("userId") userId: Long): Call<List<Tarefa>>
 
     @PUT("tarefas/update/{id}")
-    fun update(@Path("id") id: Long, @Body tarefa: Tarefa): Call<Tarefa>
+    fun update(@Path("id") id: Long?, @Body tarefa: Tarefa): Call<Tarefa>
 
     @DELETE("tarefas/delete/{id}")
-    fun delete(@Path("id") id: Long): Call<Void>
+    fun delete(@Path("id") id: Long?): Call<Void>
 }

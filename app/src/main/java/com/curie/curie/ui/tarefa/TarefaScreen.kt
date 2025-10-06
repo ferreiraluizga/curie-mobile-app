@@ -125,8 +125,8 @@ fun TarefaDialog(
 ) {
     var nome by remember { mutableStateOf(tarefa?.nome ?: "") }
     var prazo by remember { mutableStateOf(tarefa?.prazo ?: "") }
-    var prioridade by remember { mutableStateOf(tarefa?.prioridade ?: Prioridade.BAIXA) }
-    var status by remember { mutableStateOf(tarefa?.status ?: Status.PENDENTE) }
+    var prioridade by remember { mutableStateOf(tarefa?.prioridade ?: Prioridade.baixa) }
+    var status by remember { mutableStateOf(tarefa?.status ?: Status.pendente) }
 
     AlertDialog(
         onDismissRequest = onDismiss,

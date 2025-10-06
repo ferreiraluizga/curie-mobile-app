@@ -3,15 +3,19 @@ package com.curie.curie.ui.tarefa
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.curie.curie.data.api.RetrofitClient
+import com.curie.curie.data.api.TarefaApi
+import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.data.model.Tarefa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class TarefaViewModel : ViewModel() {
+class TarefaViewModel(
+    private val tokenStorage: TokenStorage
+) : ViewModel() {
 
-    private val tarefaApi = RetrofitClient.tarefaApi
+    private val tarefaApi = RetrofitClient.createService(TarefaApi::class.java) { tokenStorage.getToken() }
 
     private val _tarefas = MutableStateFlow<List<Tarefa>>(emptyList())
     val tarefas: StateFlow<List<Tarefa>> = _tarefas
@@ -151,7 +155,7 @@ class TarefaViewModel : ViewModel() {
         }
     }
 
-    fun delete(id: Long) {
+    fun delete(id: Long?) {
         _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
