@@ -208,7 +208,6 @@ fun TarefaDialog(
                 onSave(
                     Tarefa(
                         id = tarefa?.id ?: 0L,
-                        userId = userId,
                         nome = nome,
                         prazo = prazo,
                         prioridade = prioridade,

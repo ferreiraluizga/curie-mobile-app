@@ -5,7 +5,6 @@ import com.curie.curie.data.model.enums.Status
 
 data class Tarefa(
     val id: Long? = null,
-    val userId: Int,
     val nome: String,
     val prazo: String,
     val prioridade: Prioridade,
