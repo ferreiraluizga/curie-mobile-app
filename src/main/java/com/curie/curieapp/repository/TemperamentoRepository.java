@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TemperamentoRepository extends JpaRepository<Temperamento, Long> {
 
-    @Query(value = "DELETE * FROM temperamentos where user_id = :userId", nativeQuery = true)
+    @Query(value = "DELETE FROM temperamentos where user_id = :userId", nativeQuery = true)
     void deleteByUsuario (
             @Param("userId") Long userId
     );

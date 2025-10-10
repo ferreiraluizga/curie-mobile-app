@@ -35,7 +35,7 @@ public class MetaController {
         return ResponseEntity.ok(metaService.getByUsuario(userId));
     }
 
-    @GetMapping("/usuario/{userId}")
+    @GetMapping("/usuario/{userId}/buscar-por-nome")
     public ResponseEntity<List<MetaResponse>> getByNome(@PathVariable Long userId, @RequestParam String nome) {
         return ResponseEntity.ok(metaService.getByNome(nome, userId));
     }

@@ -72,8 +72,8 @@ public class AssinaturaService {
         return dataAtual.isBefore(dataLimite);
     }
 
-    public boolean possuiAssinaturaAtiva(Long usuarioId) {
-        List<Assinatura> assinaturas = assinaturaRepository.findAllByUsuarioId(usuarioId);
+    public boolean possuiAssinaturaAtiva(Long userId) {
+        List<Assinatura> assinaturas = assinaturaRepository.findAllByUserId(userId);
         LocalDateTime agora = LocalDateTime.now();
         for (Assinatura assinatura : assinaturas) {
             LocalDateTime dataLimite = assinatura.getDataCompra().plusDays(30);
