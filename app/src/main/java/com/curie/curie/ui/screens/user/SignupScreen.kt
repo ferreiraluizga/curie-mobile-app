@@ -84,6 +84,60 @@ fun SignupScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TextField(
+                label = { Text("Nome Completo") },
+                value = email,
+                onValueChange = { newText -> email = newText },
+                trailingIcon = {
+                    Icon(Icons.Outlined.Email, contentDescription = "email")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(Alignment.CenterVertically)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = Shapes.medium,
+                        clip = true
+                    )
+                    .background(
+                        color = Color.White,
+                        shape = Shapes.medium
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = BlueNavy
+                )
+            )
+
+            TextField(
+                label = { Text("Telefone") },
+                value = email,
+                onValueChange = { newText -> email = newText },
+                trailingIcon = {
+                    Icon(Icons.Outlined.Email, contentDescription = "email")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(Alignment.CenterVertically)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = Shapes.medium,
+                        clip = true
+                    )
+                    .background(
+                        color = Color.White,
+                        shape = Shapes.medium
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = BlueNavy
+                )
+            )
+
+            TextField(
                 label = { Text("E-mail") },
                 value = email,
                 onValueChange = { newText -> email = newText },
@@ -116,6 +170,45 @@ fun SignupScreen(
 
             TextField(
                 label = { Text("Senha") },
+                value = password,
+                onValueChange = { newText -> password = newText },
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        Icons.Outlined.VisibilityOff
+                    else
+                        Icons.Outlined.Visibility
+
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            imageVector = image,
+                            contentDescription = if (passwordVisible) "Ocultar senha" else "Mostrar senha",
+                            tint = BlueNavy
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(Alignment.CenterVertically)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = Shapes.medium,
+                        clip = true
+                    )
+                    .background(
+                        color = Color.White,
+                        shape = Shapes.medium
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = BlueNavy
+                ),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
+            TextField(
+                label = { Text("Confirmar Senha") },
                 value = password,
                 onValueChange = { newText -> password = newText },
                 trailingIcon = {
