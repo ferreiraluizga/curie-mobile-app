@@ -56,6 +56,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.2")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.35.0-alpha")
+    implementation("androidx.compose.material:material-icons-extended:1.4.3")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
