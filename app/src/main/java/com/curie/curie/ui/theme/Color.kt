@@ -6,7 +6,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
 val BlueDark = Color(0xFF033E8C)
-val BlueNavy = Color(0xFF023059)
+val BlueNavy = Color(0xFF000438)
 val BluePrimary = Color(0xFF0477BF)
 val BlueLight = Color(0xFF049DD9)
 val BlueCyan = Color(0xFF04B2D9)
