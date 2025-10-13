@@ -1,4 +1,4 @@
-package com.curie.curie.ui.tarefa
+package com.curie.curie.ui.screens.tarefa
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

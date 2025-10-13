@@ -1,4 +1,4 @@
-package com.curie.curie.ui.user
+package com.curie.curie.ui.screens.user
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

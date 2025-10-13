@@ -1,4 +1,4 @@
-package com.curie.curie.ui.user
+package com.curie.curie.ui.screens.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
