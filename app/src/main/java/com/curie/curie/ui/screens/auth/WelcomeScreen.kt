@@ -1,12 +1,21 @@
-package com.curie.curie.ui.screens.user
+package com.curie.curie.ui.screens.auth
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +61,7 @@ fun WelcomeScreen(
             )
 
             Text(
-                text = "Bem-vindo ao CURIE",
+                text = "sua identidade, seu futuro",
                 style = Typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 color = Color.White
@@ -71,7 +80,7 @@ fun WelcomeScreen(
                     .fillMaxWidth()
                     .height(56.dp)
             ) {
-                Text("Ir para suas metas", fontSize = 18.sp)
+                Text("Já tenho conta", fontSize = 18.sp)
             }
 
             Spacer(modifier = Modifier.padding(25.dp))
@@ -88,7 +97,7 @@ fun WelcomeScreen(
                     .fillMaxWidth()
                     .height(56.dp)
             ) {
-                Text("Ver tutoriais", fontSize = 18.sp)
+                Text("Quero me cadastrar", fontSize = 18.sp)
             }
         }
     }
