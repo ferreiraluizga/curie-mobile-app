@@ -1,4 +1,4 @@
-package com.curie.curie.ui.components
+package com.curie.curie.ui.components.tarefa
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.dp
 import com.curie.curie.ui.theme.BlueNavy
 
 @Composable
-fun TabsSection() {
+fun TabsSection(
+    selectedTab: String,
+    onTabSelected: (String) -> Unit
+) {
     var selectedTab by remember { mutableStateOf("Tarefas") }
 
     Row(

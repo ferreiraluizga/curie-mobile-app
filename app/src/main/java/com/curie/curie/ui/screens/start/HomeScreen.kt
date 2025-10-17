@@ -16,6 +16,7 @@ import com.curie.curie.ui.theme.BlueNavy
 
 @Composable
 fun HomeScreen(
+    userId: Long,
     onLogout: () -> Unit
 ) {
     Box(
@@ -23,7 +24,7 @@ fun HomeScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Bem-vindo!", fontSize = 24.sp, color = BlueNavy)
+            Text(text = "Bem-vindo, usuário $userId!", fontSize = 24.sp, color = BlueNavy)
             Spacer(modifier = Modifier.height(24.dp))
             Button(onClick = onLogout) {
                 Text(text = "Logout")

@@ -1,4 +1,4 @@
-package com.curie.curie.ui.components
+package com.curie.curie.ui.components.auth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

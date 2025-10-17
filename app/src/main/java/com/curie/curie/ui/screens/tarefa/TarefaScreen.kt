@@ -11,9 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,9 +29,11 @@ import com.curie.curie.ui.theme.CurieTheme
 @Composable
 fun TarefaScreen(
     userId: Long,
-    tokenStorage: TokenStorage = TokenStorage(LocalContext.current),
-    viewModel: TarefaViewModel = viewModel(factory = TarefaViewModelFactory(tokenStorage))
+    tokenStorage: TokenStorage
 ) {
+    val factory = remember { TarefaViewModelFactory(tokenStorage) }
+    val viewModel: TarefaViewModel = viewModel(factory = factory)
+
     val tarefas by viewModel.tarefas.collectAsStateWithLifecycle()
     val loading by viewModel.loading.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
@@ -51,13 +53,13 @@ fun TarefaScreen(
 
         else -> TarefaScreenContent(
             tarefas = tarefas,
+            userId = userId,
             onEdit = { tarefa ->
-                // Aqui a edição vai disparar o dialog dentro do TarefaScreenContent
+                viewModel.update(tarefa.id, tarefa)
             },
             onDelete = { tarefa -> viewModel.delete(tarefa.id) },
             onSave = { tarefa ->
-                if (tarefa.id == 0L) viewModel.save(tarefa)
-                else viewModel.update(tarefa.id, tarefa)
+                viewModel.save(tarefa)
             }
         )
     }
@@ -69,14 +71,15 @@ fun TarefaScreen(
 @Composable
 fun TarefaScreenPreview() {
     val fakeTarefas = listOf(
-        Tarefa(1, "Estudar Compose", "2025-10-20", Prioridade.alta, Status.pendente),
-        Tarefa(2, "Finalizar projeto", "2025-10-25", Prioridade.media, Status.concluida),
-        Tarefa(3, "Revisar código", "2025-10-18", Prioridade.baixa, Status.pendente)
+        Tarefa(1, 1, "Estudar Compose", "2025-10-20", Prioridade.alta, Status.pendente),
+        Tarefa(2, 1, "Finalizar projeto", "2025-10-25", Prioridade.media, Status.concluida),
+        Tarefa(3, 1, "Revisar código", "2025-10-18", Prioridade.baixa, Status.pendente)
     )
 
     CurieTheme {
         TarefaScreenContent(
             tarefas = fakeTarefas,
+            userId = 1L,
             onSave = { /* no preview não salva */ },
             onDelete = { /* no preview não deleta */ }
         )

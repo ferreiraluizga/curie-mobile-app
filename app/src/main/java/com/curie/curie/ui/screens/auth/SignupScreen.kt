@@ -53,7 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.curie.curie.R
-import com.curie.curie.ui.components.DateOfBirthPicker
+import com.curie.curie.ui.components.auth.DateOfBirthPicker
 import com.curie.curie.ui.theme.BlueNavy
 import com.curie.curie.ui.theme.CurieTheme
 import com.curie.curie.ui.theme.Shapes

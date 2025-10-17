@@ -40,7 +40,8 @@ class AuthViewModel(
     private fun checkExistingSession() {
         viewModelScope.launch(Dispatchers.IO) {
             val token = tokenStorage.getToken()
-            _authState.value = if (token.isNullOrEmpty()) {
+            val userId = tokenStorage.getUserId()
+            _authState.value = if (token.isNullOrEmpty() || userId == null) {
                 AuthState.Unauthenticated
             } else {
                 AuthState.Authenticated
@@ -60,6 +61,7 @@ class AuthViewModel(
                     if (loginResponse != null) {
                         // Salva o token localmente
                         tokenStorage.saveToken(loginResponse.token)
+                        tokenStorage.saveUserId(loginResponse.userId)
 
                         // Atualiza o estado para sucesso + autenticado
                         _authState.value = AuthState.Success(loginResponse.userId)

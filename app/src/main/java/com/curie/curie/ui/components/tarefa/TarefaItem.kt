@@ -1,4 +1,4 @@
-package com.curie.curie.ui.components
+package com.curie.curie.ui.components.tarefa
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -29,6 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.curie.curie.data.model.Tarefa
+import com.curie.curie.data.model.enums.Prioridade
+import com.curie.curie.data.model.enums.Status
 import com.curie.curie.ui.theme.BlueCyan
 import com.curie.curie.ui.theme.BlueDark
 import com.curie.curie.ui.theme.BlueLight
@@ -46,16 +48,17 @@ fun TarefaItem(
     onDelete: (Tarefa) -> Unit = {}
 ) {
     val formattedDate = try {
-        val parsedDate = LocalDate.parse(tarefa.prazo)
+        val datePart = tarefa.prazo.substring(0, 10)
+        val parsedDate = LocalDate.parse(datePart)
         parsedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale("pt", "BR")))
     } catch (e: Exception) {
-        tarefa.prazo
+        tarefa.prazo // fallback caso a string não seja válida
     }
 
     val faixaColor = when (tarefa.prioridade) {
-        com.curie.curie.data.model.enums.Prioridade.alta -> BluePrimary
-        com.curie.curie.data.model.enums.Prioridade.media -> BlueLight
-        com.curie.curie.data.model.enums.Prioridade.baixa -> BlueCyan
+        Prioridade.alta -> BluePrimary
+        Prioridade.media -> BlueLight
+        Prioridade.baixa -> BlueCyan
         else -> BlueDark
     }
 
@@ -121,10 +124,11 @@ fun TarefaItemPreview() {
         TarefaItem(
             tarefa = Tarefa(
                 id = 1L,
+                userId = 1L,
                 nome = "Testar layout",
                 prazo = "2025-10-15",
-                prioridade = com.curie.curie.data.model.enums.Prioridade.alta,
-                status = com.curie.curie.data.model.enums.Status.pendente
+                prioridade = Prioridade.alta,
+                status = Status.pendente
             )
         )
     }

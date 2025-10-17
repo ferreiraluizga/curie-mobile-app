@@ -1,4 +1,4 @@
-package com.curie.curie.ui.components
+package com.curie.curie.ui.components.tarefa
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -47,7 +48,7 @@ fun TarefaTopBar(
         },
         trailingIcon = {
             if (query.isNotEmpty() || active) {
-                androidx.compose.material3.IconButton(onClick = {
+                IconButton(onClick = {
                     onQueryChange("")  // limpa a busca
                     active = false      // fecha a search bar
                 }) {

@@ -29,13 +29,38 @@ class TarefaViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    fun save(tarefa: Tarefa) {
-        _loading.value = true
+    // ======================
+    // CRUD principal
+    // ======================
+
+    fun getByUsuario(userId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
+            try {
+                val response = tarefaApi.getByUsuario(userId).execute()
+                if (response.isSuccessful) {
+                    _tarefas.value = response.body() ?: emptyList()
+                } else {
+                    _error.value = "Erro ao buscar tarefas: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Falha ao buscar tarefas: ${e.message}"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun save(tarefa: Tarefa) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
             try {
                 val response = tarefaApi.save(tarefa).execute()
                 if (response.isSuccessful) {
                     _tarefa.value = response.body()
+                    getByUsuario(tarefa.userId) // atualiza lista
                 } else {
                     _error.value = "Erro ao salvar: ${response.code()}"
                 }
@@ -47,45 +72,53 @@ class TarefaViewModel(
         }
     }
 
-    fun getById(id: Long) {
-        _loading.value = true
+    fun update(id: Long, tarefa: Tarefa) {
         viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
             try {
-                val response = tarefaApi.getById(id).execute()
+                val response = tarefaApi.update(id, tarefa).execute()
                 if (response.isSuccessful) {
                     _tarefa.value = response.body()
+                    getByUsuario(tarefa.userId)
                 } else {
-                    _error.value = "Erro ao buscar tarefa: ${response.code()}"
+                    _error.value = "Erro ao atualizar: ${response.code()}"
                 }
             } catch (e: Exception) {
-                _error.value = "Falha ao buscar tarefa: ${e.message}"
+                _error.value = "Falha ao atualizar: ${e.message}"
             } finally {
                 _loading.value = false
             }
         }
     }
 
-    fun getByUsuario(userId: Long) {
-        _loading.value = true
+    fun delete(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
             try {
-                val response = tarefaApi.getByUsuario(userId).execute()
+                val response = tarefaApi.delete(id).execute()
                 if (response.isSuccessful) {
-                    _tarefas.value = response.body() ?: emptyList()
+                    _tarefas.value = _tarefas.value.filterNot { it.id == id }
                 } else {
-                    _error.value = "Erro ao buscar tarefas do usuário: ${response.code()}"
+                    _error.value = "Erro ao excluir: ${response.code()}"
                 }
             } catch (e: Exception) {
-                _error.value = "Falha ao buscar tarefas do usuário: ${e.message}"
+                _error.value = "Falha ao excluir: ${e.message}"
             } finally {
                 _loading.value = false
             }
         }
     }
+
+    // ======================
+    // Filtros e buscas
+    // ======================
 
     fun getByNome(userId: Long, nome: String) {
-        _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
             try {
                 val response = tarefaApi.getByNome(userId, nome).execute()
                 if (response.isSuccessful) {
@@ -102,8 +135,9 @@ class TarefaViewModel(
     }
 
     fun getByPrazo(userId: Long) {
-        _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
             try {
                 val response = tarefaApi.getByPrazo(userId).execute()
                 if (response.isSuccessful) {
@@ -120,8 +154,9 @@ class TarefaViewModel(
     }
 
     fun getByPrioridade(userId: Long) {
-        _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
             try {
                 val response = tarefaApi.getByPrioridade(userId).execute()
                 if (response.isSuccessful) {
@@ -131,42 +166,6 @@ class TarefaViewModel(
                 }
             } catch (e: Exception) {
                 _error.value = "Falha ao buscar por prioridade: ${e.message}"
-            } finally {
-                _loading.value = false
-            }
-        }
-    }
-
-    fun update(id: Long?, tarefa: Tarefa) {
-        _loading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = tarefaApi.update(id, tarefa).execute()
-                if (response.isSuccessful) {
-                    _tarefa.value = response.body()
-                } else {
-                    _error.value = "Erro ao atualizar: ${response.code()}"
-                }
-            } catch (e: Exception) {
-                _error.value = "Falha ao atualizar: ${e.message}"
-            } finally {
-                _loading.value = false
-            }
-        }
-    }
-
-    fun delete(id: Long?) {
-        _loading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = tarefaApi.delete(id).execute()
-                if (response.isSuccessful) {
-                    _tarefa.value = null
-                } else {
-                    _error.value = "Erro ao excluir: ${response.code()}"
-                }
-            } catch (e: Exception) {
-                _error.value = "Falha ao excluir: ${e.message}"
             } finally {
                 _loading.value = false
             }

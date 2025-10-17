@@ -1,4 +1,4 @@
-package com.curie.curie.ui.components
+package com.curie.curie.ui.components.tarefa
 
 import android.os.Build
 import androidx.annotation.RequiresApi
