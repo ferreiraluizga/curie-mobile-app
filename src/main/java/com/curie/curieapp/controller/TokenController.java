@@ -46,7 +46,7 @@ public class TokenController {
                 .map(Role::getName)
                 .collect(Collectors.joining(" "));
         var claims = JwtClaimsSet.builder()
-                .issuer("fastmarket")
+                .issuer("curie")
                 .subject(user.get().getId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
@@ -55,7 +55,7 @@ public class TokenController {
 
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
-        return ResponseEntity.ok(new LoginResponse(jwtValue, expiresIn));
+        return ResponseEntity.ok(new LoginResponse(jwtValue, user.get().getId().longValue()));
     }
 
 }
