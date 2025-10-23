@@ -12,9 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.curie.curie.data.model.Meta
-import com.curie.curie.data.model.Tarefa
-import com.curie.curie.ui.components.tarefa.TarefaDialog
-import com.curie.curie.ui.components.tarefa.TarefaItem
+import com.curie.curie.ui.components.tarefa.meta.MetaDialog
 import com.curie.curie.ui.components.tarefa.meta.MetaItem
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -23,13 +21,13 @@ import com.curie.curie.ui.components.tarefa.meta.MetaItem
 fun MetaContent(
     metas: List<Meta>,
     userId: Long,
-    onEdit: (Tarefa) -> Unit = {},
-    onDelete: (Tarefa) -> Unit = {},
-    onSave: (Tarefa) -> Unit = {}
+    onEdit: (Meta) -> Unit = {},
+    onDelete: (Meta) -> Unit = {},
+    onSave: (Meta) -> Unit = {}
 ) {
     // Estados locais para edição de metas
     var showEditDialog by remember { mutableStateOf(false) }
-    var editMeta by remember { mutableStateOf<Tarefa?>(null) }
+    var editMeta by remember { mutableStateOf<Meta?>(null) }
 
     // Lista de metas exibidas
     if (metas.isEmpty()) {
@@ -40,7 +38,6 @@ fun MetaContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(metas) { meta ->
-                // Se Meta herda de Tarefa, isso é válido.
                 MetaItem(
                     meta = meta,
                     onEdit = {
@@ -55,12 +52,12 @@ fun MetaContent(
 
     // Diálogo de edição de meta
     if (showEditDialog && editMeta != null) {
-        TarefaDialog(
-            tarefa = editMeta,
+        MetaDialog(
+            meta = editMeta,
             userId = userId,
             onDismiss = { showEditDialog = false },
-            onSave = { tarefa ->
-                onSave(tarefa)
+            onSave = { meta ->
+                onSave(meta)
                 showEditDialog = false
             }
         )

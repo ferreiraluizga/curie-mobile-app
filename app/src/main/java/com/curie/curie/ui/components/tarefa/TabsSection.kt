@@ -9,10 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -23,16 +19,16 @@ fun TabsSection(
     selectedTab: String,
     onTabSelected: (String) -> Unit
 ) {
-    var selectedTab by remember { mutableStateOf("Tarefas") }
+    val tabs = listOf("Tarefas", "Metas")
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        listOf("Tarefas", "Metas").forEach { tab ->
+        tabs.forEach { tab ->
             val isSelected = selectedTab == tab
             Button(
-                onClick = { selectedTab = tab },
+                onClick = { onTabSelected(tab) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isSelected) BlueNavy else Color.LightGray,
                     contentColor = if (isSelected) Color.White else Color.DarkGray

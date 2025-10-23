@@ -46,8 +46,8 @@ import java.util.Locale
 @Composable
 fun MetaItem(
     meta: Meta,
-    onEdit: (Tarefa) -> Unit = {},
-    onDelete: (Tarefa) -> Unit = {}
+    onEdit: (Meta) -> Unit = {},
+    onDelete: (Meta) -> Unit = {}
 ) {
     val formattedInicioDate = try {
         val datePart = meta.inicio.substring(0, 10)

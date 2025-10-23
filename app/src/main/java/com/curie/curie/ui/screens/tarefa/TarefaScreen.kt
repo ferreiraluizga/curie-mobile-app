@@ -18,9 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.curie.curie.data.api.TokenStorage
+import com.curie.curie.data.model.Meta
 import com.curie.curie.data.model.Tarefa
 import com.curie.curie.data.model.enums.Prioridade
 import com.curie.curie.data.model.enums.Status
+import com.curie.curie.ui.screens.tarefa.meta.MetaViewModel
+import com.curie.curie.ui.screens.tarefa.meta.MetaViewModelFactory
 import com.curie.curie.ui.theme.CurieTheme
 
 // --- ViewModel real ---
@@ -31,35 +34,70 @@ fun TarefaScreen(
     userId: Long,
     tokenStorage: TokenStorage
 ) {
-    val factory = remember { TarefaViewModelFactory(tokenStorage) }
-    val viewModel: TarefaViewModel = viewModel(factory = factory)
+    // FACTORIES DOS VIEWMODELS
+    val tarefaFactory = remember { TarefaViewModelFactory(tokenStorage) }
+    val metaFactory = remember { MetaViewModelFactory(tokenStorage) }
 
-    val tarefas by viewModel.tarefas.collectAsStateWithLifecycle()
-    val loading by viewModel.loading.collectAsStateWithLifecycle()
-    val error by viewModel.error.collectAsStateWithLifecycle()
+    // INSTÂNCIAS DOS VIEWMODELS
+    val tarefaViewModel: TarefaViewModel = viewModel(factory = tarefaFactory)
+    val metaViewModel: MetaViewModel = viewModel(factory = metaFactory)
 
+    // ESTADOS DE TAREFAS
+    val tarefas by tarefaViewModel.tarefas.collectAsStateWithLifecycle()
+    val tarefasLoading by tarefaViewModel.loading.collectAsStateWithLifecycle()
+    val tarefasError by tarefaViewModel.error.collectAsStateWithLifecycle()
+
+    // ESTADOS DE METAS
+    val metas by metaViewModel.metas.collectAsStateWithLifecycle()
+    val metasLoading by metaViewModel.loading.collectAsStateWithLifecycle()
+    val metasError by metaViewModel.error.collectAsStateWithLifecycle()
+
+    // BUSCA OS DADOS QUANDO A TELA É ABERTA
     LaunchedEffect(Unit) {
-        viewModel.getByUsuario(userId)
+        tarefaViewModel.getByUsuario(userId)
+        metaViewModel.getByUsuario(userId)
     }
 
+    // EXIBE ESTADO DE LOADING GERAL
     when {
-        loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        tarefasLoading || metasLoading -> Box(
+            Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
 
-        error != null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = error ?: "Erro desconhecido", color = MaterialTheme.colorScheme.error)
+        tarefasError != null || metasError != null -> Box(
+            Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = tarefasError ?: metasError ?: "Erro desconhecido",
+                color = MaterialTheme.colorScheme.error
+            )
         }
 
         else -> TarefaScreenContent(
             tarefas = tarefas,
+            metas = metas,
             userId = userId,
-            onEdit = { tarefa ->
-                viewModel.update(tarefa.id, tarefa)
+            onEditTarefa = { tarefa ->
+                tarefaViewModel.update(tarefa.id, tarefa)
             },
-            onDelete = { tarefa -> viewModel.delete(tarefa.id) },
-            onSave = { tarefa ->
-                viewModel.save(tarefa)
+            onDeleteTarefa = { tarefa ->
+                tarefaViewModel.delete(tarefa.id)
+            },
+            onSaveTarefa = { tarefa ->
+                tarefaViewModel.save(tarefa)
+            },
+            onEditMeta = { meta ->
+                metaViewModel.update(meta.id, meta)
+            },
+            onDeleteMeta = { meta ->
+                metaViewModel.delete(meta.id)
+            },
+            onSaveMeta = { meta ->
+                metaViewModel.save(meta)
             }
         )
     }
@@ -76,12 +114,16 @@ fun TarefaScreenPreview() {
         Tarefa(3, 1, "Revisar código", "2025-10-18", Prioridade.baixa, Status.pendente)
     )
 
+    val fakeMetas = listOf(
+        Meta(1, 1, "Meta de Estudo", "Aprimorar habilidades em Kotlin", inicio = "2025-10-15", fim = "2025-10-15", prioridade = Prioridade.alta, status = Status.pendente),
+        Meta(2, 1, "Meta de Saúde", "Praticar exercícios 3x por semana", inicio = "2025-10-15", fim = "2025-10-15", prioridade = Prioridade.alta, status = Status.pendente)
+    )
+
     CurieTheme {
         TarefaScreenContent(
             tarefas = fakeTarefas,
-            userId = 1L,
-            onSave = { /* no preview não salva */ },
-            onDelete = { /* no preview não deleta */ }
+            metas = fakeMetas,
+            userId = 1L
         )
     }
 }
