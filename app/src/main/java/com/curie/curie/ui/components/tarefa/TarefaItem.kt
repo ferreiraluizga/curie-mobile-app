@@ -3,6 +3,7 @@ package com.curie.curie.ui.components.tarefa
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,8 +45,9 @@ import java.util.Locale
 @Composable
 fun TarefaItem(
     tarefa: Tarefa,
-    onEdit: (Tarefa) -> Unit = {},
-    onDelete: (Tarefa) -> Unit = {}
+    onClick: () -> Unit = {},
+    onEdit: (Tarefa) -> Unit,
+    onDelete: (Tarefa) -> Unit
 ) {
     val formattedDate = try {
         val datePart = tarefa.prazo.substring(0, 10)
@@ -66,7 +68,8 @@ fun TarefaItem(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White),
+            .background(Color.White)
+            .clickable{ onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
@@ -113,24 +116,6 @@ fun TarefaItem(
                 }
             }
         }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun TarefaItemPreview() {
-    CurieTheme {
-        TarefaItem(
-            tarefa = Tarefa(
-                id = 1L,
-                userId = 1L,
-                nome = "Testar layout",
-                prazo = "2025-10-15",
-                prioridade = Prioridade.alta,
-                status = Status.pendente
-            )
-        )
     }
 }
 

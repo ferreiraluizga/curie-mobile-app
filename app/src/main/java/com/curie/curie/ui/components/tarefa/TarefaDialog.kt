@@ -113,7 +113,7 @@ fun TarefaDialog(
             TextButton(onClick = {
                 onSave(
                     Tarefa(
-                        id = tarefa?.id ?: 0L,   // 0L = nova tarefa, mantém ID se for edição
+                        id = tarefa?.id ?: 0L, // mantém id da tarefa existente
                         userId = userId,
                         nome = nome,
                         prazo = prazo,
