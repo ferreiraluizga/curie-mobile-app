@@ -24,12 +24,15 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.curie.curie.R
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.auth.AuthViewModel
+import com.curie.curie.ui.screens.chat.ChatScreen
+import com.curie.curie.ui.screens.chat.ChatViewModel
 import com.curie.curie.ui.screens.start.HomeScreen
 import com.curie.curie.ui.screens.tarefa.TarefaScreen
 
@@ -112,7 +115,10 @@ fun NavigationHost(
                     }
                 )
             }
-            composable("chat") { Text("Tela Chat") }
+            composable("chat") {
+                val chatViewModel: ChatViewModel = viewModel()
+                ChatScreen(viewModel = chatViewModel)
+            }
             composable("perfil") { Text("Tela Perfil") }
         }
     }

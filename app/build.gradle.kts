@@ -58,6 +58,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.35.0-alpha")
     implementation("androidx.compose.material:material-icons-extended:1.4.3")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
