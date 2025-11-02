@@ -36,9 +36,6 @@ fun TarefaScreenContent(
     onDeleteMeta: (Meta) -> Unit = {},
     onSaveMeta: (Meta) -> Unit = {}
 ) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(color = Color.White, darkIcons = true)
-
     // --- Estados ---
     var selectedTarefa by remember { mutableStateOf<Tarefa?>(null) }
     var showTarefaActionDialog by remember { mutableStateOf(false) }

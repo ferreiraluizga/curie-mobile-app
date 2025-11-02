@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,16 +28,10 @@ import com.curie.curie.ui.theme.BlueDark
 import com.curie.curie.ui.theme.BlueLight
 import com.curie.curie.R
 import com.curie.curie.ui.theme.Typography
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlin.collections.reversed
 @Composable
 fun ChatScreen(modifier: Modifier = Modifier, viewModel: ChatViewModel) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(
-        color = BlueDark,
-        darkIcons = false
-    )
-    Column(modifier = modifier.imePadding()) {
+    Column {
         AppHeader()
         MessageList(
             modifier = Modifier.weight(1f),

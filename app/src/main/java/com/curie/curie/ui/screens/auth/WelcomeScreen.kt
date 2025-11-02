@@ -35,11 +35,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun WelcomeScreen(
     onContinueClick: () -> Unit = {}
 ) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(
-        color = BlueNavy,
-        darkIcons = false
-    )
     Column(
         modifier = Modifier
             .fillMaxSize()

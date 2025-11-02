@@ -73,12 +73,6 @@ fun LoginScreen(
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(
-        color = BlueNavy,
-        darkIcons = false
-    )
-
     val scrollState = rememberScrollState()
 
     Column(

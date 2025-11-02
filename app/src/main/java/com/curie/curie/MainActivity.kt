@@ -8,7 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.start.StartScreen
+import com.curie.curie.ui.theme.BlueNavy
 import com.curie.curie.ui.theme.CurieTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -18,6 +20,11 @@ class MainActivity : ComponentActivity() {
         val tokenStorage = TokenStorage(this)
         setContent {
             CurieTheme {
+                val systemUiController = rememberSystemUiController()
+                systemUiController.setSystemBarsColor(
+                    color = BlueNavy,
+                    darkIcons = false
+                )
                 StartScreen(tokenStorage = tokenStorage)
             }
         }

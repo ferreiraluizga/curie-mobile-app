@@ -62,7 +62,7 @@ fun StartScreen(
             LoginScreen(
                 onLogin = { email, password -> authViewModel.login(LoginRequest(email, password)) },
                 onRegisterClick = { },
-                isLoading = auth is AuthViewModel.AuthState.Loading,
+                isLoading = false,
                 errorMessage = (auth as? AuthViewModel.AuthState.Error)?.message
             )
         }
