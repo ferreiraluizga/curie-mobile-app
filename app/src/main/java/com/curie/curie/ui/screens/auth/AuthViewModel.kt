@@ -6,6 +6,7 @@ import com.curie.curie.data.api.AuthApi
 import com.curie.curie.data.api.RetrofitClient
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.data.model.LoginRequest
+import com.curie.curie.data.model.RegisterRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -73,6 +74,27 @@ class AuthViewModel(
                     val errorBody = response.errorBody()?.string() ?: "Erro desconhecido."
                     _authState.value = AuthState.Error(
                         "Falha no login (${response.code()}): $errorBody"
+                    )
+                }
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error("Falha de conexão: ${e.message}")
+            }
+        }
+    }
+
+    fun register(request: RegisterRequest) {
+        _authState.value = AuthState.Loading
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = authApi.register(request).execute()
+
+                if (response.isSuccessful) {
+                    _authState.value = AuthState.Success(userId = -1L)
+                } else {
+                    val errorBody = response.errorBody()?.string() ?: "Erro desconhecido."
+                    _authState.value = AuthState.Error(
+                        "Falha no registro (${response.code()}): $errorBody"
                     )
                 }
             } catch (e: Exception) {

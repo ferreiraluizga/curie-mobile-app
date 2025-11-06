@@ -35,13 +35,13 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateOfBirthPicker() {
-    val context = LocalContext.current
+fun DateOfBirthPicker(
+    onDateSelected: (String) -> Unit = {}
+) {
     val datePickerState = rememberDatePickerState()
     var showDialog by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf<String?>(null) }
 
-    // Abre o diálogo do seletor de data
     if (showDialog) {
         DatePickerDialog(
             onDismissRequest = { showDialog = false },
@@ -49,10 +49,12 @@ fun DateOfBirthPicker() {
                 TextButton(onClick = {
                     showDialog = false
                     selectedDate = datePickerState.selectedDateMillis?.let { millis ->
-                        // Formata a data para dd/MM/yyyy
-                        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        // 👉 Formata para ISO 8601 (AAAA-MM-DD)
+                        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                         formatter.format(Date(millis))
                     }
+
+                    selectedDate?.let { onDateSelected(it) }
                 }) {
                     Text("OK", color = BlueNavy)
                 }
@@ -67,7 +69,6 @@ fun DateOfBirthPicker() {
         }
     }
 
-    // Campo que exibe a data selecionada
     OutlinedTextField(
         value = selectedDate ?: "",
         onValueChange = {},
@@ -94,12 +95,4 @@ fun DateOfBirthPicker() {
             focusedIndicatorColor = BlueNavy
         )
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DateOfBirthInputPreview() {
-    CurieTheme {
-        DateOfBirthPicker()
-    }
 }

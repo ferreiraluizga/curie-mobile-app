@@ -16,6 +16,7 @@ import com.curie.curie.ui.navigation.NavigationHost
 import com.curie.curie.ui.screens.auth.AuthViewModel
 import com.curie.curie.ui.screens.auth.AuthViewModelFactory
 import com.curie.curie.ui.screens.auth.LoginScreen
+import com.curie.curie.ui.screens.auth.SignupScreen
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -25,8 +26,8 @@ fun StartScreen(
     authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(tokenStorage))
 ) {
     var showSplash by remember { mutableStateOf(true) }
+    var isRegistering by remember { mutableStateOf(false) }
 
-    // Splash por 2 segundos
     LaunchedEffect(Unit) {
         delay(2000)
         showSplash = false
@@ -43,29 +44,38 @@ fun StartScreen(
         is AuthViewModel.AuthState.Loading -> SplashScreen()
 
         is AuthViewModel.AuthState.Success -> {
-            // userId garantido aqui
-            NavigationHost(auth.userId, authViewModel = authViewModel)
+            NavigationHost(auth.userId, authViewModel)
         }
 
         is AuthViewModel.AuthState.Authenticated -> {
             val userId = tokenStorage.getUserId()
             if (userId != null) {
-                NavigationHost(userId, authViewModel = authViewModel)
+                NavigationHost(userId, authViewModel)
             } else {
-                authViewModel.logout() // sessão inválida, força login
+                authViewModel.logout()
             }
         }
 
-        is AuthViewModel.AuthState.Unauthenticated,
         is AuthViewModel.AuthState.Error,
+        is AuthViewModel.AuthState.Unauthenticated,
         AuthViewModel.AuthState.Idle -> {
-            LoginScreen(
-                onLogin = { email, password -> authViewModel.login(LoginRequest(email, password)) },
-                onRegisterClick = { },
-                isLoading = false,
-                errorMessage = (auth as? AuthViewModel.AuthState.Error)?.message
-            )
+            if (isRegistering) {
+                SignupScreen(
+                    onContinueClick = { request ->
+                        authViewModel.register(request)
+                    },
+                    onLoginClick = { isRegistering = false }
+                )
+            } else {
+                LoginScreen(
+                    onLogin = { email, password ->
+                        authViewModel.login(LoginRequest(email, password))
+                    },
+                    onRegisterClick = { isRegistering = true },
+                    isLoading = state is AuthViewModel.AuthState.Loading,
+                    errorMessage = (auth as? AuthViewModel.AuthState.Error)?.message
+                )
+            }
         }
     }
 }
-
