@@ -44,6 +44,8 @@ import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.auth.AuthViewModel
 import com.curie.curie.ui.screens.chat.ChatScreen
 import com.curie.curie.ui.screens.chat.ChatViewModel
+import com.curie.curie.ui.screens.perfil.EditarPerfilScreen
+import com.curie.curie.ui.screens.perfil.PerfilScreen
 import com.curie.curie.ui.screens.start.HomeScreen
 import com.curie.curie.ui.screens.tarefa.TarefaScreen
 import com.curie.curie.ui.theme.BlueNavy
@@ -150,7 +152,30 @@ fun NavigationHost(
                 val chatViewModel: ChatViewModel = viewModel()
                 ChatScreen(viewModel = chatViewModel)
             }
-            composable("perfil") { Text("Tela Perfil") }
+
+            composable("perfil") {
+                PerfilScreen(
+                    userId = userId,
+                    tokenStorage = tokenStorage,
+                    onEditClick = { id ->
+                        navController.navigate("editarPerfil/$id")
+                    }
+                )
+            }
+
+            composable("editarPerfil/{userId}") { backStackEntry ->
+                val userIdArg = backStackEntry.arguments?.getString("userId")?.toLong() ?: 0L
+
+                EditarPerfilScreen(
+                    userId = userIdArg,
+                    tokenStorage = tokenStorage,
+                    onBackClick = { navController.popBackStack() },
+                    onSaveSuccess = {
+                        navController.popBackStack() // volta pro perfil ao salvar
+                    }
+                )
+            }
+
         }
     }
 }

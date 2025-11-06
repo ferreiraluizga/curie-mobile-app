@@ -90,7 +90,7 @@ fun TarefaScreenContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp, vertical = 0.dp)
             ) {
                 WeekCalendar()
                 Spacer(Modifier.height(16.dp))

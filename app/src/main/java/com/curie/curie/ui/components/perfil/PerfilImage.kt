@@ -69,7 +69,7 @@ fun PerfilImage(
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "@$userUsername",
+                text = "$userUsername",
                 style = Typography.labelLarge,
                 color = Color.Gray
             )
