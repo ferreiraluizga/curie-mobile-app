@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import com.curie.curie.data.api.TokenStorage
+import com.curie.curie.ui.screens.carreira.comportamento.TesteComportamentoScreen
 import com.curie.curie.ui.screens.start.StartScreen
 import com.curie.curie.ui.theme.BlueNavy
 import com.curie.curie.ui.theme.CurieTheme

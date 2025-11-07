@@ -42,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.curie.curie.R
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.auth.AuthViewModel
+import com.curie.curie.ui.screens.carreira.comportamento.TesteComportamentoScreen
 import com.curie.curie.ui.screens.chat.ChatScreen
 import com.curie.curie.ui.screens.chat.ChatViewModel
 import com.curie.curie.ui.screens.perfil.EditarPerfilScreen
@@ -139,7 +140,9 @@ fun NavigationHost(
             composable("tarefas") {
                 TarefaScreen(userId = userId, tokenStorage = tokenStorage)
             }
-            composable("carreira") { Text("Tela Carreira") }
+            composable("carreira") {
+                TesteComportamentoScreen(usuarioId = userId, tokenStorage = tokenStorage, onBack = { navController.popBackStack() })
+            }
             composable("home") {
                 HomeScreen(
                     userId = userId,
