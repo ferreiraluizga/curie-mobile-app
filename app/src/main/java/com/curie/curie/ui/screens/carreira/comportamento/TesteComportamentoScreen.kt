@@ -329,6 +329,7 @@ fun TesteComportamentoScreen(
 
                                 comportamentoViewModel.finalizarTeste(resultadoCalculado) { comportamentoId ->
                                     if (comportamentoId != null) {
+                                        tokenStorage.saveComportamentoId(comportamentoId)
                                         Log.d("TesteComportamento", "Comportamento salvo com ID: $comportamentoId")
                                     } else {
                                         Log.e("TesteComportamento", "Falha ao salvar comportamento.")

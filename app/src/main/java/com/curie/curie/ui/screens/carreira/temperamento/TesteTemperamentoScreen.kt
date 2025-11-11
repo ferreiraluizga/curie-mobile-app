@@ -342,9 +342,10 @@ fun TesteTemperamentoScreen(
                                     resultadoNome = resultadoCalculado,
                                     maiorDesempenho = forcaDescricao,
                                     menorDesempenho = fraquezaDescricao
-                                ) { comportamentoId ->
-                                    if (comportamentoId != null) {
-                                        Log.d("TesteTemperamento", "Temperamento salvo com ID: $comportamentoId")
+                                ) { temperamentoId ->
+                                    if (temperamentoId != null) {
+                                        tokenStorage.saveTemperamentoId(temperamentoId)
+                                        Log.d("TesteTemperamento", "Temperamento salvo com ID: $temperamentoId")
                                     } else {
                                         Log.e("TesteTemperamento", "Falha ao salvar temperamento.")
                                     }
