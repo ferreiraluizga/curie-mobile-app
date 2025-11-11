@@ -43,6 +43,7 @@ import com.curie.curie.R
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.auth.AuthViewModel
 import com.curie.curie.ui.screens.carreira.comportamento.TesteComportamentoScreen
+import com.curie.curie.ui.screens.carreira.temperamento.TesteTemperamentoScreen
 import com.curie.curie.ui.screens.chat.ChatScreen
 import com.curie.curie.ui.screens.chat.ChatViewModel
 import com.curie.curie.ui.screens.perfil.EditarPerfilScreen
@@ -141,7 +142,7 @@ fun NavigationHost(
                 TarefaScreen(userId = userId, tokenStorage = tokenStorage)
             }
             composable("carreira") {
-                TesteComportamentoScreen(usuarioId = userId, tokenStorage = tokenStorage, onBack = { navController.popBackStack() })
+                TesteTemperamentoScreen(userId = userId, tokenStorage = tokenStorage, onBack = { navController.popBackStack() })
             }
             composable("home") {
                 HomeScreen(

@@ -1,4 +1,4 @@
-package com.curie.curie.ui.screens.carreira.comportamento
+package com.curie.curie.ui.screens.carreira.temperamento
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -28,173 +27,153 @@ import androidx.compose.ui.unit.times
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.curie.curie.data.api.TokenStorage
-import com.curie.curie.data.model.Comportamento
-import com.curie.curie.ui.screens.carreira.PerfilViewModel
-import com.curie.curie.ui.screens.carreira.PerfilViewModelFactory
+import com.curie.curie.data.model.Temperamento
 import com.curie.curie.ui.theme.BlueNavy
 import kotlinx.coroutines.launch
 
-// -----------------------------
-// DATA CLASSES
-// -----------------------------
 data class Alternativa(val texto: String, val tipo: String)
 data class Pergunta(val texto: String, val alternativas: List<Alternativa>)
 
-// -----------------------------
-// PRINCIPAL
-// -----------------------------
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TesteComportamentoScreen(
+fun TesteTemperamentoScreen(
     userId: Long,
     onBack: () -> Unit,
     tokenStorage: TokenStorage
 ) {
-    // --- FACTORIES ---
-    val comportamentoFactory = remember { ComportamentoViewModelFactory(tokenStorage) }
+    val temperamentoFactory = remember { TemperamentoViewModelFactory(tokenStorage) }
+    val temperamentoViewModel: TemperamentoViewModel = viewModel(factory = temperamentoFactory)
 
-    // --- VIEWMODELS ---
-    val comportamentoViewModel: ComportamentoViewModel = viewModel(factory = comportamentoFactory)
+    val loading by temperamentoViewModel.loading.collectAsStateWithLifecycle()
+    val error by temperamentoViewModel.error.collectAsStateWithLifecycle()
+    val temperamentoSalvo by temperamentoViewModel.temperamento.collectAsStateWithLifecycle()
 
-    // --- ESTADOS ---
-    val loading by comportamentoViewModel.loading.collectAsStateWithLifecycle()
-    val error by comportamentoViewModel.error.collectAsStateWithLifecycle()
-    val comportamentoSalvo by comportamentoViewModel.comportamento.collectAsStateWithLifecycle()
-    val contexto = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    // 🔹 Perguntas sem as áreas de desempenho
     val perguntas = listOf(
         Pergunta(
-            "Quando surge um problema em grupo, você…",
+            "Quando algo dá errado no que eu planejei…",
             listOf(
-                Alternativa("Analisa o problema antes de tomar qualquer atitude.", "Analítico"),
-                Alternativa("Conversa com todos até chegar a um acordo.", "Comunicativo"),
-                Alternativa("Fica tranquilo e espera o momento certo para agir.", "Estável"),
-                Alternativa("Assume a liderança e decide o que fazer.", "Proativo")
+                Alternativa("Tento entender o que falhou e reorganizo tudo com calma.", "Melancólico"),
+                Alternativa("Fico frustrado, mas logo busco uma solução prática.", "Colérico"),
+                Alternativa("Converso com alguém para desabafar e clarear as ideias.", "Sanguíneo"),
+                Alternativa("Aceito que imprevistos acontecem e continuo no meu ritmo.", "Fleumático")
             )
         ),
         Pergunta(
-            "Ao receber uma tarefa nova, você…",
+            "Quando estou em grupo…",
             listOf(
-                Alternativa("Faz em um tempo desacelerado e com paciência.", "Estável"),
-                Alternativa("Faz uma lista de tarefas antes de começar.", "Analítico"),
-                Alternativa("Pede ajuda ou compartilha com alguém.", "Comunicativo"),
-                Alternativa("Quer começar logo e resolver rápido.", "Proativo")
+                Alternativa("Gosto de manter o ambiente leve e animado.", "Sanguíneo"),
+                Alternativa("Gosto de ficar no meu espaço e evitar tensão.", "Fleumático"),
+                Alternativa("Assumo a organização ou direção naturalmente.", "Colérico"),
+                Alternativa("Faço críticas (positivas ou não) e ofereço soluções.", "Melancólico")
             )
         ),
         Pergunta(
-            "Quando está estudando, você prefere…",
+            "Diante de uma decisão difícil…",
             listOf(
-                Alternativa("Fazer resumos e anotações detalhadas.", "Analítico"),
-                Alternativa("Resolver exercícios e desafios práticos.", "Proativo"),
-                Alternativa("Discutir o tema com colegas.", "Comunicativo"),
-                Alternativa("Seguir uma rotina fixa de estudo.", "Estável")
+                Alternativa("Analiso todos os prós e contras antes de agir.", "Melancólico"),
+                Alternativa("Escolho rápido, confiando no que parece mais lógico.", "Colérico"),
+                Alternativa("Peço opiniões de pessoas próximas antes de decidir.", "Sanguíneo"),
+                Alternativa("Penso com calma e só ajo quando estiver tranquilo.", "Fleumático")
             )
         ),
         Pergunta(
-            "Quando algo dá errado em um trabalho em grupo, você…",
+            "Em momentos de pressão…",
             listOf(
-                Alternativa("Revê o que fez e procura o erro.", "Analítico"),
-                Alternativa("Fica frustrado, mas tenta resolver sozinho.", "Proativo"),
-                Alternativa("Tenta animar os outros e seguir em frente.", "Comunicativo"),
-                Alternativa("Aceita o erro e segue o ritmo.", "Estável")
+                Alternativa("Mantenho o foco e ajo imediatamente.", "Colérico"),
+                Alternativa("Tento aliviar o clima e me adapto.", "Sanguíneo"),
+                Alternativa("Fico em silêncio e me adapto.", "Fleumático"),
+                Alternativa("Reavalio os detalhes para evitar erros e demoro um pouco para agir.", "Melancólico")
             )
         ),
         Pergunta(
-            "Quando alguém te critica…",
+            "Sobre rotina…",
             listOf(
-                Alternativa("Ri e leva numa boa.", "Comunicativo"),
-                Alternativa("Defende seu ponto de vista.", "Proativo"),
-                Alternativa("Reavalia o que fez com cuidado.", "Analítico"),
-                Alternativa("Fica em silêncio, mas pensa no que ouviu.", "Estável")
+                Alternativa("Gosto de rotina bem estruturada.", "Melancólico"),
+                Alternativa("Preciso de variedade para não perder o interesse.", "Sanguíneo"),
+                Alternativa("Sigo o que funciona e evito mudanças bruscas.", "Fleumático"),
+                Alternativa("Ajusto a rotina sempre que surge uma oportunidade melhor.", "Colérico")
             )
         ),
         Pergunta(
-            "Sua mesa de estudos geralmente está…",
+            "Quando alguém me critica...",
             listOf(
-                Alternativa("Um pouco bagunçada, mas funcional.", "Comunicativo"),
-                Alternativa("Cheia de papéis e anotações de ideias.", "Proativo"),
-                Alternativa("Extremamente organizada, caso contrário não é possível a concentração.", "Analítico"),
-                Alternativa("Organizada e limpa.", "Estável")
+                Alternativa("Reflito profundamente e levo isso para melhorar.", "Melancólico"),
+                Alternativa("Tento compreender sem me abalar.", "Fleumático"),
+                Alternativa("Fico incomodado, mas respondo com firmeza.", "Colérico"),
+                Alternativa("Converso para entender o motivo e esclarecer.", "Sanguíneo")
             )
         ),
         Pergunta(
-            "Em um dia de prova, você...",
+            "Quando estou com várias tarefas...",
             listOf(
-                Alternativa("Revisa o material.", "Analítico"),
-                Alternativa("Mantém a calma e o foco.", "Estável"),
-                Alternativa("Fica nervoso, mas tenta descontrair.", "Comunicativo"),
-                Alternativa("Gosta de desafio e sente adrenalina.", "Proativo")
+                Alternativa("Faço um plano e priorizo a qualidade.", "Melancólico"),
+                Alternativa("Escolho o mais urgente e vou direto.", "Colérico"),
+                Alternativa("Faço aos poucos, sem me sobrecarregar.", "Fleumático"),
+                Alternativa("Faço mais de uma tarefa ao mesmo tempo.", "Sanguíneo")
             )
         ),
         Pergunta(
-            "Seu maior ponto fraco é…",
+            "Quando alguém está triste…",
             listOf(
-                Alternativa("Falta de foco.", "Comunicativo"),
-                Alternativa("Procrastinação.", "Estável"),
-                Alternativa("Perfeccionismo.", "Analítico"),
-                Alternativa("Impulsividade.", "Proativo")
+                Alternativa("Tento animar a pessoa com algo leve, tentando distrair do problema.", "Sanguíneo"),
+                Alternativa("Ofereço presença e evito invadir o espaço pessoal.", "Fleumático"),
+                Alternativa("Sugiro soluções práticas, mesmo que pareça direto demais.", "Colérico"),
+                Alternativa("Procuro entender profundamente o que ela sente, ouvindo com atenção.", "Melancólico")
             )
         ),
         Pergunta(
             "Ao lidar com mudanças…",
             listOf(
-                Alternativa("Adapta-se rápido.", "Proativo"),
-                Alternativa("Precisa planejar tudo antes.", "Analítico"),
-                Alternativa("Se empolga, mas pode perder o ritmo.", "Comunicativo"),
-                Alternativa("Resiste um pouco, mas aceita.", "Estável")
+                Alternativa("Encaro como oportunidade de crescer.", "Colérico"),
+                Alternativa("Me adapto devagar, mas sem reclamar.", "Fleumático"),
+                Alternativa("Fico animado e curioso com o novo.", "Sanguíneo"),
+                Alternativa("Sinto insegurança e tento planejar cada detalhe.", "Melancólico")
             )
         ),
         Pergunta(
-            "Quando precisa estudar algo difícil, você majoritariamente…",
+            "Quando tenho uma ideia…",
             listOf(
-                Alternativa("Pesquisa várias fontes antes.", "Analítico"),
-                Alternativa("Estuda aos poucos, sem pressão.", "Estável"),
-                Alternativa("Estuda até dominar o assunto.", "Proativo"),
-                Alternativa("Procura ajuda.", "Comunicativo")
+                Alternativa("Coloco em prática o quanto antes.", "Colérico"),
+                Alternativa("Penso se ela é realmente viável e bem estruturada.", "Melancólico"),
+                Alternativa("Gosto de compartilhar com os outros e ouvir opiniões.", "Sanguíneo"),
+                Alternativa("Guardo para analisar com calma depois.", "Fleumático")
             )
         ),
         Pergunta(
-            "Quando há uma divergência em grupo, você tende a…",
+            "Quando tenho tempo livre…",
             listOf(
-                Alternativa("Mediar e buscar consenso.", "Comunicativo"),
-                Alternativa("Assumir o controle da situação.", "Proativo"),
-                Alternativa("Esperar as emoções se acalmarem.", "Estável"),
-                Alternativa("Ouvir todos antes de sugerir algo racional ou se abster.", "Analítico")
+                Alternativa("Gosto de me desafiar com algo novo.", "Colérico"),
+                Alternativa("Gosto de conversar, sair ou conhecer gente.", "Sanguíneo"),
+                Alternativa("Prefiro descanso e momentos tranquilos.", "Fleumático"),
+                Alternativa("Prefiro atividades calmas e introspectivas.", "Melancólico")
             )
         ),
         Pergunta(
-            "Em dias de muito estresse, você…",
+            "Quando me sinto sobrecarregado…",
             listOf(
-                Alternativa("Se fecha e organiza a mente antes de agir.", "Analítico"),
-                Alternativa("Busca companhia para aliviar a tensão.", "Comunicativo"),
-                Alternativa("Tenta manter o ritmo, mesmo devagar.", "Estável"),
-                Alternativa("Age rapidamente para resolver e sair do problema.", "Proativo")
-            )
-        ),
-        Pergunta(
-            "Quando recebe um elogio por algo que fez, você…",
-            listOf(
-                Alternativa("Fica animado e compartilha a conquista.", "Comunicativo"),
-                Alternativa("Analisa o que deu certo para repetir depois.", "Analítico"),
-                Alternativa("Agradece e mantém a mesma dedicação de sempre.", "Estável"),
-                Alternativa("Se sente motivado a buscar novos desafios.", "Proativo")
+                Alternativa("Me esforço até resolver tudo.", "Colérico"),
+                Alternativa("Busco distrações leves para aliviar.", "Sanguíneo"),
+                Alternativa("Faço pausas e continuo no meu ritmo.", "Fleumático"),
+                Alternativa("Tento entender o motivo da exaustão e ajustar.", "Melancólico")
             )
         )
     )
 
-    // --- ESTADOS DO TESTE ---
     var perguntaAtual by remember { mutableStateOf(0) }
+    var forcaDescricao by remember { mutableStateOf("") }
+    var fraquezaDescricao by remember { mutableStateOf("") }
     val respostas = remember { mutableStateListOf<String?>(*Array(perguntas.size) { null }) }
     var resultado by remember { mutableStateOf<String?>(null) }
 
-    // --- TELA PRINCIPAL ---
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
-                title = {
-                    Text("Teste Comportamental", color = Color.White, fontWeight = FontWeight.SemiBold)
-                },
+                title = { Text("Teste Temperamental", color = Color.White, fontWeight = FontWeight.SemiBold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Voltar", tint = Color.White)
@@ -212,12 +191,11 @@ fun TesteComportamentoScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // --------------- ETAPA: TESTE ----------------
             if (resultado == null) {
                 val scrollState = rememberScrollState()
                 val density = LocalDensity.current
 
-                // Bolinhas de progresso
+                // 🔹 Bolinhas de progresso
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -256,7 +234,6 @@ fun TesteComportamentoScreen(
                     }
                 }
 
-                // Auto-scroll das bolinhas
                 LaunchedEffect(perguntaAtual) {
                     val offsetDp = perguntaAtual * (42.dp + 8.dp)
                     val offsetPx = with(density) { offsetDp.toPx().toInt() }
@@ -265,7 +242,6 @@ fun TesteComportamentoScreen(
 
                 Spacer(Modifier.height(24.dp))
 
-                // Pergunta atual
                 Text(
                     text = perguntas[perguntaAtual].texto,
                     style = MaterialTheme.typography.titleMedium,
@@ -276,7 +252,6 @@ fun TesteComportamentoScreen(
 
                 Spacer(Modifier.height(16.dp))
 
-                // Alternativas
                 perguntas[perguntaAtual].alternativas.forEach { alt ->
                     val selecionada = respostas[perguntaAtual] == alt.tipo
                     Box(
@@ -297,7 +272,27 @@ fun TesteComportamentoScreen(
 
                 Spacer(Modifier.height(24.dp))
 
-                // Botões
+                // 🔹 Campos de escrita aparecem somente após responder todas
+                if (perguntaAtual == perguntas.lastIndex) {
+                    OutlinedTextField(
+                        value = forcaDescricao,
+                        onValueChange = { forcaDescricao = it },
+                        label = { Text("Descreva sua principal força de aprendizado") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        value = fraquezaDescricao,
+                        onValueChange = { fraquezaDescricao = it },
+                        label = { Text("Descreva sua principal dificuldade de aprendizado") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+                }
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -306,9 +301,7 @@ fun TesteComportamentoScreen(
                         OutlinedButton(
                             onClick = { perguntaAtual-- },
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = BlueNavy)
-                        ) {
-                            Text("Voltar")
-                        }
+                        ) { Text("Voltar") }
                     }
 
                     Button(
@@ -316,6 +309,24 @@ fun TesteComportamentoScreen(
                             if (perguntaAtual < perguntas.size - 1) {
                                 perguntaAtual++
                             } else {
+                                val todasRespondidas = respostas.all { it != null }
+                                val textosPreenchidos =
+                                    forcaDescricao.isNotBlank() && fraquezaDescricao.isNotBlank()
+
+                                if (!todasRespondidas) {
+                                    coroutineScope.launch {
+                                        snackbarHostState.showSnackbar("Responda todas as perguntas antes de enviar.")
+                                    }
+                                    return@Button
+                                }
+
+                                if (!textosPreenchidos) {
+                                    coroutineScope.launch {
+                                        snackbarHostState.showSnackbar("Preencha os campos de texto antes de enviar.")
+                                    }
+                                    return@Button
+                                }
+
                                 val contagem = respostas.filterNotNull().groupingBy { it }.eachCount()
                                 val max = contagem.values.maxOrNull()
                                 val empatados = contagem.filter { it.value == max }.keys
@@ -327,11 +338,15 @@ fun TesteComportamentoScreen(
 
                                 resultado = resultadoCalculado
 
-                                comportamentoViewModel.finalizarTeste(resultadoCalculado) { comportamentoId ->
+                                temperamentoViewModel.finalizarTeste(
+                                    resultadoNome = resultadoCalculado,
+                                    maiorDesempenho = forcaDescricao,
+                                    menorDesempenho = fraquezaDescricao
+                                ) { comportamentoId ->
                                     if (comportamentoId != null) {
-                                        Log.d("TesteComportamento", "Comportamento salvo com ID: $comportamentoId")
+                                        Log.d("TesteTemperamento", "Temperamento salvo com ID: $comportamentoId")
                                     } else {
-                                        Log.e("TesteComportamento", "Falha ao salvar comportamento.")
+                                        Log.e("TesteTemperamento", "Falha ao salvar temperamento.")
                                     }
                                 }
                             }
@@ -341,16 +356,14 @@ fun TesteComportamentoScreen(
                         Text(if (perguntaAtual == perguntas.size - 1) "Enviar respostas" else "Próxima")
                     }
                 }
-            }
-
-            // --------------- ETAPA: RESULTADO ----------------
-            else {
+            } else {
                 when {
                     loading -> {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             CircularProgressIndicator(color = BlueNavy)
                         }
                     }
+
                     error != null -> {
                         Column(
                             Modifier.fillMaxSize(),
@@ -362,10 +375,11 @@ fun TesteComportamentoScreen(
                             Button(onClick = onBack) { Text("Tentar novamente") }
                         }
                     }
-                    comportamentoSalvo != null -> {
-                        ResultadoComportamentoCompleto(
+
+                    temperamentoSalvo != null -> {
+                        ResultadoTemperamentoCompleto(
                             tipo = resultado ?: "Indefinido",
-                            comportamento = comportamentoSalvo!!,
+                            temperamento = temperamentoSalvo!!,
                             onConcluir = onBack
                         )
                     }
@@ -376,9 +390,9 @@ fun TesteComportamentoScreen(
 }
 
 @Composable
-fun ResultadoComportamentoCompleto(
+fun ResultadoTemperamentoCompleto(
     tipo: String,
-    comportamento: Comportamento,
+    temperamento: Temperamento,
     onConcluir: () -> Unit
 ) {
     Column(
@@ -392,19 +406,15 @@ fun ResultadoComportamentoCompleto(
         Spacer(Modifier.height(8.dp))
         Text(text = tipo, fontWeight = FontWeight.Bold, fontSize = 22.sp, color = BlueNavy)
         Spacer(Modifier.height(16.dp))
+        Column {
+            Text("Sua Força de Aprendizado:", fontWeight = FontWeight.Bold)
+            Text(temperamento.forcaAprendizado)
+            Spacer(Modifier.height(12.dp))
 
-        Text("Características:", fontWeight = FontWeight.Bold)
-        Text(comportamento.caracteristicas)
-        Spacer(Modifier.height(12.dp))
-
-        Text("Aprendizagem:", fontWeight = FontWeight.Bold)
-        Text(comportamento.aprendizagem)
-        Spacer(Modifier.height(12.dp))
-
-        Text("Dicas de Estudo:", fontWeight = FontWeight.Bold)
-        Text(comportamento.descricaoEstudo)
-        Spacer(Modifier.height(24.dp))
-
+            Text("Sua Dificuldade de Aprendizado:", fontWeight = FontWeight.Bold)
+            Text(temperamento.fraquezaAprendizado)
+            Spacer(Modifier.height(12.dp))
+        }
         Button(onClick = onConcluir) {
             Text("Concluir")
         }
