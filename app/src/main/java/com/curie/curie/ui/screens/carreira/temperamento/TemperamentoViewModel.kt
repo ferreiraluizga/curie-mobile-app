@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.Normalizer
 
 class TemperamentoViewModel(
     private val tokenStorage: TokenStorage
@@ -42,7 +43,10 @@ class TemperamentoViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    // 🔹 Buscar temperamento por ID
+
+    // =============================
+    // Buscar temperamento por ID
+    // =============================
     fun getById(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.value = true
@@ -62,7 +66,9 @@ class TemperamentoViewModel(
         }
     }
 
-    // 🔹 Salvar novo temperamento
+    // =============================
+    // Salvar novo temperamento
+    // =============================
     fun save(temperamento: Temperamento) {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.value = true
@@ -82,7 +88,9 @@ class TemperamentoViewModel(
         }
     }
 
-    // 🔹 Excluir temperamento
+    // =============================
+    // Excluir temperamento
+    // =============================
     fun delete(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.value = true
@@ -102,49 +110,84 @@ class TemperamentoViewModel(
         }
     }
 
-    // 🔹 Finalizar teste — cria e salva o resultado do temperamento
-    fun finalizarTeste(resultadoNome: String, maiorDesempenho: String, menorDesempenho: String, onResult: (Long?) -> Unit = {}) {
+    // =============================
+    // Finalizar teste
+    // =============================
+    fun finalizarTeste(
+        resultadoNome: String,
+        maiorDesempenho: String,
+        menorDesempenho: String,
+        onResult: (Long?) -> Unit = {}
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 Log.d("TemperamentoVM", "Iniciando finalizarTeste para resultado: $resultadoNome")
 
-                val tiposResponse = tipoTemperamentoApi.getAll().execute()
-                if (tiposResponse.isSuccessful) {
-                    val tipos = tiposResponse.body() ?: emptyList()
-                    val tipo = tipos.find { it.nome.equals(resultadoNome, ignoreCase = true) }
-
-                    if (tipo != null) {
-                        val novoTemperamento = Temperamento(
-                            id = null,
-                            tipoTemperamentoId = tipo.id,
-                            forcaAprendizado = maiorDesempenho,
-                            fraquezaAprendizado = menorDesempenho
-                        )
-
-                        Log.d("TemperamentoVM", "Salvando temperamento: $novoTemperamento")
-
-                        val saveResponse = temperamentoApi.save(novoTemperamento).execute()
-                        if (saveResponse.isSuccessful) {
-                            val salvo = saveResponse.body()
-                            Log.d("TemperamentoVM", "✅ Temperamento salvo com sucesso: $salvo")
-                            _temperamento.value = salvo
-                            _resultado.value = tipo
-                            withContext(Dispatchers.Main) { onResult(salvo?.id) }
-                        } else {
-                            val errorMsg = saveResponse.errorBody()?.string()
-                            Log.e("TemperamentoVM", "❌ Erro ao salvar: ${saveResponse.code()} - $errorMsg")
-                            _error.value = "Erro ao salvar: ${saveResponse.code()}"
-                            withContext(Dispatchers.Main) { onResult(null) }
-                        }
-                    } else {
-                        Log.e("TemperamentoVM", "⚠️ Tipo de temperamento não encontrado: $resultadoNome")
-                        _error.value = "Tipo de temperamento não encontrado: $resultadoNome"
-                        withContext(Dispatchers.Main) { onResult(null) }
+                // 🔹 Normaliza acentos, traços e capitalização
+                val nomeNormalizado = Normalizer.normalize(resultadoNome, Normalizer.Form.NFD)
+                    .replace("\\p{M}".toRegex(), "") // remove acentos
+                    .replace("–", "-")
+                    .replace("—", "-")
+                    .trim()
+                    .split("-")
+                    .joinToString("-") { parte ->
+                        parte.trim().replaceFirstChar { it.uppercaseChar() }
                     }
-                } else {
+
+                Log.d("TemperamentoVM", "🔍 Nome normalizado: $nomeNormalizado")
+
+                val tiposResponse = tipoTemperamentoApi.getAll().execute()
+                if (!tiposResponse.isSuccessful) {
                     _error.value = "Erro ao buscar tipos: ${tiposResponse.code()}"
                     withContext(Dispatchers.Main) { onResult(null) }
+                    return@launch
                 }
+
+                val tipos = tiposResponse.body() ?: emptyList()
+                Log.d("TemperamentoVM", "📘 Tipos disponíveis: ${tipos.map { it.nome }}")
+
+                val tipo = tipos.find {
+                    Normalizer.normalize(it.nome, Normalizer.Form.NFD)
+                        .replace("\\p{M}".toRegex(), "")
+                        .equals(nomeNormalizado, ignoreCase = true)
+                }
+
+                if (tipo == null) {
+                    Log.e("TemperamentoVM", "⚠️ Tipo de temperamento não encontrado: $resultadoNome")
+                    _error.value = "Tipo de temperamento não encontrado: $resultadoNome"
+                    withContext(Dispatchers.Main) { onResult(null) }
+                    return@launch
+                }
+
+                // 🔹 Cria o objeto a ser salvo
+                val novoTemperamento = Temperamento(
+                    id = null,
+                    tipoTemperamentoId = tipo.id,
+                    forcaAprendizado = maiorDesempenho,
+                    fraquezaAprendizado = menorDesempenho
+                )
+
+                Log.d("TemperamentoVM", "💾 Salvando temperamento: $novoTemperamento")
+
+                val saveResponse = temperamentoApi.save(novoTemperamento).execute()
+                if (saveResponse.isSuccessful) {
+                    val salvo = saveResponse.body()
+                    Log.d("TemperamentoVM", "✅ Temperamento salvo com sucesso: $salvo")
+
+                    _temperamento.value = salvo
+                    _resultado.value = tipo
+
+                    // 🔹 Guarda o ID para o dashboard
+                    salvo?.id?.let { tokenStorage.saveTemperamentoId(it) }
+
+                    withContext(Dispatchers.Main) { onResult(salvo?.id) }
+                } else {
+                    val errorMsg = saveResponse.errorBody()?.string()
+                    Log.e("TemperamentoVM", "❌ Erro ao salvar: ${saveResponse.code()} - $errorMsg")
+                    _error.value = "Erro ao salvar: ${saveResponse.code()}"
+                    withContext(Dispatchers.Main) { onResult(null) }
+                }
+
             } catch (e: Exception) {
                 Log.e("TemperamentoVM", "💥 Falha ao finalizar teste", e)
                 _error.value = "Falha ao finalizar teste: ${e.message}"

@@ -42,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.curie.curie.R
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.auth.AuthViewModel
+import com.curie.curie.ui.screens.carreira.UserDashboardScreen
 import com.curie.curie.ui.screens.carreira.comportamento.TesteComportamentoScreen
 import com.curie.curie.ui.screens.carreira.temperamento.TesteTemperamentoScreen
 import com.curie.curie.ui.screens.chat.ChatScreen
@@ -142,8 +143,34 @@ fun NavigationHost(
                 TarefaScreen(userId = userId, tokenStorage = tokenStorage)
             }
             composable("carreira") {
-                TesteTemperamentoScreen(userId = userId, tokenStorage = tokenStorage, onBack = { navController.popBackStack() })
+                UserDashboardScreen(
+                    tokenStorage = tokenStorage,
+                    onVocacionalClick = {
+                        navController.navigate("testeVocacional")
+                    },
+                    onComportamentalClick = {
+                        navController.navigate("testeComportamento")
+                    },
+                    onTemperamentoClick = {
+                        navController.navigate("testeTemperamento")
+                    }
+                )
             }
+            composable("testeComportamento") {
+                TesteComportamentoScreen(
+                    userId = userId,
+                    tokenStorage = tokenStorage,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("testeTemperamento") {
+                TesteTemperamentoScreen(
+                    userId = userId,
+                    tokenStorage = tokenStorage,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
             composable("home") {
                 HomeScreen(
                     userId = userId,

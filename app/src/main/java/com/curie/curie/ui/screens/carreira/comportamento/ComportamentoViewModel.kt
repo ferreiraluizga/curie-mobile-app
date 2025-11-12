@@ -109,10 +109,19 @@ class ComportamentoViewModel(
             try {
                 Log.d("ComportamentoVM", "Iniciando finalizarTeste para resultado: $resultadoNome")
 
+                val nomeNormalizado = resultadoNome
+                    .replace("–", "-")
+                    .replace("—", "-")
+                    .trim()
+                    .split("-")
+                    .joinToString("-") { parte ->
+                        parte.trim().replaceFirstChar { it.uppercaseChar() }
+                    }
+
                 val tiposResponse = tipoComportamentoApi.getAll().execute()
                 if (tiposResponse.isSuccessful) {
                     val tipos = tiposResponse.body() ?: emptyList()
-                    val tipo = tipos.find { it.nome.equals(resultadoNome, ignoreCase = true) }
+                    val tipo = tipos.find { it.nome.equals(nomeNormalizado, ignoreCase = true) }
 
                     if (tipo != null) {
                         val comportamento = when (tipo.nome.lowercase()) {
