@@ -1,64 +1,61 @@
 package com.curie.curie.data.api
 
 import android.content.Context
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class TokenStorage(context: Context) {
+
     private val prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
 
-    // ------------------------
-    // TOKEN E USUÁRIO
-    // ------------------------
+    // 🔹 Fluxos reativos (StateFlow)
+    private val _temperamentoIdFlow = MutableStateFlow<Long?>(getTemperamentoId())
+    val temperamentoIdFlow: StateFlow<Long?> = _temperamentoIdFlow
+
+    private val _comportamentoIdFlow = MutableStateFlow<Long?>(getComportamentoId())
+    val comportamentoIdFlow: StateFlow<Long?> = _comportamentoIdFlow
+
+    // 🧠 Tokens e IDs de usuário
     fun saveToken(token: String) {
-        prefs.edit().putString("jwt_token", token).apply()
+        prefs.edit().putString("token", token).apply()
     }
 
-    fun getToken(): String? = prefs.getString("jwt_token", null)
+    fun getToken(): String? = prefs.getString("token", null)
 
     fun saveUserId(userId: Long) {
-        prefs.edit().putLong("user_id", userId).apply()
+        prefs.edit().putLong("userId", userId).apply()
     }
 
     fun getUserId(): Long? {
-        return if (prefs.contains("user_id"))
-            prefs.getLong("user_id", -1).takeIf { it != -1L }
-        else null
+        val id = prefs.getLong("userId", -1L)
+        return if (id == -1L) null else id
     }
 
-    // ------------------------
-    // TESTE DE COMPORTAMENTO
-    // ------------------------
-    fun saveComportamentoId(id: Long) {
-        prefs.edit().putLong("comportamento_id", id).apply()
-    }
-
-    fun getComportamentoId(): Long? {
-        return if (prefs.contains("comportamento_id"))
-            prefs.getLong("comportamento_id", -1).takeIf { it != -1L }
-        else null
-    }
-
-    // ------------------------
-    // TESTE DE TEMPERAMENTO
-    // ------------------------
+    // 🔸 IDs dos testes
     fun saveTemperamentoId(id: Long) {
-        prefs.edit().putLong("temperamento_id", id).apply()
+        prefs.edit().putLong("temperamentoId", id).apply()
+        _temperamentoIdFlow.value = id
+    }
+
+    fun saveComportamentoId(id: Long) {
+        prefs.edit().putLong("comportamentoId", id).apply()
+        _comportamentoIdFlow.value = id
     }
 
     fun getTemperamentoId(): Long? {
-        return if (prefs.contains("temperamento_id"))
-            prefs.getLong("temperamento_id", -1).takeIf { it != -1L }
-        else null
+        val id = prefs.getLong("temperamentoId", -1L)
+        return if (id == -1L) null else id
     }
 
-    // ------------------------
-    // LIMPAR TUDO
-    // ------------------------
-    fun clear() {
-        prefs.edit()
-            .remove("jwt_token")
-            .remove("user_id")
-            .remove("comportamento_id")
-            .remove("temperamento_id")
-            .apply()
+    fun getComportamentoId(): Long? {
+        val id = prefs.getLong("comportamentoId", -1L)
+        return if (id == -1L) null else id
+    }
+
+    // 🔁 Limpeza
+    fun clearAll() {
+        prefs.edit().clear().apply()
+        _temperamentoIdFlow.value = null
+        _comportamentoIdFlow.value = null
     }
 }

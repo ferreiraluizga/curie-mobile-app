@@ -327,12 +327,19 @@ fun TesteTemperamentoScreen(
                                     return@Button
                                 }
 
-                                val contagem = respostas.filterNotNull().groupingBy { it }.eachCount()
+                                val contagem = respostas
+                                    .filterNotNull()
+                                    .map { it.trim() }
+                                    .groupingBy { it }
+                                    .eachCount()
+
+                                Log.d("TesteTemperamento", "Resumo das respostas: $contagem")
+
                                 val max = contagem.values.maxOrNull()
                                 val empatados = contagem.filter { it.value == max }.keys
                                 val resultadoCalculado = when {
                                     empatados.size == 1 -> empatados.first()
-                                    empatados.size == 2 -> "${empatados.elementAt(0)}–${empatados.elementAt(1)}"
+                                    empatados.size > 1 -> empatados.sorted().joinToString("–")
                                     else -> "Indefinido"
                                 }
 

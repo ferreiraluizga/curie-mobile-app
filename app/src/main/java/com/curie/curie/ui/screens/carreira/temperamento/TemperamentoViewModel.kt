@@ -123,16 +123,12 @@ class TemperamentoViewModel(
             try {
                 Log.d("TemperamentoVM", "Iniciando finalizarTeste para resultado: $resultadoNome")
 
-                // 🔹 Normaliza acentos, traços e capitalização
-                val nomeNormalizado = Normalizer.normalize(resultadoNome, Normalizer.Form.NFD)
-                    .replace("\\p{M}".toRegex(), "") // remove acentos
-                    .replace("–", "-")
-                    .replace("—", "-")
+                // ✅ Mantém acentos e padroniza o hífen para o formato longo
+                val nomeNormalizado = resultadoNome
+                    .replace("–", "–")
+                    .replace("—", "–")
+                    .replace("-", "–")
                     .trim()
-                    .split("-")
-                    .joinToString("-") { parte ->
-                        parte.trim().replaceFirstChar { it.uppercaseChar() }
-                    }
 
                 Log.d("TemperamentoVM", "🔍 Nome normalizado: $nomeNormalizado")
 
@@ -146,10 +142,9 @@ class TemperamentoViewModel(
                 val tipos = tiposResponse.body() ?: emptyList()
                 Log.d("TemperamentoVM", "📘 Tipos disponíveis: ${tipos.map { it.nome }}")
 
+                // ✅ Mantém acentuação e apenas padroniza hífen para comparação
                 val tipo = tipos.find {
-                    Normalizer.normalize(it.nome, Normalizer.Form.NFD)
-                        .replace("\\p{M}".toRegex(), "")
-                        .equals(nomeNormalizado, ignoreCase = true)
+                    it.nome.trim().replace("-", "–") == nomeNormalizado
                 }
 
                 if (tipo == null) {
@@ -159,7 +154,6 @@ class TemperamentoViewModel(
                     return@launch
                 }
 
-                // 🔹 Cria o objeto a ser salvo
                 val novoTemperamento = Temperamento(
                     id = null,
                     tipoTemperamentoId = tipo.id,
@@ -176,8 +170,6 @@ class TemperamentoViewModel(
 
                     _temperamento.value = salvo
                     _resultado.value = tipo
-
-                    // 🔹 Guarda o ID para o dashboard
                     salvo?.id?.let { tokenStorage.saveTemperamentoId(it) }
 
                     withContext(Dispatchers.Main) { onResult(salvo?.id) }

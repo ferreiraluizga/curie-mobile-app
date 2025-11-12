@@ -105,7 +105,7 @@ class AuthViewModel(
 
     fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
-            tokenStorage.clear()
+            tokenStorage.clearAll()
             _authState.value = AuthState.Unauthenticated
         }
     }

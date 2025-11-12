@@ -1,5 +1,6 @@
 package com.curie.curie.ui.screens.carreira
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,18 +25,13 @@ import com.curie.curie.R
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.components.carreira.ResultCard
 import com.curie.curie.ui.components.carreira.TestCard
-import com.curie.curie.ui.screens.carreira.comportamento.ComportamentoViewModel
-import com.curie.curie.ui.screens.carreira.comportamento.ComportamentoViewModelFactory
-import com.curie.curie.ui.screens.carreira.comportamento.TipoComportamentoViewModel
-import com.curie.curie.ui.screens.carreira.comportamento.TipoComportamentoViewModelFactory
-import com.curie.curie.ui.screens.carreira.temperamento.TemperamentoViewModel
-import com.curie.curie.ui.screens.carreira.temperamento.TemperamentoViewModelFactory
-import com.curie.curie.ui.screens.carreira.temperamento.TipoTemperamentoViewModel
-import com.curie.curie.ui.screens.carreira.temperamento.TipoTemperamentoViewModelFactory
+import com.curie.curie.ui.screens.carreira.comportamento.*
+import com.curie.curie.ui.screens.carreira.temperamento.*
 import com.curie.curie.ui.screens.perfil.UserViewModel
 import com.curie.curie.ui.screens.perfil.UserViewModelFactory
 import com.curie.curie.ui.theme.BlueNavy
 import com.curie.curie.ui.theme.Typography
+
 data class TestStatus(
     val done: Boolean,
     val resultDescription: String? = null
@@ -61,7 +57,7 @@ fun UserDashboardScreen(
         factory = UserViewModelFactory(tokenStorage)
     )
 
-    // 🔠 ViewModels auxiliares (tipos)
+    // 🔠 ViewModels auxiliares
     val tipoComportamentoViewModel: TipoComportamentoViewModel = viewModel(
         factory = TipoComportamentoViewModelFactory(tokenStorage)
     )
@@ -69,7 +65,9 @@ fun UserDashboardScreen(
         factory = TipoTemperamentoViewModelFactory(tokenStorage)
     )
 
-    // 🔄 Coleta dos estados dos ViewModels
+    // 🔄 Estados observáveis
+    val comportamentoId by tokenStorage.comportamentoIdFlow.collectAsState()
+    val temperamentoId by tokenStorage.temperamentoIdFlow.collectAsState()
     val comportamento by comportamentoViewModel.comportamento.collectAsStateWithLifecycle()
     val temperamento by temperamentoViewModel.temperamento.collectAsStateWithLifecycle()
     val tipoComportamento by tipoComportamentoViewModel.tipoComportamento.collectAsStateWithLifecycle()
@@ -83,35 +81,28 @@ fun UserDashboardScreen(
 
     // 🧍 Buscar usuário logado
     LaunchedEffect(Unit) {
-        val userId = tokenStorage.getUserId()
-        if (userId != null) {
-            userViewModel.getById(userId)
+        tokenStorage.getUserId()?.let { userViewModel.getById(it) }
+    }
+
+    // 🔁 Quando um ID muda, busca o novo resultado
+    LaunchedEffect(comportamentoId, temperamentoId) {
+        comportamentoId?.let {
+            comportamentoViewModel.getById(it)
+            Log.d("UserDashboard", "Comportamento atualizado ID=$it")
+        }
+        temperamentoId?.let {
+            temperamentoViewModel.getById(it)
+            Log.d("UserDashboard", "Temperamento atualizado ID=$it")
         }
     }
 
-    // 🚀 Buscar resultados se IDs existirem
-    LaunchedEffect(Unit) {
-        val comportamentoId = tokenStorage.getComportamentoId()
-        val temperamentoId = tokenStorage.getTemperamentoId()
-
-        comportamentoId?.let { comportamentoViewModel.getById(it) }
-        temperamentoId?.let { temperamentoViewModel.getById(it) }
+    // 🔁 Quando um resultado muda, busca o tipo
+    LaunchedEffect(comportamento, temperamento) {
+        comportamento?.let { tipoComportamentoViewModel.getById(it.tipoComportamentoId) }
+        temperamento?.let { tipoTemperamentoViewModel.getById(it.tipoTemperamentoId) }
     }
 
-    // 🔁 Buscar os tipos após carregar comportamento e temperamento
-    LaunchedEffect(comportamento) {
-        comportamento?.let {
-            tipoComportamentoViewModel.getById(it.tipoComportamentoId)
-        }
-    }
-
-    LaunchedEffect(temperamento) {
-        temperamento?.let {
-            tipoTemperamentoViewModel.getById(it.tipoTemperamentoId)
-        }
-    }
-
-    // 🧩 Atualizar status com nomes reais
+    // 🧩 Atualiza status de exibição
     LaunchedEffect(tipoComportamento, tipoTemperamento) {
         tipoComportamento?.let {
             comportamentalStatus = TestStatus(true, it.nome)
@@ -129,7 +120,7 @@ fun UserDashboardScreen(
             .fillMaxSize()
             .background(Color(0xFFF2F4F7))
     ) {
-        // 🔹 Cabeçalho
+        // Cabeçalho
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -139,14 +130,12 @@ fun UserDashboardScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painter = painterResource(id = R.drawable.app_logo),
-                    contentDescription = "Foto do usuário",
+                    contentDescription = "Logo",
                     modifier = Modifier
                         .size(60.dp)
                         .clip(CircleShape)
                 )
-
                 Spacer(modifier = Modifier.width(16.dp))
-
                 Column {
                     Text(
                         text = "Olá, ${user?.nome ?: "Usuário"}!",
@@ -163,7 +152,7 @@ fun UserDashboardScreen(
             }
         }
 
-        // 🔸 Alerta de progresso
+        // Aviso de progresso
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -184,9 +173,7 @@ fun UserDashboardScreen(
                     tint = if (allDone) Color(0xFF2E7D32) else Color(0xFFB26A00),
                     modifier = Modifier.size(28.dp)
                 )
-
                 Spacer(modifier = Modifier.width(12.dp))
-
                 Column {
                     if (allDone) {
                         Text(
@@ -222,7 +209,7 @@ fun UserDashboardScreen(
             }
         }
 
-        // 🔹 Conteúdo principal
+        // Conteúdo principal
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -238,7 +225,7 @@ fun UserDashboardScreen(
                 )
             }
 
-            // Teste Vocacional
+            // Vocacional
             item {
                 if (vocacionalStatus.done) {
                     ResultCard(
@@ -262,7 +249,7 @@ fun UserDashboardScreen(
                 }
             }
 
-            // Teste Comportamental
+            // Comportamental
             item {
                 if (comportamentalStatus.done) {
                     ResultCard(
@@ -286,7 +273,7 @@ fun UserDashboardScreen(
                 }
             }
 
-            // Teste de Temperamento
+            // Temperamento
             item {
                 if (temperamentoStatus.done) {
                     ResultCard(

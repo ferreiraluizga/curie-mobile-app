@@ -110,13 +110,10 @@ class ComportamentoViewModel(
                 Log.d("ComportamentoVM", "Iniciando finalizarTeste para resultado: $resultadoNome")
 
                 val nomeNormalizado = resultadoNome
-                    .replace("–", "-")
-                    .replace("—", "-")
+                    .replace("–", "–")
+                    .replace("—", "–")
+                    .replace("-", "–")
                     .trim()
-                    .split("-")
-                    .joinToString("-") { parte ->
-                        parte.trim().replaceFirstChar { it.uppercaseChar() }
-                    }
 
                 val tiposResponse = tipoComportamentoApi.getAll().execute()
                 if (tiposResponse.isSuccessful) {

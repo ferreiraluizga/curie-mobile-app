@@ -13,9 +13,9 @@ interface TemperamentoApi {
     @POST("temperamento/save")
     fun save(@Body temperamento: Temperamento): Call<Temperamento>
 
-    @GET("comportamento/{id}")
+    @GET("temperamento/{id}")
     fun getById(@Path("id") id: Long): Call<Temperamento>
 
-    @DELETE("comportamento/delete/{id}")
+    @DELETE("temperamento/delete/{id}")
     fun delete(@Path("id") id: Long?): Call<Void>
 }
