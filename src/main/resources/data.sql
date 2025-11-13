@@ -1,2 +1,36 @@
+-- Roles
 INSERT IGNORE INTO roles (role_id, name) VALUES (1, 'admin');
 INSERT IGNORE INTO roles (role_id, name) VALUES (2, 'basic');
+
+-- Tipos de Comportamento
+INSERT IGNORE INTO `tipo_comportamento` (`id`, `descricao`, `nome`) VALUES
+(1, 'Você se destaca pela energia, iniciativa e coragem para decidir. Gosta de desafios e de estar no controle das situações. É direto, determinado e orientado pelos resultados e consequências.', 'Proativo'),
+(2, 'Você se comunica com facilidade, inspira confiança e gosta de estar entre pessoas. É criativo, empático e aprende bem conversando, trocando experiências ou explicando para os outros.', 'Comunicativo'),
+(3, 'Você é um bom ouvinte, paciente e confiável. Mantém a compostura mesmo em situações de pressão. Gosta de rotina, previsibilidade e evita mudanças bruscas.', 'Estável'),
+(4, 'Você valoriza organização, lógica e qualidade. Observa detalhes, segue planos e regras. Prefere estudar com tempo suficiente para entender todos os detalhes.', 'Analítico'),
+(5, 'Você é uma pessoa dinâmica, que toma iniciativa e inspira os outros por meio da comunicação. Gosta de liderar grupos, expressar ideias e gerar entusiasmo nas pessoas ao redor. É enérgico, aprende melhor quando há interação social e desafios concretos', 'Proativo-Comunicativo'),
+(6, 'Você combina iniciativa e foco com serenidade e paciência. Age de forma firme, mas raramente impulsiva. Prefere resolver as coisas de maneira prática, sem perder o controle emocional. É bom em situações de pressão porque mantém a calma sem deixar de agir.', 'Proativo-Estável'),
+(7, 'Você é alguém que une ação e planejamento. Gosta de resultados concretos, mas valoriza a preparação antes de agir. Sua força está em transformar planos em realidade. Costuma liderar com base em lógica e estratégia, e tende a ser exigente consigo mesmo.', 'Proativo-Analítico'),
+(8, 'Você é empático e acessível, sabendo equilibrar emoção e calma. Cria harmonia nos grupos e tem facilidade em ouvir e acolher. Pode evitar conflitos excessivamente.', 'Comunicativo-Estável'),
+(9, 'Você combina expressão verbal com raciocínio lógico. Gosta de expor ideias de maneira organizada e tem talento para ensinar e explicar. Sua força está em transformar conceitos complexos em algo acessível aos outros.', 'Comunicativo-Analítico'),
+(10, 'Você é calmo, organizado e minucioso. Prefere compreender cada parte do processo antes de agir. Trabalha bem sob rotina e preza por consistência e qualidade. Pode demorar um pouco mais, mas entrega com precisão e constância.', 'Estável-Analítico');
+
+-- Tipos de Temperamento
+INSERT IGNORE INTO `tipo_temperamento` (`id`, `nome`, `descricao`) VALUES
+(1, 'Colérico', 'O colérico é determinado, direto e voltado para resultados. Gosta de desafios e tende a assumir o comando nas situações. É prático, confiante e movido por objetivos concretos. Por outro lado, pode demonstrar impaciência, rigidez ou dificuldade em lidar com a lentidão dos outros. É um perfil de energia e liderança, que prefere agir a esperar.'),
+(2, 'Sanguíneo', 'O sanguíneo é comunicativo, entusiasmado e sociável. Costuma enxergar o lado positivo das coisas e tem facilidade em motivar quem está ao redor. É criativo, espontâneo e adaptável, mas às vezes dispersa ou se deixa levar por emoções momentâneas. Valoriza conexões humanas e ambientes leves, onde possa se expressar livremente.'),
+(3, 'Fleumático', 'O fleumático é calmo, estável e observador. Prefere agir com cautela e evita conflitos sempre que possível. Tem grande capacidade de ouvir, adaptar-se e manter a harmonia. Pode ser reservado e demorar a reagir em situações novas, mas transmite equilíbrio e constância. É o tipo que sustenta a paz e o bom senso em meio às mudanças.'),
+(4, 'Melancólico', 'O melancólico é analítico, sensível e perfeccionista. Busca compreender as coisas com profundidade e se guia por valores e princípios firmes. É dedicado, detalhista e responsável, mas pode ser exigente consigo mesmo e ter dificuldade em lidar com erros. Sua força está na reflexão e na busca pela excelência.'),
+(5, 'Colérico–Sanguíneo', 'O Colérico–Sanguíneo combina iniciativa e energia com capacidade de envolvimento social. É assertivo e comunicativo, capaz de liderar projetos enquanto motiva e engaja pessoas ao redor. Tende a ser persuasivo, criativo na busca de soluções e orientado a resultados visíveis. Por outro lado, pode oscilar entre agir impulsivamente e buscar aprovação social; precisa cuidar para não priorizar velocidade ou popularidade em detrimento da análise cuidadosa.'),
+(6, 'Colérico–Fleumático', 'O Colérico–Fleumático une determinação e estabilidade. Age com propósito e mantém a calma sob pressão, equilibrando ação com controle emocional. É eficaz na execução de tarefas e consistente na manutenção de rotinas, sendo bom em conduzir equipes sem provocar tensões. Pode, porém, alternar entre urgência por resultados e resistência a mudanças rápidas; às vezes tende a adiar decisões impulsivas em favor de cautela excessiva.'),
+(7, 'Colérico–Melancólico', 'O Colérico–Melancólico combina foco por resultados com rigor analítico. Planeja com precisão e executa com determinação, valorizando tanto a eficácia quanto a qualidade do trabalho. É estratégico, exigente e orientado a metas bem fundamentadas. Risco: pode tornar-se rígido e autocrítico, cobrando demais a si e aos outros; precisa equilibrar a busca pela perfeição com flexibilidade prática.'),
+(8, 'Sanguíneo–Fleumático', 'O Sanguíneo–Fleumático mistura sociabilidade e estabilidade emocional. Tem facilidade para criar conexões, ao mesmo tempo que transmite segurança e serenidade. Costuma ser acolhedor, confiável e cooperativo, favorecendo ambientes harmoniosos e colaborativos. Pode, no entanto, protelar decisões que impliquem conflito ou mudança, preferindo conservar a paz mesmo quando ações firmes seriam necessárias.'),
+(9, 'Sanguíneo–Melancólico', 'O perfil Sanguíneo–Melancólico reúne sensibilidade e expressividade criativa. Une empatia e habilidade de comunicação com gosto por reflexão e profundidade. Produz ideias com conteúdo emocional bem elaborado e costuma envolver pessoas com argumentos bem pensados. Pode oscilar entre entusiasmo social e introspecção intensa, correndo o risco de sentir insegurança ao expor trabalhos ainda em desenvolvimento.'),
+(10, 'Fleumático–Melancólico', 'O perfil Fleumático–Melancólico é ponderado, metódico e confiável. Prioriza rotina, organização e reflexão cuidadosa; age com paciência e busca consistência nos resultados. Tem boa capacidade de análise calma e de seguir processos até a conclusão. Pode, contudo, demorar a tomar iniciativas e apresentar resistência a mudanças rápidas; tende a preferir segurança e profundidade antes de agir.');
+
+-- Areas de Conhecimento
+INSERT IGNORE INTO `areas_conhecimento` (`id`, `materias`, `nome`) VALUES
+(1, 'História, Geografia, Filosofia, Sociologia', 'Ciências Humanas'),
+(2, 'Matemática, Física, Química', 'Matemática e suas Tecnologias'),
+(3, 'Biologia, Física, Química', 'Ciências da Natureza'),
+(4, 'Língua Portuguesa, Literatura, Artes, Inglês, Espanhol, Educação Física', 'Linguagens e Códigos');

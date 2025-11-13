@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -63,6 +60,45 @@ public class UserController {
     public ResponseEntity<List<User>> getAll() {
         var users = userRepository.findAll();
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getById(@PathVariable Long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/update/{id}")
+    @Transactional
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User updatedUser) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        // Atualiza apenas campos permitidos
+        user.setNome(updatedUser.getNome());
+        user.setDescricao(updatedUser.getDescricao());
+        user.setTelefone(updatedUser.getTelefone());
+        user.setNascimento(updatedUser.getNascimento());
+        user.setEmail(updatedUser.getEmail());
+
+        // Se vier nova senha, recriptografa
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+
+        userRepository.save(user);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @Transactional
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        userRepository.delete(user);
+        return ResponseEntity.noContent().build();
     }
 
 }

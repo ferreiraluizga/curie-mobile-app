@@ -39,6 +39,12 @@ public class PerfilController {
         return ResponseEntity.ok(perfilService.getById(id));
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<PerfilResponse> update(@PathVariable Long id, @RequestBody PerfilRequest dto) {
+        PerfilResponse response = perfilService.update(id, dto);
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         perfilService.delete(id);
