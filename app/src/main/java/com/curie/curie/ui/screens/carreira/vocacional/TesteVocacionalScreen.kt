@@ -85,120 +85,165 @@ fun TesteVocacionalScreen(
 
     val perguntas = listOf(
         Pergunta(
-            "Quando surge um problema em grupo, você…",
+            "Quando você precisa aprender algo novo rapidamente, tende a...",
             listOf(
-                Alternativa("Analisa o problema antes de tomar qualquer atitude.", "Analítico"),
-                Alternativa("Conversa com todos até chegar a um acordo.", "Comunicativo"),
-                Alternativa("Fica tranquilo e espera o momento certo para agir.", "Estável"),
-                Alternativa("Assume a liderança e decide o que fazer.", "Proativo")
+                Alternativa("Fazer anotações, criar um resumo e estruturar o conteúdo.", "C"), // Humanas
+                Alternativa("Testar direto na prática, aprendendo com o erro.", "A"), // Exatas/Tec
+                Alternativa("Buscar vídeos, exemplos visuais e formas diferentes de entender.", "B"), // Artes/Design
+                Alternativa("Conversar com alguém que já sabe e trocar experiências.", "C") // Educação/Psicologia
             )
         ),
         Pergunta(
-            "Ao receber uma tarefa nova, você…",
+            "Ao observar um problema no seu dia a dia, sua primeira reação é...",
             listOf(
-                Alternativa("Faz em um tempo desacelerado e com paciência.", "Estável"),
-                Alternativa("Faz uma lista de tarefas antes de começar.", "Analítico"),
-                Alternativa("Pede ajuda ou compartilha com alguém.", "Comunicativo"),
-                Alternativa("Quer começar logo e resolver rápido.", "Proativo")
+                Alternativa("Pensar em como resolver com lógica ou ferramentas.", "A"), // Engenharia/TI
+                Alternativa("Imaginar uma forma inovadora de contornar ou transformar.", "B"), // Criativas
+                Alternativa("Querer entender o impacto disso nas pessoas.", "C"), // Humanas/Saúde
+                Alternativa("Analisar o contexto e as causas por trás.", "D") // Ciências/Pesquisa
             )
         ),
         Pergunta(
-            "Quando está estudando, você prefere…",
+            "Em um projeto novo, o que mais te empolga?",
             listOf(
-                Alternativa("Fazer resumos e anotações detalhadas.", "Analítico"),
-                Alternativa("Resolver exercícios e desafios práticos.", "Proativo"),
-                Alternativa("Discutir o tema com colegas.", "Comunicativo"),
-                Alternativa("Seguir uma rotina fixa de estudo.", "Estável")
+                Alternativa("Estruturar o plano e definir metas.", "A"), // Gestão
+                Alternativa("Criar algo único e expressivo.", "B"), // Design/Comunicação
+                Alternativa("Explorar ideias e fazer testes.", "D"), // Ciência/Tecnologia
+                Alternativa("Trabalhar com outras pessoas para alcançar um resultado coletivo.", "C") // Educação/Social
             )
         ),
         Pergunta(
-            "Quando algo dá errado em um trabalho em grupo, você…",
+            "Quando tem uma tarefa longa e complexa, você...",
             listOf(
-                Alternativa("Revê o que fez e procura o erro.", "Analítico"),
-                Alternativa("Fica frustrado, mas tenta resolver sozinho.", "Proativo"),
-                Alternativa("Tenta animar os outros e seguir em frente.", "Comunicativo"),
-                Alternativa("Aceita o erro e segue o ritmo.", "Estável")
+                Alternativa("Divide em partes e faz passo a passo.", "A"), // Exatas
+                Alternativa("Vai fazendo do seu jeito e ajusta conforme o progresso.", "B"), // Criativo
+                Alternativa("Gosta de trabalhar com alguém para manter o ritmo.", "C"), // Social
+                Alternativa("Pensa antes em todo o processo e possíveis dificuldades.", "D") // Analítico/Ciências
             )
         ),
         Pergunta(
-            "Quando alguém te critica…",
+            "Qual tipo de atividade te deixa mais satisfeito no fim do dia?",
             listOf(
-                Alternativa("Ri e leva numa boa.", "Comunicativo"),
-                Alternativa("Defende seu ponto de vista.", "Proativo"),
-                Alternativa("Reavalia o que fez com cuidado.", "Analítico"),
-                Alternativa("Fica em silêncio, mas pensa no que ouviu.", "Estável")
+                Alternativa("Aquela que trouxe resultados concretos.", "A"), // Engenharia/Admin.
+                Alternativa("Aquela que permitiu expressar ideias novas.", "B"), // Artes/Design
+                Alternativa("Aquela que ajudou ou inspirou alguém.", "C"), // Psicologia/Educação
+                Alternativa("Aquela que te ensinou algo novo sobre o mundo.", "D") // Pesquisa/Ciência
             )
         ),
         Pergunta(
-            "Sua mesa de estudos geralmente está…",
+            "Quando algo dá errado, o que você costuma fazer primeiro?",
             listOf(
-                Alternativa("Um pouco bagunçada, mas funcional.", "Comunicativo"),
-                Alternativa("Cheia de papéis e anotações de ideias.", "Proativo"),
-                Alternativa("Extremamente organizada, caso contrário não é possível a concentração.", "Analítico"),
-                Alternativa("Organizada e limpa.", "Estável")
+                Alternativa("Ver onde houve falha técnica e corrigir.", "A"), // Exatas
+                Alternativa("Tentar outro caminho criativo.", "B"), // Artes
+                Alternativa("Conversar para entender o que aconteceu.", "C"), // Humanas
+                Alternativa("Refletir e anotar o aprendizado.", "D") // Ciência
             )
         ),
         Pergunta(
-            "Em um dia de prova, você...",
+            "Você se sente mais confiante quando...",
             listOf(
-                Alternativa("Revisa o material.", "Analítico"),
-                Alternativa("Mantém a calma e o foco.", "Estável"),
-                Alternativa("Fica nervoso, mas tenta descontrair.", "Comunicativo"),
-                Alternativa("Gosta de desafio e sente adrenalina.", "Proativo")
+                Alternativa("Consegue dominar uma ferramenta ou método.", "A"), // Tecnologia/Eng.
+                Alternativa("As pessoas valorizam suas ideias e energia.", "B"), // Comunicação/Empreender
+                Alternativa("Alguém te agradece por uma ajuda ou conselho.", "C"), // Educação/Saúde
+                Alternativa("Descobre uma explicação ou lógica nova.", "D") // Pesquisa/Filosofia
             )
         ),
         Pergunta(
-            "Seu maior ponto fraco é…",
+            "Se pudesse participar de um grande projeto, escolheria...",
             listOf(
-                Alternativa("Falta de foco.", "Comunicativo"),
-                Alternativa("Procrastinação.", "Estável"),
-                Alternativa("Perfeccionismo.", "Analítico"),
-                Alternativa("Impulsividade.", "Proativo")
+                Alternativa("Construir ou programar algo funcional.", "A"), // TI/Eng.
+                Alternativa("Criar campanhas, vídeos ou soluções visuais.", "B"), // Design/Publicidade
+                Alternativa("Fazer entrevistas e entender comportamentos.", "C"), // Psicologia/Sociologia
+                Alternativa("Coletar dados e comprovar hipóteses.", "D") // Ciências Naturais
             )
         ),
         Pergunta(
-            "Ao lidar com mudanças…",
+            "Quando pensa em 'sucesso', o que te vem à mente?",
             listOf(
-                Alternativa("Adapta-se rápido.", "Proativo"),
-                Alternativa("Precisa planejar tudo antes.", "Analítico"),
-                Alternativa("Se empolga, mas pode perder o ritmo.", "Comunicativo"),
-                Alternativa("Resiste um pouco, mas aceita.", "Estável")
+                Alternativa("Ter estabilidade e reconhecimento profissional.", "A"), // Gestão/Técnico
+                Alternativa("Ser lembrado pela criatividade e originalidade.", "B"), // Artes
+                Alternativa("Ajudar pessoas e deixar impacto positivo.", "C"), // Educação/Social
+                Alternativa("Contribuir para o conhecimento humano.", "D") // Pesquisa
             )
         ),
         Pergunta(
-            "Quando precisa estudar algo difícil, você majoritariamente…",
+            "Como reage quando alguém discorda de você?",
             listOf(
-                Alternativa("Pesquisa várias fontes antes.", "Analítico"),
-                Alternativa("Estuda aos poucos, sem pressão.", "Estável"),
-                Alternativa("Estuda até dominar o assunto.", "Proativo"),
-                Alternativa("Procura ajuda.", "Comunicativo")
+                Alternativa("Argumenta com dados e lógica.", "A"), // Direito/Exatas
+                Alternativa("Procura entender o ponto de vista e achar equilíbrio.", "C"), // Psicologia
+                Alternativa("Usa exemplos criativos para explicar o seu ponto.", "B"), // Comunicação
+                Alternativa("Analisa o motivo da discordância e reflete sobre ela.", "D") // Filosofia
             )
         ),
         Pergunta(
-            "Quando há uma divergência em grupo, você tende a…",
+            "Qual dessas tarefas você considera mais prazerosa?",
             listOf(
-                Alternativa("Mediar e buscar consenso.", "Comunicativo"),
-                Alternativa("Assumir o controle da situação.", "Proativo"),
-                Alternativa("Esperar as emoções se acalmarem.", "Estável"),
-                Alternativa("Ouvir todos antes de sugerir algo racional ou se abster.", "Analítico")
+                Alternativa("Organizar, planejar e colocar em prática.", "A"), // Administração
+                Alternativa("Criar, ilustrar ou inventar algo.", "B"), // Artes
+                Alternativa("Ensinar ou orientar alguém.", "C"), // Educação
+                Alternativa("Pesquisar e descobrir informações.", "D") // Ciência
             )
         ),
         Pergunta(
-            "Em dias de muito estresse, você…",
+            "Se tivesse um tempo livre de 3 horas, o que te atrairia mais?",
             listOf(
-                Alternativa("Se fecha e organiza a mente antes de agir.", "Analítico"),
-                Alternativa("Busca companhia para aliviar a tensão.", "Comunicativo"),
-                Alternativa("Tenta manter o ritmo, mesmo devagar.", "Estável"),
-                Alternativa("Age rapidamente para resolver e sair do problema.", "Proativo")
+                Alternativa("Resolver algo prático — montar, consertar, programar.", "A"), // Exatas
+                Alternativa("Criar algo — pintar, escrever, editar vídeos.", "B"), // Artes
+                Alternativa("Conversar, ajudar alguém ou ouvir histórias.", "C"), // Psicologia/Social
+                Alternativa("Ler, estudar ou fazer anotações de curiosidades.", "D") // Ciência/Pesquisa
             )
         ),
         Pergunta(
-            "Quando recebe um elogio por algo que fez, você…",
+            "Quando trabalha sob pressão, tende a...",
             listOf(
-                Alternativa("Fica animado e compartilha a conquista.", "Comunicativo"),
-                Alternativa("Analisa o que deu certo para repetir depois.", "Analítico"),
-                Alternativa("Agradece e mantém a mesma dedicação de sempre.", "Estável"),
-                Alternativa("Se sente motivado a buscar novos desafios.", "Proativo")
+                Alternativa("Focar totalmente na solução e agir rápido.", "A"), // Gestão/Eng.
+                Alternativa("Manter a calma e seguir o plano.", "D"), // Ciências/Organização
+                Alternativa("Motivar o grupo e manter o clima leve.", "C"), // Social/Comunicação
+                Alternativa("Parar um instante e refletir no sentido da tarefa.", "D") // Filosofia/Humanas
+            )
+        ),
+        Pergunta(
+            "Em uma conversa com amigos, você costuma...",
+            listOf(
+                Alternativa("Falar sobre projetos, ideias e soluções práticas.", "A"), // Empreendedorismo
+                Alternativa("Contar histórias ou trazer humor e emoção.", "B"), // Comunicação
+                Alternativa("Escutar e dar conselhos.", "C"), // Psicologia
+                Alternativa("Levantar reflexões e teorias.", "D") // Filosofia/Ciência
+            )
+        ),
+        Pergunta(
+            "Ao ver um problema social, você se imagina...",
+            listOf(
+                Alternativa("Criando uma ferramenta ou tecnologia para resolver.", "A"), // Eng/TI
+                Alternativa("Fazendo campanhas e mobilizando pessoas.", "B"), // Comunicação/Social
+                Alternativa("Ajudando diretamente quem precisa.", "C"), // Educação/Saúde
+                Alternativa("Estudando as causas e impactos do problema.", "D") // Ciências Sociais
+            )
+        ),
+        Pergunta(
+            "Quando começa um novo projeto, o que te desafia mais?",
+            listOf(
+                Alternativa("Transformar ideias em algo prático.", "A"), // Exatas
+                Alternativa("Escolher o melhor caminho criativo.", "B"), // Design
+                Alternativa("Manter o foco por muito tempo.", "C"), // Humanas
+                Alternativa("Garantir que tudo esteja perfeitamente planejado.", "D") // Engenharia/Ciência
+            )
+        ),
+        Pergunta(
+            "O que mais te incomoda em um ambiente de trabalho?",
+            listOf(
+                Alternativa("Falta de organização e eficiência.", "A"), // Exatas
+                Alternativa("Falta de liberdade e expressão.", "B"), // Artes
+                Alternativa("Falta de empatia e colaboração.", "C"), // Humanas
+                Alternativa("Falta de propósito e aprendizado.", "D") // Ciência/Filosofia
+            )
+        ),
+        Pergunta(
+            "Se você pudesse ser reconhecido por algo, gostaria que fosse por...",
+            listOf(
+                Alternativa("Sua capacidade de resolver problemas.", "A"), // Exatas
+                Alternativa("Sua originalidade e visão criativa.", "B"), // Artes
+                Alternativa("Sua sensibilidade e apoio às pessoas.", "C"), // Psicologia
+                Alternativa("Sua inteligência e profundidade de pensamento.", "D") // Ciências/Filosofia
             )
         )
     )
@@ -207,6 +252,9 @@ fun TesteVocacionalScreen(
     var perguntaAtual by remember { mutableStateOf(0) }
     val respostas = remember { mutableStateListOf<String?>(*Array(perguntas.size) { null }) }
     var resultado by remember { mutableStateOf<String?>(null) }
+    var mostrarDesempate by remember { mutableStateOf(false) }
+    var letrasEmpatadas by remember { mutableStateOf(listOf<String>()) }
+    var perguntaDesempate by remember { mutableStateOf<Pergunta?>(null) }
 
     // --- TELA PRINCIPAL ---
     Scaffold(
@@ -232,6 +280,42 @@ fun TesteVocacionalScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
+            // --------------- ETAPA: DESEMPATE ----------------
+            if (mostrarDesempate && perguntaDesempate != null) {
+
+                // Pergunta
+                Text(
+                    text = perguntaDesempate!!.texto,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(Modifier.height(24.dp))
+
+                // Alternativas filtradas
+                perguntaDesempate!!.alternativas.forEach { alt ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                            .background(Color(0xFFF0F0F0))
+                            .clickable {
+                                // RESPOSTA FINAL
+                                resultado = alt.tipo
+                                mostrarDesempate = false
+                            }
+                            .padding(14.dp)
+                    ) {
+                        Text(text = alt.texto)
+                    }
+                }
+
+                return@Column // ← evita desenhar o restante da tela
+            }
+
             // --------------- ETAPA: TESTE ----------------
             if (resultado == null) {
                 val scrollState = rememberScrollState()
@@ -342,28 +426,19 @@ fun TesteVocacionalScreen(
                                     .groupingBy { it }
                                     .eachCount()
 
-                                Log.d("TesteComportamento", "Resumo das respostas: $contagem")
-
                                 val max = contagem.values.maxOrNull()
-                                val empatados = contagem.filter { it.value == max }.keys
-                                val resultadoCalculado = when {
-                                    empatados.size == 1 -> empatados.first()
-                                    empatados.size > 1 -> empatados.sorted().joinToString("–")
-                                    else -> "Indefinido"
-                                }
+                                val empatados = contagem.filter { it.value == max }.keys.toList()
 
-                                resultado = resultadoCalculado
+                                if (empatados.size == 1) {
+                                    // Não tem empate → resultado final
+                                    resultado = empatados.first()
+                                } else {
+                                    // TEM EMPATE → ativar pergunta de desempate
+                                    letrasEmpatadas = empatados
+                                    mostrarDesempate = true
 
-                                /*
-                                comportamentoViewModel.finalizarTeste(resultadoCalculado) { comportamentoId ->
-                                    if (comportamentoId != null) {
-                                        tokenStorage.saveComportamentoId(comportamentoId)
-                                        Log.d("TesteComportamento", "Comportamento salvo com ID: $comportamentoId")
-                                    } else {
-                                        Log.e("TesteComportamento", "Falha ao salvar comportamento.")
-                                    }
+                                    perguntaDesempate = gerarPerguntaDesempate(empatados)
                                 }
-                                 */
                             }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = BlueNavy)
@@ -375,42 +450,51 @@ fun TesteVocacionalScreen(
 
             // --------------- ETAPA: RESULTADO ----------------
             else {
-                when {
-                    loading -> {
-                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator(color = BlueNavy)
-                        }
-                    }
-                    error != null -> {
-                        Column(
-                            Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text("Erro: $error", color = Color.Red)
-                            Spacer(Modifier.height(8.dp))
-                            Button(onClick = onBack) { Text("Tentar novamente") }
-                        }
-                    }
-                    /*
-                    comportamentoSalvo != null -> {
-                        ResultadoComportamentoCompleto(
-                            tipo = resultado ?: "Indefinido",
-                            comportamento = comportamentoSalvo!!,
-                            onConcluir = onBack
-                        )
-                    }
-                     */
+                // 🔥 Carregar dados da letra final
+                val letraFinal = resultado ?: ""
+
+                val areas = areasMapeadas[letraFinal]?.joinToString(", ") ?: "Não encontrado"
+
+                val descricao = when (letraFinal) {
+                    "A" -> "Você possui um perfil voltado para lógica, exatas, tecnologia e resolução prática de problemas."
+                    "B" -> "Seu perfil é criativo, comunicativo e expressivo. Áreas de artes e design combinam com você."
+                    "C" -> "Você tem vocação para trabalhar com pessoas, educação, cuidado e desenvolvimento humano."
+                    "D" -> "Você possui perfil analítico, investigativo e reflexivo, ideal para pesquisa e ciências."
+                    else -> "Não foi possível determinar sua vocação."
                 }
+
+                ResultadoVocacional(
+                    tipo = letraFinal,
+                    recomendacao = areas,
+                    descricao = descricao,
+                    onConcluir = onBack
+                )
             }
         }
     }
 }
 
+fun gerarPerguntaDesempate(letras: List<String>): Pergunta {
+    val mapaAlternativas = mapOf(
+        "A" to Alternativa("Resolver problemas práticos com lógica.", "A"),
+        "B" to Alternativa("Criar uma solução criativa e visual.", "B"),
+        "C" to Alternativa("Ajudar, ouvir e entender pessoas.", "C"),
+        "D" to Alternativa("Pesquisar, analisar ou compreender profundamente.", "D")
+    )
+
+    val alternativasFiltradas = letras.mapNotNull { mapaAlternativas[it] }
+
+    return Pergunta(
+        texto = "Qual das alternativas abaixo te representa melhor?",
+        alternativas = alternativasFiltradas
+    )
+}
+
 @Composable
-fun ResultadoComportamentoCompleto(
+fun ResultadoVocacional(
     tipo: String,
-    comportamento: Comportamento,
+    recomendacao: String,
+    descricao: String,
     onConcluir: () -> Unit
 ) {
     Column(
@@ -420,22 +504,47 @@ fun ResultadoComportamentoCompleto(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Text("Resultado:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+
+        Text(
+            text = "Sua Vocação:",
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp
+        )
+
         Spacer(Modifier.height(8.dp))
-        Text(text = tipo, fontWeight = FontWeight.Bold, fontSize = 22.sp, color = BlueNavy)
+
+        Text(
+            text = tipo,
+            fontWeight = FontWeight.Bold,
+            fontSize = 26.sp,
+            color = BlueNavy
+        )
+
         Spacer(Modifier.height(16.dp))
 
-        Text("Características:", fontWeight = FontWeight.Bold)
-        Text(comportamento.caracteristicas)
-        Spacer(Modifier.height(12.dp))
+        Text(
+            text = "Áreas recomendadas:",
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp
+        )
+        Text(
+            text = recomendacao,
+            fontSize = 16.sp
+        )
 
-        Text("Aprendizagem:", fontWeight = FontWeight.Bold)
-        Text(comportamento.aprendizagem)
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(20.dp))
 
-        Text("Dicas de Estudo:", fontWeight = FontWeight.Bold)
-        Text(comportamento.descricaoEstudo)
-        Spacer(Modifier.height(24.dp))
+        Text(
+            text = "Descrição:",
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp
+        )
+        Text(
+            text = descricao,
+            fontSize = 16.sp
+        )
+
+        Spacer(Modifier.height(30.dp))
 
         Button(onClick = onConcluir) {
             Text("Concluir")

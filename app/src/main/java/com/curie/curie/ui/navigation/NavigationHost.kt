@@ -45,6 +45,7 @@ import com.curie.curie.ui.screens.auth.AuthViewModel
 import com.curie.curie.ui.screens.carreira.UserDashboardScreen
 import com.curie.curie.ui.screens.carreira.comportamento.TesteComportamentoScreen
 import com.curie.curie.ui.screens.carreira.temperamento.TesteTemperamentoScreen
+import com.curie.curie.ui.screens.carreira.vocacional.TesteVocacionalScreen
 import com.curie.curie.ui.screens.chat.ChatScreen
 import com.curie.curie.ui.screens.chat.ChatViewModel
 import com.curie.curie.ui.screens.perfil.EditarPerfilScreen
@@ -165,6 +166,13 @@ fun NavigationHost(
             }
             composable("testeTemperamento") {
                 TesteTemperamentoScreen(
+                    userId = userId,
+                    tokenStorage = tokenStorage,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("testeVocacional") {
+                TesteVocacionalScreen(
                     userId = userId,
                     tokenStorage = tokenStorage,
                     onBack = { navController.popBackStack() }
