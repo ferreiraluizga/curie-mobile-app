@@ -52,6 +52,34 @@ class TokenStorage(context: Context) {
         return if (id == -1L) null else id
     }
 
+    // 🔹 Mapeamento de área → ID
+    val areaEducacionalIds = mapOf(
+        "Ciências Humanas" to 1L,
+        "Matemática e suas Tecnologias" to 2L,
+        "Ciências da Natureza" to 3L,
+        "Linguagens e Códigos" to 4L
+    )
+
+    // 🔸 EDUCAÇÃO — Força e Fraqueza (corrigido)
+
+    fun saveForcaEducacionalId(id: Long) {
+        prefs.edit().putLong("forcaEducacionalId", id).apply()
+    }
+
+    fun getForcaEducacionalId(): Long? {
+        val id = prefs.getLong("forcaEducacionalId", -1L)
+        return if (id == -1L) null else id
+    }
+
+    fun saveFraquezaEducacionalId(id: Long) {
+        prefs.edit().putLong("fraquezaEducacionalId", id).apply()
+    }
+
+    fun getFraquezaEducacionalId(): Long? {
+        val id = prefs.getLong("fraquezaEducacionalId", -1L)
+        return if (id == -1L) null else id
+    }
+
     // 🔁 Limpeza
     fun clearAll() {
         prefs.edit().clear().apply()

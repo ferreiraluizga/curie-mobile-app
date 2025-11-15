@@ -29,10 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.data.model.Comportamento
-import com.curie.curie.ui.screens.carreira.PerfilViewModel
-import com.curie.curie.ui.screens.carreira.PerfilViewModelFactory
 import com.curie.curie.ui.theme.BlueNavy
-import kotlinx.coroutines.launch
 
 // -----------------------------
 // DATA CLASSES

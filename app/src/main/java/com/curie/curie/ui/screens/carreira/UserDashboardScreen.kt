@@ -112,7 +112,7 @@ fun UserDashboardScreen(
         }
     }
 
-    val allDone = vocacionalStatus.done && comportamentalStatus.done && temperamentoStatus.done
+    val allDone = comportamentalStatus.done && temperamentoStatus.done
 
     // 🧱 Layout principal
     Column(
@@ -165,7 +165,7 @@ fun UserDashboardScreen(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
             ) {
                 Icon(
                     imageVector = if (allDone) Icons.Outlined.CheckCircle else Icons.Outlined.WarningAmber,
@@ -207,6 +207,21 @@ fun UserDashboardScreen(
                     }
                 }
             }
+
+            if (allDone) {
+                Button(
+                    onClick = {
+                        // TODO: coloque sua navegação para tela de análise
+                        Log.d("Dashboard", "Gerar análise de perfil clicado")
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, bottom = 8.dp, end = 8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = BlueNavy)
+                ) {
+                    Text("Gerar análise de perfil")
+                }
+            }
         }
 
         // Conteúdo principal
@@ -218,7 +233,7 @@ fun UserDashboardScreen(
         ) {
             item {
                 Text(
-                    text = "Acompanhe seus resultados e explore novos caminhos",
+                    text = "Acompanhe seus resultados e explore novos caminhos!",
                     color = Color.DarkGray,
                     style = Typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 8.dp)

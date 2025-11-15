@@ -1,6 +1,5 @@
 package com.curie.curie.ui.screens.carreira.vocacional
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,13 +27,7 @@ import androidx.compose.ui.unit.times
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.curie.curie.data.api.TokenStorage
-import com.curie.curie.data.model.Comportamento
-import com.curie.curie.ui.screens.carreira.PerfilViewModel
-import com.curie.curie.ui.screens.carreira.PerfilViewModelFactory
-import com.curie.curie.ui.screens.carreira.comportamento.ComportamentoViewModel
-import com.curie.curie.ui.screens.carreira.comportamento.ComportamentoViewModelFactory
 import com.curie.curie.ui.theme.BlueNavy
-import kotlinx.coroutines.launch
 
 // -----------------------------
 // DATA CLASSES
@@ -255,6 +248,10 @@ fun TesteVocacionalScreen(
     var mostrarDesempate by remember { mutableStateOf(false) }
     var letrasEmpatadas by remember { mutableStateOf(listOf<String>()) }
     var perguntaDesempate by remember { mutableStateOf<Pergunta?>(null) }
+    var areaForte by remember { mutableStateOf<String?>(null) }
+    var areaFraca by remember { mutableStateOf<String?>(null) }
+    var etapaExtra by remember { mutableStateOf(false) }
+
 
     // --- TELA PRINCIPAL ---
     Scaffold(
@@ -445,6 +442,83 @@ fun TesteVocacionalScreen(
                     ) {
                         Text(if (perguntaAtual == perguntas.size - 1) "Enviar respostas" else "Próxima")
                     }
+                }
+            }
+
+            // --------------- ETAPA: PERGUNTAS EXTRAS ----------------
+            else if (!etapaExtra) {
+
+                Text(
+                    text = "Para finalizar, nos diga um pouco mais sobre você.",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(Modifier.height(24.dp))
+
+                // Pergunta 1 - Área forte
+                Text("Qual é sua área de conhecimento mais forte?")
+                Spacer(Modifier.height(8.dp))
+
+                listOf("Ciências Humanas", "Matemática e suas Tecnologias", "Ciências da Natureza", "Linguagens e Códigos").forEach { area ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                            .background(if (areaForte == area) BlueNavy else Color(0xFFF2F2F2))
+                            .clickable { areaForte = area }
+                            .padding(12.dp)
+                    ) {
+                        Text(
+                            text = area,
+                            color = if (areaForte == area) Color.White else Color.Black
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(24.dp))
+
+                // Pergunta 2 - Área fraca
+                Text("E qual é sua área de maior dificuldade?")
+                Spacer(Modifier.height(8.dp))
+
+                listOf("Ciências Humanas", "Matemática e suas Tecnologias", "Ciências da Natureza", "Linguagens e Códigos").forEach { area ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                            .background(if (areaFraca == area) BlueNavy else Color(0xFFF2F2F2))
+                            .clickable { areaFraca = area }
+                            .padding(12.dp)
+                    ) {
+                        Text(
+                            text = area,
+                            color = if (areaFraca == area) Color.White else Color.Black
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(30.dp))
+
+                Button(
+                    onClick = {
+                        if (areaForte != null && areaFraca != null) {
+                            val forteId = tokenStorage.areaEducacionalIds[areaForte]
+                            val fracaId = tokenStorage.areaEducacionalIds[areaFraca]
+                            tokenStorage.saveForcaEducacionalId(forteId!!)
+                            tokenStorage.saveFraquezaEducacionalId(fracaId!!)
+                            etapaExtra = true // libera a etapa final
+                        }
+                    },
+                    enabled = areaForte != null && areaFraca != null,
+                    colors = ButtonDefaults.buttonColors(containerColor = BlueNavy),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Continuar")
                 }
             }
 

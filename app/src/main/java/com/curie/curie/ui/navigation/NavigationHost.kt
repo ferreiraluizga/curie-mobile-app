@@ -1,13 +1,10 @@
 package com.curie.curie.ui.navigation
 
-import android.net.http.SslCertificate.restoreState
-import android.net.http.SslCertificate.saveState
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Home
@@ -15,19 +12,16 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -42,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.curie.curie.R
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.auth.AuthViewModel
+import com.curie.curie.ui.screens.carreira.InstrucoesScreen
 import com.curie.curie.ui.screens.carreira.UserDashboardScreen
 import com.curie.curie.ui.screens.carreira.comportamento.TesteComportamentoScreen
 import com.curie.curie.ui.screens.carreira.temperamento.TesteTemperamentoScreen
@@ -147,13 +142,13 @@ fun NavigationHost(
                 UserDashboardScreen(
                     tokenStorage = tokenStorage,
                     onVocacionalClick = {
-                        navController.navigate("testeVocacional")
+                        navController.navigate("instrucoesVocacional")
                     },
                     onComportamentalClick = {
-                        navController.navigate("testeComportamento")
+                        navController.navigate("instrucoesComportamento")
                     },
                     onTemperamentoClick = {
-                        navController.navigate("testeTemperamento")
+                        navController.navigate("instrucoesTemperamento")
                     }
                 )
             }
@@ -164,6 +159,12 @@ fun NavigationHost(
                     onBack = { navController.popBackStack() }
                 )
             }
+            composable("instrucoesComportamento") {
+                InstrucoesScreen(
+                    onStartClick = { navController.navigate("testeComportamento") },
+                    onBack = { navController.popBackStack() }
+                )
+            }
             composable("testeTemperamento") {
                 TesteTemperamentoScreen(
                     userId = userId,
@@ -171,10 +172,22 @@ fun NavigationHost(
                     onBack = { navController.popBackStack() }
                 )
             }
+            composable("instrucoesTemperamento") {
+                InstrucoesScreen(
+                    onStartClick = { navController.navigate("testeTemperamento") },
+                    onBack = { navController.popBackStack() }
+                )
+            }
             composable("testeVocacional") {
                 TesteVocacionalScreen(
                     userId = userId,
                     tokenStorage = tokenStorage,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("instrucoesVocacional") {
+                InstrucoesScreen(
+                    onStartClick = { navController.navigate("testeVocacional") },
                     onBack = { navController.popBackStack() }
                 )
             }

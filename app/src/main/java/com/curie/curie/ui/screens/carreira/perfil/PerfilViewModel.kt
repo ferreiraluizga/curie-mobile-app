@@ -1,4 +1,4 @@
-package com.curie.curie.ui.screens.carreira
+package com.curie.curie.ui.screens.carreira.perfil
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -11,9 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class PerfilViewModel(
     private val tokenStorage: TokenStorage
