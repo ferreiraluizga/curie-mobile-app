@@ -1,4 +1,4 @@
-package com.curie.curie.ui.screens.carreira.perfil
+package com.curie.curie.ui.screens.carreira.analise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

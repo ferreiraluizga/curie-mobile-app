@@ -42,7 +42,8 @@ fun UserDashboardScreen(
     tokenStorage: TokenStorage,
     onVocacionalClick: () -> Unit = {},
     onComportamentalClick: () -> Unit = {},
-    onTemperamentoClick: () -> Unit = {}
+    onTemperamentoClick: () -> Unit = {},
+    onGerarClick: () -> Unit = {}
 ) {
     val comportamentoViewModel: ComportamentoViewModel = viewModel(
         factory = ComportamentoViewModelFactory(tokenStorage)
@@ -171,6 +172,16 @@ fun UserDashboardScreen(
                             color = Color(0xFF2E7D32),
                             fontSize = 13.sp
                         )
+                        Button(
+                            onClick = { onGerarClick() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF2E7D32),
+                                contentColor = Color.White
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Gerar Análises")
+                        }
                     } else {
                         Text(
                             text = "Atenção!",
