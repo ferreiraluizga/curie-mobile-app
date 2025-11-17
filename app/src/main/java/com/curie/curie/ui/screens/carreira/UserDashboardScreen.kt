@@ -44,9 +44,6 @@ fun UserDashboardScreen(
     onComportamentalClick: () -> Unit = {},
     onTemperamentoClick: () -> Unit = {}
 ) {
-    val scope = rememberCoroutineScope()
-
-    // 🧠 ViewModels principais
     val comportamentoViewModel: ComportamentoViewModel = viewModel(
         factory = ComportamentoViewModelFactory(tokenStorage)
     )
@@ -56,8 +53,6 @@ fun UserDashboardScreen(
     val userViewModel: UserViewModel = viewModel(
         factory = UserViewModelFactory(tokenStorage)
     )
-
-    // 🔠 ViewModels auxiliares
     val tipoComportamentoViewModel: TipoComportamentoViewModel = viewModel(
         factory = TipoComportamentoViewModelFactory(tokenStorage)
     )
@@ -65,7 +60,6 @@ fun UserDashboardScreen(
         factory = TipoTemperamentoViewModelFactory(tokenStorage)
     )
 
-    // 🔄 Estados observáveis
     val comportamentoId by tokenStorage.comportamentoIdFlow.collectAsState()
     val temperamentoId by tokenStorage.temperamentoIdFlow.collectAsState()
     val comportamento by comportamentoViewModel.comportamento.collectAsStateWithLifecycle()
@@ -74,53 +68,38 @@ fun UserDashboardScreen(
     val tipoTemperamento by tipoTemperamentoViewModel.tipoTemperamento.collectAsStateWithLifecycle()
     val user by userViewModel.user.collectAsStateWithLifecycle()
 
-    // 🪣 Estados locais
     var vocacionalStatus by remember { mutableStateOf(TestStatus(false)) }
     var comportamentalStatus by remember { mutableStateOf(TestStatus(false)) }
     var temperamentoStatus by remember { mutableStateOf(TestStatus(false)) }
 
-    // 🧍 Buscar usuário logado
     LaunchedEffect(Unit) {
         tokenStorage.getUserId()?.let { userViewModel.getById(it) }
     }
 
-    // 🔁 Quando um ID muda, busca o novo resultado
     LaunchedEffect(comportamentoId, temperamentoId) {
-        comportamentoId?.let {
-            comportamentoViewModel.getById(it)
-            Log.d("UserDashboard", "Comportamento atualizado ID=$it")
-        }
-        temperamentoId?.let {
-            temperamentoViewModel.getById(it)
-            Log.d("UserDashboard", "Temperamento atualizado ID=$it")
-        }
+        comportamentoId?.let { comportamentoViewModel.getById(it) }
+        temperamentoId?.let { temperamentoViewModel.getById(it) }
     }
 
-    // 🔁 Quando um resultado muda, busca o tipo
     LaunchedEffect(comportamento, temperamento) {
         comportamento?.let { tipoComportamentoViewModel.getById(it.tipoComportamentoId) }
         temperamento?.let { tipoTemperamentoViewModel.getById(it.tipoTemperamentoId) }
     }
 
-    // 🧩 Atualiza status de exibição
     LaunchedEffect(tipoComportamento, tipoTemperamento) {
-        tipoComportamento?.let {
-            comportamentalStatus = TestStatus(true, it.nome)
-        }
-        tipoTemperamento?.let {
-            temperamentoStatus = TestStatus(true, it.nome)
-        }
+        tipoComportamento?.let { comportamentalStatus = TestStatus(true, it.nome) }
+        tipoTemperamento?.let { temperamentoStatus = TestStatus(true, it.nome) }
     }
 
     val allDone = comportamentalStatus.done && temperamentoStatus.done
+    val isVocacionalEnabled = comportamentalStatus.done && temperamentoStatus.done
 
-    // 🧱 Layout principal
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF2F4F7))
     ) {
-        // Cabeçalho
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -152,7 +131,6 @@ fun UserDashboardScreen(
             }
         }
 
-        // Aviso de progresso
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -165,7 +143,7 @@ fun UserDashboardScreen(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+                modifier = Modifier.padding(16.dp)
             ) {
                 Icon(
                     imageVector = if (allDone) Icons.Outlined.CheckCircle else Icons.Outlined.WarningAmber,
@@ -195,42 +173,22 @@ fun UserDashboardScreen(
                             fontSize = 15.sp
                         )
                         Text(
-                            text = "Conclua todos os testes para gerar sua análise de perfil.",
-                            color = Color(0xFFB26A00),
-                            fontSize = 13.sp
-                        )
-                        Text(
-                            text = "Se sair antes de finalizar, seus dados serão excluídos.",
+                            text = "Conclua todos os testes para liberar o relatório final.",
                             color = Color(0xFFB26A00),
                             fontSize = 13.sp
                         )
                     }
                 }
             }
-
-            if (allDone) {
-                Button(
-                    onClick = {
-                        // TODO: coloque sua navegação para tela de análise
-                        Log.d("Dashboard", "Gerar análise de perfil clicado")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 8.dp, bottom = 8.dp, end = 8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = BlueNavy)
-                ) {
-                    Text("Gerar análise de perfil")
-                }
-            }
         }
 
-        // Conteúdo principal
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+
             item {
                 Text(
                     text = "Acompanhe seus resultados e explore novos caminhos!",
@@ -240,12 +198,12 @@ fun UserDashboardScreen(
                 )
             }
 
-            // Vocacional
+            // VOCACIONAL
             item {
                 if (vocacionalStatus.done) {
                     ResultCard(
                         title = "Teste Vocacional",
-                        description = "Você tem afinidade com as seguintes áreas: ${vocacionalStatus.resultDescription}",
+                        description = "Você tem afinidade com: ${vocacionalStatus.resultDescription}",
                         icon = Icons.Outlined.Book,
                         color = Color(0xFFB39DDB),
                         buttonText = "Ver resultado",
@@ -259,12 +217,13 @@ fun UserDashboardScreen(
                         buttonText = "Explorar carreiras",
                         icon = Icons.Outlined.Book,
                         buttonColor = Color(0xFFB39DDB),
+                        enabled = isVocacionalEnabled, // 👈 desabilita até os outros testes acabarem
                         onClick = onVocacionalClick
                     )
                 }
             }
 
-            // Comportamental
+            // COMPORTAMENTAL
             item {
                 if (comportamentalStatus.done) {
                     ResultCard(
@@ -288,12 +247,12 @@ fun UserDashboardScreen(
                 }
             }
 
-            // Temperamento
+            // TEMPERAMENTO
             item {
                 if (temperamentoStatus.done) {
                     ResultCard(
                         title = "Teste de Temperamento",
-                        description = "Seu temperamento predominante é ${temperamentoStatus.resultDescription}",
+                        description = "Seu temperamento é ${temperamentoStatus.resultDescription}",
                         icon = Icons.Outlined.Psychology,
                         color = BlueNavy,
                         buttonText = "Ver resultado",

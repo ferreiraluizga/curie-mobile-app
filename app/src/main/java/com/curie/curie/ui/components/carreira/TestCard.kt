@@ -28,7 +28,8 @@ fun TestCard(
     buttonText: String,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     buttonColor: Color,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true // 👈 novo parâmetro
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -43,7 +44,10 @@ fun TestCard(
                 Box(
                     modifier = Modifier
                         .size(48.dp)
-                        .background(color = buttonColor, shape = CircleShape),
+                        .background(
+                            color = if (enabled) buttonColor else Color.LightGray,
+                            shape = CircleShape
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -59,7 +63,7 @@ fun TestCard(
                     text = title,
                     style = Typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = buttonColor
+                    color = if (enabled) buttonColor else Color.Gray
                 )
             }
 
@@ -73,7 +77,6 @@ fun TestCard(
 
             Spacer(modifier = Modifier.height(2.dp))
 
-            // Linha com ícone de relógio e quantidade de perguntas
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Outlined.Schedule,
@@ -93,8 +96,9 @@ fun TestCard(
 
             Button(
                 onClick = onClick,
+                enabled = enabled, // 👈 habilita/desabilita
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = buttonColor,
+                    containerColor = if (enabled) buttonColor else Color.LightGray,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(24.dp),
