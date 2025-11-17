@@ -80,6 +80,17 @@ class TokenStorage(context: Context) {
         return if (id == -1L) null else id
     }
 
+    fun saveAreasRecomendadas(areas: List<String>) {
+        val serialized = areas.joinToString("|") // transforma em string
+        prefs.edit().putString("areas_recomendadas", serialized).apply()
+    }
+
+    fun getAreasRecomendadas(): List<String> {
+        val saved = prefs.getString("areas_recomendadas", "") ?: ""
+        if (saved.isBlank()) return emptyList()
+        return saved.split("|")
+    }
+
     // 🔁 Limpeza
     fun clearAll() {
         prefs.edit().clear().apply()

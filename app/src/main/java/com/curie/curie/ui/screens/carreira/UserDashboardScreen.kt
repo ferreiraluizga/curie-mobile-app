@@ -76,6 +76,12 @@ fun UserDashboardScreen(
         tokenStorage.getUserId()?.let { userViewModel.getById(it) }
     }
 
+    LaunchedEffect(Unit) {
+        val areas: List<String> = tokenStorage.getAreasRecomendadas() ?: emptyList()
+        val formatted = if (areas.isEmpty()) null else areas.joinToString(", ")
+        vocacionalStatus = TestStatus(done = areas.isNotEmpty(), resultDescription = formatted)
+    }
+
     LaunchedEffect(comportamentoId, temperamentoId) {
         comportamentoId?.let { comportamentoViewModel.getById(it) }
         temperamentoId?.let { temperamentoViewModel.getById(it) }
@@ -91,7 +97,7 @@ fun UserDashboardScreen(
         tipoTemperamento?.let { temperamentoStatus = TestStatus(true, it.nome) }
     }
 
-    val allDone = comportamentalStatus.done && temperamentoStatus.done
+    val allDone = comportamentalStatus.done && temperamentoStatus.done && vocacionalStatus.done
     val isVocacionalEnabled = comportamentalStatus.done && temperamentoStatus.done
 
     Column(

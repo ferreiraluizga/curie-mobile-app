@@ -524,10 +524,14 @@ fun TesteVocacionalScreen(
 
             // --------------- ETAPA: RESULTADO ----------------
             else {
-                // 🔥 Carregar dados da letra final
                 val letraFinal = resultado ?: ""
 
-                val areas = areasMapeadas[letraFinal]?.joinToString(", ") ?: "Não encontrado"
+                val listaAreas = areasMapeadas[letraFinal] ?: emptyList()
+
+                // 🔥 SALVAR NO TOKEN STORAGE A LISTA DE ÁREAS
+                tokenStorage.saveAreasRecomendadas(listaAreas)
+
+                val areas = listaAreas.joinToString(", ")
 
                 val descricao = when (letraFinal) {
                     "A" -> "Você possui um perfil voltado para lógica, exatas, tecnologia e resolução prática de problemas."
