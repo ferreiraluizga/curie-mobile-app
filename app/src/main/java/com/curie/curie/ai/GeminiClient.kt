@@ -56,6 +56,7 @@ class GeminiClient(
 
     /**
      * 🔹 Aqui fica seu prompt oficial de análise de carreira
+     * (MODIFICADO COM AS TAGS)
      */
     private fun construirPrompt(
         areasRecomendadas: List<String>,
@@ -65,6 +66,11 @@ class GeminiClient(
         temperamento: String?,
         comportamento: String?
     ): String {
+
+        // Instruções claras para a IA sobre as tags
+        val instrucaoGrad = "IMPORTANTE: Para CADA graduação sugerida, coloque o nome exato dentro de tags <GRAD> e </GRAD>. Exemplo: <GRAD>Administração</GRAD>."
+        val instrucaoPos = "IMPORTANTE: Para CADA pós-graduação sugerida, coloque o nome exato dentro de tags <POS> e </POS>. Exemplo: <POS>MBA em Gestão de Projetos</POS>."
+        val instrucaoProf = "IMPORTANTE: Para CADA profissão sugerida, coloque o nome exato dentro de tags <PROF> e </PROF>. Exemplo: <PROF>Analista de Negócios</PROF>."
 
         return """
             Você é um orientador profissional especializado em análise vocacional,
@@ -82,30 +88,27 @@ class GeminiClient(
 
             Gere uma análise completa contendo:
 
-            1) **Perfil Geral do Usuário**  
-            - Faça uma síntese combinando temperamento + comportamento.
+            1) **Perfil Geral do Usuário** - Faça uma síntese combinando temperamento + comportamento.
 
-            2) **Indicação de Área de Carreira**  
-            - Explique por que as áreas recomendadas fazem sentido para o perfil.
+            2) **Indicação de Área de Carreira** - Explique por que as áreas recomendadas fazem sentido para o perfil.
 
-            3) **Sugestão de Graduação**  
-            - Indique 1 a 3 graduações principais e por quê.
+            3) **Sugestão de Graduação** - Indique 1 graduação principal e por quê.
+            - $instrucaoGrad
 
-            4) **Sugestão de Pós-Graduação**  
-            - Aponte especializações adequadas ao perfil e área.
+            4) **Sugestão de Pós-Graduação** - Aponte 1 especialização adequada ao perfil e área.
+            - $instrucaoPos
 
-            5) **Sugestão de Profissões**  
-            - Liste 3 a 6 profissões com breves justificativas.
+            5) **Sugestão de Profissões** - Liste 1 profissão com breves justificativas.
+            - $instrucaoProf
 
-            6) **Plano de Carreira Estruturado (Passo a Passo)**  
-            - Curto prazo (0-1 ano)
+            6) **Plano de Carreira Estruturado (Passo a Passo)** - Curto prazo (0-1 ano)
             - Médio prazo (1-3 anos)
             - Longo prazo (3-5 anos)
             - Competências a desenvolver
 
             7) **Resumo Final Motivacional**
 
-            Responda tudo em português do Brasil, com clareza e tom profissional,
+            Responda tudo em português do Brasil, com clara e tom profissional,
             evitando repetição e mantendo objetividade.
         """.trimIndent()
     }

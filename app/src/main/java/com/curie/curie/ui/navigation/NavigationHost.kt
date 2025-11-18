@@ -34,15 +34,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.curie.curie.R
+import com.curie.curie.ai.GeminiClient
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.auth.AuthViewModel
 import com.curie.curie.ui.screens.carreira.InstrucoesScreen
 import com.curie.curie.ui.screens.carreira.UserDashboardScreen
+import com.curie.curie.ui.screens.carreira.analise.PlanoDeCarreiraScreen
 import com.curie.curie.ui.screens.carreira.comportamento.TesteComportamentoScreen
 import com.curie.curie.ui.screens.carreira.temperamento.TesteTemperamentoScreen
 import com.curie.curie.ui.screens.carreira.vocacional.TesteVocacionalScreen
 import com.curie.curie.ui.screens.chat.ChatScreen
 import com.curie.curie.ui.screens.chat.ChatViewModel
+import com.curie.curie.ui.screens.chat.Constants
 import com.curie.curie.ui.screens.perfil.EditarPerfilScreen
 import com.curie.curie.ui.screens.perfil.PerfilScreen
 import com.curie.curie.ui.screens.start.HomeScreen
@@ -84,6 +87,7 @@ fun NavigationHost(
 
     val context = LocalContext.current
     val tokenStorage = remember { TokenStorage(context) }
+    val geminiClient = remember { GeminiClient(Constants.apiKey) }
 
     Scaffold(
         bottomBar = {
@@ -138,9 +142,11 @@ fun NavigationHost(
             composable("tarefas") {
                 TarefaScreen(userId = userId, tokenStorage = tokenStorage)
             }
+
             composable("carreira") {
                 UserDashboardScreen(
                     tokenStorage = tokenStorage,
+                    geminiClient = geminiClient, // 🚨 PASSAR O CLIENTE
                     onVocacionalClick = {
                         navController.navigate("instrucoesVocacional")
                     },
@@ -149,6 +155,14 @@ fun NavigationHost(
                     },
                     onTemperamentoClick = {
                         navController.navigate("instrucoesTemperamento")
+                    },
+                    onGerarClick = {
+                        // 🚨 Quando o botão "Gerar Análises" é clicado:
+                        navController.navigate("analiseCarreira")
+                    },
+                    onNavigateToAnalysisResult = {
+                        // 🚨 Se houver resultado pronto, navega para a tela de análise (opcionalmente)
+                        navController.navigate("analiseCarreira")
                     }
                 )
             }
@@ -191,6 +205,19 @@ fun NavigationHost(
                     onBack = { navController.popBackStack() }
                 )
             }
+            composable("analiseCarreira") {
+                PlanoDeCarreiraScreen(
+                    tokenStorage = tokenStorage,
+                    geminiClient = geminiClient, // 🚨 PASSAR O CLIENTE
+                    onPlanoSalvo = {
+                        // Volta para o Dashboard ou Home após salvar
+                        navController.popBackStack("carreira", inclusive = false)
+                    },
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
 
             composable("home") {
                 HomeScreen(
@@ -200,6 +227,7 @@ fun NavigationHost(
                     }
                 )
             }
+
             composable("chat") {
                 val chatViewModel: ChatViewModel = viewModel()
                 ChatScreen(viewModel = chatViewModel)
@@ -214,7 +242,6 @@ fun NavigationHost(
                     }
                 )
             }
-
             composable("editarPerfil/{userId}") { backStackEntry ->
                 val userIdArg = backStackEntry.arguments?.getString("userId")?.toLong() ?: 0L
 

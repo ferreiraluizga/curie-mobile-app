@@ -528,8 +528,11 @@ fun TesteVocacionalScreen(
 
                 val listaAreas = areasMapeadas[letraFinal] ?: emptyList()
 
-                // 🔥 SALVAR NO TOKEN STORAGE A LISTA DE ÁREAS
+                // 1. SALVAR NO TOKEN STORAGE A LISTA DE NOMES DE ÁREAS
                 tokenStorage.saveAreasRecomendadas(listaAreas)
+
+                // 2. 🚨 NOVO: BUSCAR E SALVAR AS IDs NO TokenStorage
+                areaCarreiraViewModel.saveAreaIdsRecomendadas()
 
                 val areas = listaAreas.joinToString(", ")
 

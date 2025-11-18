@@ -15,6 +15,10 @@ class TokenStorage(context: Context) {
     private val _comportamentoIdFlow = MutableStateFlow<Long?>(getComportamentoId())
     val comportamentoIdFlow: StateFlow<Long?> = _comportamentoIdFlow
 
+    // 🚨 NOVO: Fluxo reativo para IDs de Áreas Recomendadas
+    private val _areasIdsFlow = MutableStateFlow<List<Long>?>(getAreasIds())
+    val areasIdsFlow: StateFlow<List<Long>?> = _areasIdsFlow
+
     // 🧠 Tokens e IDs de usuário
     fun saveToken(token: String) {
         prefs.edit().putString("token", token).apply()
@@ -124,6 +128,24 @@ class TokenStorage(context: Context) {
         return saved.split("|")
     }
 
+    // =================================================================
+    // 🚨 NOVO: Persistência dos IDs de Áreas de Carreira Recomendadas
+    // Usado pelo CarreiraViewModel no Dashboard para filtrar dados.
+    // =================================================================
+
+    fun saveAreasIds(ids: List<Long>) {
+        // SharedPreferences só salva Set<String>. Convertemos Long para String
+        val serialized = ids.map { it.toString() }.toSet()
+        prefs.edit().putStringSet("areas_recomendadas_ids", serialized).apply()
+        _areasIdsFlow.value = ids // Notifica o StateFlow
+    }
+
+    fun getAreasIds(): List<Long> {
+        val savedSet = prefs.getStringSet("areas_recomendadas_ids", emptySet()) ?: emptySet()
+        if (savedSet.isEmpty()) return emptyList()
+        // Converte Set<String> de volta para List<Long>
+        return savedSet.mapNotNull { it.toLongOrNull() }
+    }
 
     // 🔁 Limpeza
     fun clearAll() {

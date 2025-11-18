@@ -72,13 +72,21 @@ class AreaCarreiraViewModel(
         }
     }
 
+    // 🔹 Obtém os IDs das áreas recomendadas (após o teste)
     fun getIdsDasAreasRecomendadas(): List<Long> {
         val recomendadas = tokenStorage.getAreasRecomendadas()
-        val todas = _areasCarreira.value
+        val todas = _areasCarreira.value // Garante que a lista foi carregada pelo getAll()
 
         return todas
             .filter { recomendadas.contains(it.nome) }
             .map { it.id }
     }
 
+    // 🚨 NOVO: Salva os IDs das áreas recomendadas no TokenStorage
+    fun saveAreaIdsRecomendadas() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val ids = getIdsDasAreasRecomendadas()
+            tokenStorage.saveAreasIds(ids) // 👈 Assume que esta função existe no TokenStorage
+        }
+    }
 }

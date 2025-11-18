@@ -1,5 +1,6 @@
 package com.curie.curie.ui.screens.carreira
 
+import CarreiraViewModelFactory
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,9 +23,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.curie.curie.R
+import com.curie.curie.ai.GeminiClient
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.components.carreira.ResultCard
 import com.curie.curie.ui.components.carreira.TestCard
+import com.curie.curie.ui.screens.carreira.analise.CarreiraViewModel
 import com.curie.curie.ui.screens.carreira.comportamento.*
 import com.curie.curie.ui.screens.carreira.temperamento.*
 import com.curie.curie.ui.screens.perfil.UserViewModel
@@ -40,10 +43,12 @@ data class TestStatus(
 @Composable
 fun UserDashboardScreen(
     tokenStorage: TokenStorage,
+    geminiClient: GeminiClient,
     onVocacionalClick: () -> Unit = {},
     onComportamentalClick: () -> Unit = {},
     onTemperamentoClick: () -> Unit = {},
-    onGerarClick: () -> Unit = {}
+    onGerarClick: () -> Unit = {}, // callback para navegação pós-geração
+    onNavigateToAnalysisResult: () -> Unit // NOVO: Callback para navegação para tela de resultado
 ) {
     val comportamentoViewModel: ComportamentoViewModel = viewModel(
         factory = ComportamentoViewModelFactory(tokenStorage)
@@ -60,11 +65,15 @@ fun UserDashboardScreen(
     val tipoTemperamentoViewModel: TipoTemperamentoViewModel = viewModel(
         factory = TipoTemperamentoViewModelFactory(tokenStorage)
     )
+    val carreiraViewModel: CarreiraViewModel = viewModel(
+        factory = CarreiraViewModelFactory(tokenStorage, geminiClient)
+    )
 
     val comportamentoId by tokenStorage.comportamentoIdFlow.collectAsState()
     val temperamentoId by tokenStorage.temperamentoIdFlow.collectAsState()
     val comportamento by comportamentoViewModel.comportamento.collectAsStateWithLifecycle()
     val temperamento by temperamentoViewModel.temperamento.collectAsStateWithLifecycle()
+    val areasIds by tokenStorage.areasIdsFlow.collectAsState() // NOVO: Para o loadAllForAreas
     val tipoComportamento by tipoComportamentoViewModel.tipoComportamento.collectAsStateWithLifecycle()
     val tipoTemperamento by tipoTemperamentoViewModel.tipoTemperamento.collectAsStateWithLifecycle()
     val user by userViewModel.user.collectAsStateWithLifecycle()
