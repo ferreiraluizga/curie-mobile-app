@@ -71,4 +71,14 @@ class AreaCarreiraViewModel(
             }
         }
     }
+
+    fun getIdsDasAreasRecomendadas(): List<Long> {
+        val recomendadas = tokenStorage.getAreasRecomendadas()
+        val todas = _areasCarreira.value
+
+        return todas
+            .filter { recomendadas.contains(it.nome) }
+            .map { it.id }
+    }
+
 }

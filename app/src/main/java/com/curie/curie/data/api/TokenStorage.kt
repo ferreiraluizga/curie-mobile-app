@@ -91,6 +91,40 @@ class TokenStorage(context: Context) {
         return saved.split("|")
     }
 
+    fun saveGraduacoes(graduacoes: List<String>) {
+        val serialized = graduacoes.joinToString("|")
+        prefs.edit().putString("graduacoes", serialized).apply()
+    }
+
+    fun getGraduacoes(): List<String> {
+        val saved = prefs.getString("graduacoes", "") ?: ""
+        if (saved.isBlank()) return emptyList()
+        return saved.split("|")
+    }
+
+    fun savePosGraduacoes(pos: List<String>) {
+        val serialized = pos.joinToString("|")
+        prefs.edit().putString("pos_graduacoes", serialized).apply()
+    }
+
+    fun getPosGraduacoes(): List<String> {
+        val saved = prefs.getString("pos_graduacoes", "") ?: ""
+        if (saved.isBlank()) return emptyList()
+        return saved.split("|")
+    }
+
+    fun saveProfissoes(profissoes: List<String>) {
+        val serialized = profissoes.joinToString("|")
+        prefs.edit().putString("profissoes", serialized).apply()
+    }
+
+    fun getProfissoes(): List<String> {
+        val saved = prefs.getString("profissoes", "") ?: ""
+        if (saved.isBlank()) return emptyList()
+        return saved.split("|")
+    }
+
+
     // 🔁 Limpeza
     fun clearAll() {
         prefs.edit().clear().apply()
