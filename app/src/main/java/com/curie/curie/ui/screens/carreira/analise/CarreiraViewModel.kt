@@ -292,48 +292,66 @@ class CarreiraViewModel(
         }
     }
 
-    fun loadAllForAreas() { // Removido o parâmetro areaIds: List<Long>
+    fun loadAllForAreas() {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.value = true
             _error.value = null
+
             try {
-                // 🚨 CORREÇÃO: Pega os IDs diretamente do TokenStorage
                 val areaIds = tokenStorage.getAreasIds()
-                Log.d("CarreiraViewModel", "Carregando graduações/pós para IDs de Área: $areaIds")
+                Log.d("CarreiraViewModel", "IDs de área carregados do storage: $areaIds")
 
                 if (areaIds.isEmpty()) {
-                    Log.w("CarreiraViewModel", "Nenhum ID de área encontrado no TokenStorage. Pulando o carregamento de graduações/pós.")
+                    Log.w("CarreiraViewModel", "Nenhuma área encontrada no TokenStorage.")
                     return@launch
                 }
 
-                val g = graduacaoApi.getAll().execute()
-                val pg = posGraduacaoApi.getAll().execute()
+                // 1) Carregar TODAS as graduações
+                val graduacaoResp = graduacaoApi.getAll().execute()
+                if (graduacaoResp.isSuccessful) {
+                    val todasGraduacoes = graduacaoResp.body() ?: emptyList()
 
-                if (g.isSuccessful) {
-                    val todas = g.body() ?: emptyList()
-                    val filtradas = todas.filter { grad ->
-                        areaIds.contains(grad.areaCarreiraId)
+                    // 🔥 CORRIGIDO: Filtra pelo campo CORRETO vindo do backend
+                    val filtradasGrad = todasGraduacoes.filter { grad ->
+                        areaIds.contains(grad.areaCarreira.id)
                     }
-                    _graduacoes.value = filtradas
+
+                    _graduacoes.value = filtradasGrad
+
                     tokenStorage.saveGraduacoes(
-                        filtradas.map { it.nome }
+                        filtradasGrad.map { it.nome }
                     )
-                    Log.d("CarreiraViewModel", "Graduações salvas no storage: ${filtradas.size}")
+
+                    Log.d(
+                        "CarreiraViewModel",
+                        "Graduações filtradas: ${filtradasGrad.size} | totais: ${todasGraduacoes.size}"
+                    )
                 }
 
-                if (pg.isSuccessful) {
-                    val todas = pg.body() ?: emptyList()
-                    val filtradas = todas.filter { pos ->
-                        areaIds.contains(pos.areaCarreiraId)
+                // 2) Carregar TODAS as pós
+                val posResp = posGraduacaoApi.getAll().execute()
+                if (posResp.isSuccessful) {
+                    val todasPos = posResp.body() ?: emptyList()
+
+                    // 🔥 CORRIGIDO: Filtrar usando os campos válidos
+                    val filtradasPos = todasPos.filter { pos ->
+                        areaIds.contains(pos.areaCarreira.id)
                     }
-                    _posGraduacoes.value = filtradas
+
+                    _posGraduacoes.value = filtradasPos
+
                     tokenStorage.savePosGraduacoes(
-                        filtradas.map { it.nome }
+                        filtradasPos.map { it.nome }
                     )
-                    Log.d("CarreiraViewModel", "Pós-graduações salvas no storage: ${filtradas.size}")
+
+                    Log.d(
+                        "CarreiraViewModel",
+                        "Pós filtradas: ${filtradasPos.size} | totais: ${todasPos.size}"
+                    )
                 }
 
             } catch (e: Exception) {
+                Log.e("CarreiraViewModel", "Erro ao carregar dados: ${e.message}")
                 _error.value = "Erro ao carregar dados: ${e.localizedMessage}"
             } finally {
                 _loading.value = false

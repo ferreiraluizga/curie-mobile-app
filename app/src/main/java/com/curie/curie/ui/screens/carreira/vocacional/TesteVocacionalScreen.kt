@@ -528,13 +528,48 @@ fun TesteVocacionalScreen(
 
                 val listaAreas = areasMapeadas[letraFinal] ?: emptyList()
 
-                // 1. SALVAR NO TOKEN STORAGE A LISTA DE NOMES DE ÁREAS
+// 1. SALVAR NOMES DAS ÁREAS
                 tokenStorage.saveAreasRecomendadas(listaAreas)
 
-                // 2. 🚨 NOVO: BUSCAR E SALVAR AS IDs NO TokenStorage
-                areaCarreiraViewModel.saveAreaIdsRecomendadas()
 
+                // 2. FUNÇÃO LOCAL PARA CONVERTER NOME → ID
+                fun mapearNomesParaIds(nomes: List<String>): List<Long> {
+                    val mapa = mapOf(
+                        "Exatas" to 1,
+                        "Tecnologia" to 2,
+                        "Engenharia" to 3,
+                        "Gestão" to 4,
+                        "Administração" to 5,
+                        "Contabilidade" to 6,
+                        "Artes" to 7,
+                        "Design" to 8,
+                        "Comunicação" to 9,
+                        "Criativas" to 10,
+                        "Publicidade" to 11,
+                        "Moda" to 12,
+                        "Arquitetura" to 13,
+                        "Cinema" to 14,
+                        "Humanas" to 15,
+                        "Educação" to 16,
+                        "Psicologia" to 17,
+                        "Social" to 18,
+                        "Ciências" to 19,
+                        "Pesquisa" to 20,
+                        "Filosofia" to 21
+                    )
+
+                    return nomes.mapNotNull { mapa[it]?.toLong() }
+                }
+
+
+// 3. GERAR E SALVAR AS IDs DIRETO NO TOKENSTORAGE
+                val listaIds = mapearNomesParaIds(listaAreas)
+                tokenStorage.saveAreasIds(listaIds)
+
+
+// 4. Apenas monta o texto final (se você usa para exibir)
                 val areas = listaAreas.joinToString(", ")
+
 
                 val descricao = when (letraFinal) {
                     "A" -> "Você possui um perfil voltado para lógica, exatas, tecnologia e resolução prática de problemas."

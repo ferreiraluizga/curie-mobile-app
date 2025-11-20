@@ -5,5 +5,5 @@ data class Graduacao(
     val nome: String,
     val descricao: String,
     val duracao: Int,
-    val areaCarreiraId: Long
+    val areaCarreira: AreaCarreira
 )

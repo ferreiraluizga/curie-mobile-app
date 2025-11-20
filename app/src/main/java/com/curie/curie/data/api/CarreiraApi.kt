@@ -13,12 +13,12 @@ import retrofit2.http.Query
 
 interface CarreiraApi {
 
-    @POST("carreiras/save")
+    @POST("carreira/save")
     fun save(@Body carreira: Carreira): Call<Carreira>
 
-    @GET("carreiras/{id}")
+    @GET("carreira/{id}")
     fun getById(@Path("id") id: Long): Call<Carreira>
 
-    @DELETE("carreiras/delete/{id}")
+    @DELETE("carreira/delete/{id}")
     fun delete(@Path("id") id: Long?): Call<Void>
 }
