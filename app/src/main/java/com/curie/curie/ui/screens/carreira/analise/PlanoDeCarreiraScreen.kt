@@ -20,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.curie.curie.ai.GeminiClient
 import com.curie.curie.data.api.TokenStorage
+import com.curie.curie.data.model.Perfil
 import com.curie.curie.ui.theme.BlueNavy // Supondo sua cor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,6 +39,14 @@ fun PlanoDeCarreiraScreen(
 
     // 2. Obtém o ViewModel usando a Factory
     val viewModel: CarreiraViewModel = viewModel(factory = carreiraViewModelFactory)
+
+    // 1. Cria a Factory, passando as dependências
+    val perfilViewModelFactory = remember {
+        PerfilViewModelFactory(tokenStorage)
+    }
+
+    // 2. Obtém o ViewModel usando a Factory
+    val perfilViewModel: PerfilViewModel = viewModel(factory = perfilViewModelFactory)
 
     // --- ESTADOS ---
     val isLoading by viewModel.loading.collectAsStateWithLifecycle()
@@ -83,7 +92,20 @@ fun PlanoDeCarreiraScreen(
                     actions = { Spacer(Modifier.weight(1f)) },
                     floatingActionButton = {
                         ExtendedFloatingActionButton(
-                            onClick = { viewModel.salvarPlanoGerado() },
+                            onClick = {
+                                viewModel.salvarPlanoGerado()
+                                perfilViewModel.save(
+                                    Perfil(
+                                        id = null,
+                                        userId = tokenStorage.getUserId(),
+                                        descricao = "Análise de Perfil",
+                                        comportamentoId = tokenStorage.getComportamentoId(),
+                                        temperamentoId = tokenStorage.getTemperamentoId(),
+                                        forcaId = tokenStorage.getForcaEducacionalId(),
+                                        fraquezaId = tokenStorage.getFraquezaEducacionalId()
+                                    )
+                                )
+                                      },
                             icon = { Icon(Icons.Default.Done, contentDescription = "Salvar") },
                             text = { Text("Salvar e Concluir") },
                             containerColor = BlueNavy,

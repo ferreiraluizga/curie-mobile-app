@@ -48,15 +48,8 @@ object AiResponseParser {
      * @param respostaIA O texto completo retornado pela IA.
      * @return Uma string contendo o texto do resumo.
      */
-    fun extrairResumoFinal(respostaIA: String): String {
-        // Regex para encontrar "7) Resumo Final Motivacional" e capturar o texto a seguir.
-        // \\s*: Captura quaisquer espaços em branco, incluindo quebras de linha.
-        // (.*): Captura o resumo. Como é a última seção, ele captura até o fim do texto.
-        val regex = "7\\) Resumo Final Motivacional\\s*(.*)".toRegex(RegexOption.DOT_MATCHES_ALL)
-
-        val match = regex.find(respostaIA)
-
-        // Retorna o texto capturado (grupo 1) ou uma string vazia.
-        return match?.groupValues?.get(1)?.trim() ?: ""
+    fun extrairResumoFinal(texto: String): String? {
+        val regex = "<RESUMO>(.*?)</RESUMO>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        return regex.find(texto)?.groupValues?.get(1)?.trim()
     }
 }

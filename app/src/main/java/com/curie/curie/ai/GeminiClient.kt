@@ -52,8 +52,7 @@ class GeminiClient(
 
                 Log.d("GeminiClient", "🟢 Resposta recebida do Gemini.")
                 text
-            }
-            catch (e: GoogleGenerativeAIException) {
+            } catch (e: GoogleGenerativeAIException) {
 
                 Log.e("GeminiClient", "❌ Erro do Gemini: ${e.message}")
 
@@ -69,8 +68,7 @@ class GeminiClient(
                     else ->
                         "⚠ Não foi possível gerar o plano no momento. Tente novamente."
                 }
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.e("GeminiClient", "❌ Erro inesperado: ${e.message}")
                 return@withContext "⚠ Erro inesperado ao gerar sua análise."
             }
@@ -90,44 +88,63 @@ class GeminiClient(
     ): String {
 
         val instrucaoGrad =
-            "IMPORTANTE: Para CADA graduação sugerida, coloque o nome exato dentro de <GRAD> e </GRAD>."
+            "OBRIGATÓRIO: escolha EXATAMENTE 1 (uma) graduação da lista fornecida. " +
+                    "Se nenhuma for claramente compatível, você DEVE escolher automaticamente a PRIMEIRA opção da lista. " +
+                    "Você é PROIBIDO de inventar ou sugerir qualquer outra. " +
+                    "Coloque o nome escolhido dentro de <GRAD> e </GRAD>. NUNCA deixe em branco."
+
         val instrucaoPos =
-            "IMPORTANTE: Para CADA pós-graduação sugerida, coloque o nome exato dentro de <POS> e </POS>."
+            "OBRIGATÓRIO: escolha EXATAMENTE 1 (uma) pós-graduação da lista fornecida. " +
+                    "Se nenhuma parecer compatível, escolha automaticamente a PRIMEIRA opção da lista. " +
+                    "Você é PROIBIDO de criar novas ou deixar vazio. " +
+                    "Coloque o nome escolhido dentro de <POS> e </POS>."
+
         val instrucaoProf =
-            "IMPORTANTE: Para CADA profissão sugerida, coloque o nome exato dentro de <PROF> e </PROF>."
+            "OBRIGATÓRIO: escolha EXATAMENTE 1 (uma) profissão da lista fornecida. " +
+                    "Se não houver compatibilidade clara, escolha a PRIMEIRA opção da lista. " +
+                    "Você NÃO pode criar profissões novas nem sugerir mais de uma. " +
+                    "Coloque a profissão dentro de <PROF> e </PROF>."
 
         return """
-            Você é um orientador profissional especializado em análise vocacional,
-            comportamento e temperamento. Seu objetivo é gerar um **Plano de Carreira Completo**
-            claro, objetivo e personalizado.
-
-            ANALISE OS DADOS:
-
-            • Áreas Recomendadas: ${areasRecomendadas.joinToString(", ")}
-            • Graduações Relacionadas: ${graduacoes.joinToString(", ")}
-            • Pós-Graduações Relacionadas: ${posGraduacoes.joinToString(", ")}
-            • Possíveis Profissões: ${profissoes.joinToString(", ")}
-            • Temperamento: ${temperamento ?: "Não informado"}
-            • Comportamento: ${comportamento ?: "Não informado"}
-
-            Gere:
-
-            1) Perfil Geral do Usuário (comportamento + temperamento)
-            2) Indicação da Área de Carreira ideal
-            3) Sugestão de Graduação
-               - $instrucaoGrad
-            4) Sugestão de Pós-Graduação
-               - $instrucaoPos
-            5) Sugestão de Profissão
-               - $instrucaoProf
-            6) Plano de Carreira Estruturado:
-               - Curto prazo (0-1 ano)
-               - Médio prazo (1-3 anos)
-               - Longo prazo (3-5 anos)
-               - Competências a desenvolver
-            7) Resumo Final Motivacional
-
-            Responda em português do Brasil, com clareza e objetividade.
+        Você é um orientador profissional especializado.
+        
+        ⚠ REGRAS ABSOLUTAS (SIGA SEM EXCEÇÃO):
+        1. Escolha EXATAMENTE UMA opção de cada categoria:
+           - 1 graduação
+           - 1 pós-graduação
+           - 1 profissão
+        2. TODAS as escolhas devem vir exclusivamente das listas fornecidas.
+        3. É proibido inventar novos nomes.
+        4. É proibido sugerir mais de uma opção por categoria.
+        5. É proibido deixar a marcação vazia.
+        6. Se necessário, escolha a mais compatível com base nas áreas recomendadas.
+        
+        ANALISE OS DADOS:
+        
+        • Áreas recomendadas: ${areasRecomendadas.joinToString(", ")}
+        • Graduações disponíveis: ${graduacoes.joinToString(", ")}
+        • Pós disponíveis: ${posGraduacoes.joinToString(", ")}
+        • Profissões disponíveis: ${profissoes.joinToString(", ")}
+        • Temperamento: ${temperamento ?: "Não informado"}
+        • Comportamento: ${comportamento ?: "Não informado"}
+        
+        Gere:
+        
+        1) Perfil Geral
+        2) Área de carreira escolhida
+        3) Graduação escolhida:
+           - $instrucaoGrad
+        4) Pós-graduação escolhida:
+           - $instrucaoPos
+        5) Profissão escolhida:
+           - $instrucaoProf
+        6) Plano de carreira estruturado
+        7) Resumo (<RESUMO></RESUMO>), no máximo 240 caracteres
+        
+        ⚠ REGRA DE CONTINGÊNCIA:
+        Se você não identificar nenhuma opção realmente compatível em uma categoria,
+        você deve automaticamente selecionar a PRIMEIRA opção da lista enviada.
+        Nunca deixe <GRAD>, <POS> ou <PROF> vazios.
         """.trimIndent()
     }
 }
