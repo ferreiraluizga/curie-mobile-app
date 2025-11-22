@@ -89,21 +89,27 @@ class GeminiClient(
 
         val instrucaoGrad =
             "OBRIGATÓRIO: escolha EXATAMENTE 1 (uma) graduação da lista fornecida. " +
-                    "Se nenhuma for claramente compatível, você DEVE escolher automaticamente a PRIMEIRA opção da lista. " +
-                    "Você é PROIBIDO de inventar ou sugerir qualquer outra. " +
-                    "Coloque o nome escolhido dentro de <GRAD> e </GRAD>. NUNCA deixe em branco."
+                    "Você NÃO PODE criar novas, sugerir alternativas, usar sinônimos ou alterar ortografia. " +
+                    "Se tentar usar algo fora da lista, você DEVE automaticamente selecionar a PRIMEIRA opção. " +
+                    "A graduação escolhida DEVE corresponder EXATAMENTE (caracter por caracter) a um dos itens da lista: " +
+                    graduacoes.joinToString(", ") + ". " +
+                    "Coloque o valor escolhido dentro de <GRAD> e </GRAD> e NUNCA deixe vazio."
 
         val instrucaoPos =
             "OBRIGATÓRIO: escolha EXATAMENTE 1 (uma) pós-graduação da lista fornecida. " +
-                    "Se nenhuma parecer compatível, escolha automaticamente a PRIMEIRA opção da lista. " +
-                    "Você é PROIBIDO de criar novas ou deixar vazio. " +
-                    "Coloque o nome escolhido dentro de <POS> e </POS>."
+                    "Você NÃO PODE criar novas, sugerir alternativas ou alterar ortografia. " +
+                    "Se você tentar criar qualquer coisa fora da lista, considere automaticamente a PRIMEIRA opção. " +
+                    "A pós escolhida DEVE corresponder exatamente (caracter por caracter) a um dos itens da lista: " +
+                    posGraduacoes.joinToString(", ") + ". " +
+                    "Coloque o valor dentro de <POS> e </POS>."
 
         val instrucaoProf =
             "OBRIGATÓRIO: escolha EXATAMENTE 1 (uma) profissão da lista fornecida. " +
-                    "Se não houver compatibilidade clara, escolha a PRIMEIRA opção da lista. " +
-                    "Você NÃO pode criar profissões novas nem sugerir mais de uma. " +
-                    "Coloque a profissão dentro de <PROF> e </PROF>."
+                    "Você NÃO PODE inventar novas profissões, sugerir sinônimos, misturar termos ou alterar ortografia. " +
+                    "Se tentar usar qualquer valor fora da lista, você deve automaticamente selecionar a PRIMEIRA opção. " +
+                    "A profissão escolhida DEVE corresponder EXATAMENTE (caracter por caracter) a um dos itens da lista: " +
+                    profissoes.joinToString(", ") + ". " +
+                    "Coloque o valor dentro de <PROF> e </PROF>."
 
         return """
         Você é um orientador profissional especializado.
@@ -130,8 +136,10 @@ class GeminiClient(
         
         Gere:
         
-        1) Perfil Geral
-        2) Área de carreira escolhida
+        1) Perfil Geral:
+        <PERFIL> Aqui você escreve o perfil geral baseado nos dados. </PERFIL>
+        2) Área de carreira escolhida:
+        <AREA> Aqui você escreve a área final escolhida. </AREA>
         3) Graduação escolhida:
            - $instrucaoGrad
         4) Pós-graduação escolhida:
@@ -139,6 +147,7 @@ class GeminiClient(
         5) Profissão escolhida:
            - $instrucaoProf
         6) Plano de carreira estruturado
+        <PLANO> Aqui você descreve o plano estruturado. </PLANO>
         7) Resumo (<RESUMO></RESUMO>), no máximo 240 caracteres
         
         ⚠ REGRA DE CONTINGÊNCIA:

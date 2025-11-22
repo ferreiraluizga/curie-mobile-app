@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.*
@@ -53,6 +52,14 @@ fun PlanoDeCarreiraScreen(
     val error by viewModel.error.collectAsStateWithLifecycle()
     val planoTexto by viewModel.planoGeradoEmTexto.collectAsStateWithLifecycle()
     val carreiraSalva by viewModel.carreira.collectAsStateWithLifecycle()
+    val profissao by viewModel.profissaoGerada.collectAsStateWithLifecycle()
+    val graduacao by viewModel.graduacaoGerada.collectAsStateWithLifecycle()
+    val pos by viewModel.posGerada.collectAsStateWithLifecycle()
+    val resumo by viewModel.resumoGerado.collectAsStateWithLifecycle()
+    val perfil by viewModel.perfilGerado.collectAsStateWithLifecycle()
+    val areaEscolhida by viewModel.areaGerada.collectAsStateWithLifecycle()
+    val planoCarreira by viewModel.planoGerado.collectAsStateWithLifecycle()
+
 
     // 3. EFEITO: Dispara a geração quando a tela é carregada
     LaunchedEffect(Unit) {
@@ -150,14 +157,108 @@ fun PlanoDeCarreiraScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
+                            .padding(bottom = 80.dp) // espaço pro botão
                     ) {
+
+                        // 🔹 Título geral
                         Text(
-                            text = planoTexto!!,
-                            style = MaterialTheme.typography.bodyMedium
+                            text = "Resultado da Análise",
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = BlueNavy
                         )
+                        Spacer(Modifier.height(16.dp))
+
+                        // =============================================================
+                        // 🔹 PROFISSÃO
+                        // =============================================================
+                        ResultadoCard(
+                            titulo = "Profissão Ideal",
+                            conteudo = profissao ?: "Carregando..."
+                        )
+
+                        // =============================================================
+                        // 🔹 GRADUAÇÃO
+                        // =============================================================
+                        ResultadoCard(
+                            titulo = "Graduação Recomendada",
+                            conteudo = graduacao ?: "Carregando..."
+                        )
+
+                        // =============================================================
+                        // 🔹 PÓS-GRADUAÇÃO
+                        // =============================================================
+                        ResultadoCard(
+                            titulo = "Pós-Graduação Indicada",
+                            conteudo = pos ?: "Carregando..."
+                        )
+
+                        // =============================================================
+                        // 🔹 RESUMO FINAL / DESCRIÇÃO
+                        // =============================================================
+                        ResultadoCard(
+                            titulo = "Resumo da Análise",
+                            conteudo = resumo ?: "Carregando..."
+                        )
+
+                        // =============================================================
+                        // 🔹 PERFIL COMPORTAMENTAL
+                        // =============================================================
+                        ResultadoCard(
+                            titulo = "Perfil Identificado",
+                            conteudo = perfil ?: "Carregando..."
+                        )
+
+                        // =============================================================
+                        // 🔹 ÁREA DE CARREIRA
+                        // =============================================================
+                        ResultadoCard(
+                            titulo = "Área de Carreira",
+                            conteudo = areaEscolhida ?: "Carregando..."
+                        )
+
+                        // =============================================================
+                        // 🔹 PLANO DE CARREIRA COMPLETO
+                        // =============================================================
+                        ResultadoCard(
+                            titulo = "Plano de Carreira",
+                            conteudo = planoCarreira ?: "Carregando..."
+                        )
+
+                        Spacer(Modifier.height(120.dp)) // espaço extra para scrolling
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ResultadoCard(
+    titulo: String,
+    conteudo: String
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF6F6F6)),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+
+            Text(
+                text = titulo,
+                style = MaterialTheme.typography.titleMedium,
+                color = BlueNavy
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = conteudo,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.DarkGray
+            )
         }
     }
 }

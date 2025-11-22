@@ -95,6 +95,26 @@ class CarreiraViewModel(
     // Armazena o objeto Carreira completo, pronto para ser salvo
     private var carreiraProntaParaSalvar: Carreira? = null
 
+    private val _profissaoGerada = MutableStateFlow<String?>(null)
+    val profissaoGerada = _profissaoGerada
+
+    private val _graduacaoGerada = MutableStateFlow<String?>(null)
+    val graduacaoGerada = _graduacaoGerada
+
+    private val _posGerada = MutableStateFlow<String?>(null)
+    val posGerada = _posGerada
+
+    private val _resumoGerado = MutableStateFlow<String?>(null)
+    val resumoGerado = _resumoGerado
+
+    private val _perfilGerado = MutableStateFlow<String?>(null)
+    val perfilGerado = _perfilGerado
+
+    private val _areaGerada = MutableStateFlow<String?>(null)
+    val areaGerada = _areaGerada
+
+    private val _planoGerado = MutableStateFlow<String?>(null)
+    val planoGerado = _planoGerado
 
     // ================================================================
     // 🔹 PASSO 1: Gerar Plano (Chama IA e prepara o objeto)
@@ -152,6 +172,14 @@ class CarreiraViewModel(
                 // NOVO: Extrai o resumo para usar como descrição
                 val resumoDescricao = AiResponseParser.extrairResumoFinal(respostaCompletaIA)
 
+                _profissaoGerada.value = AiResponseParser.extrairPrimeiraProfissao(respostaCompletaIA)
+                _graduacaoGerada.value = AiResponseParser.extrairPrimeiraGraduacao(respostaCompletaIA)
+                _posGerada.value = AiResponseParser.extrairPrimeiraPosGraduacao(respostaCompletaIA)
+
+                _resumoGerado.value = AiResponseParser.extrairResumoFinal(respostaCompletaIA)
+                _perfilGerado.value = AiResponseParser.extrairPerfil(respostaCompletaIA)
+                _areaGerada.value = AiResponseParser.extrairAreaEscolhida(respostaCompletaIA)
+                _planoGerado.value = AiResponseParser.extrairPlanoCarreira(respostaCompletaIA)
 
                 // 4b. REALIZA O LOOKUP DO ID
                 // OBSERVAÇÃO: Depende que os métodos loadAll... tenham sido chamados antes!

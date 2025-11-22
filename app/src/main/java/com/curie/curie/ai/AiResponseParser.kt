@@ -52,4 +52,20 @@ object AiResponseParser {
         val regex = "<RESUMO>(.*?)</RESUMO>".toRegex(RegexOption.DOT_MATCHES_ALL)
         return regex.find(texto)?.groupValues?.get(1)?.trim()
     }
+
+    fun extrairPerfil(texto: String): String? {
+        val regex = "<PERFIL>(.*?)</PERFIL>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        return regex.find(texto)?.groupValues?.get(1)?.trim()
+    }
+
+    fun extrairAreaEscolhida(texto: String): String? {
+        val regex = "<AREA>(.*?)</AREA>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        return regex.find(texto)?.groupValues?.get(1)?.trim()
+    }
+
+    fun extrairPlanoCarreira(texto: String): String? {
+        val regex = "<PLANO>(.*?)</PLANO>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        return regex.find(texto)?.groupValues?.get(1)?.trim()
+    }
+
 }
