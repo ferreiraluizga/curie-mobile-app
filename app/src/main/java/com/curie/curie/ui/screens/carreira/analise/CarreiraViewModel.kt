@@ -116,14 +116,6 @@ class CarreiraViewModel(
     private val _planoGerado = MutableStateFlow<String?>(null)
     val planoGerado = _planoGerado
 
-    // ================================================================
-    // 🔹 PASSO 1: Gerar Plano (Chama IA e prepara o objeto)
-    // ================================================================
-
-    // ================================================================
-// 🔹 PASSO 1: Gerar Plano (Chama IA e prepara o objeto)
-// ================================================================
-
     fun gerarEExibirPlano() {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.value = true
@@ -212,10 +204,6 @@ class CarreiraViewModel(
         }
     }
 
-    // ================================================================
-    // 🔹 PASSO 2: Salvar Plano (Pega o objeto pronto e envia)
-    // ================================================================
-
     fun salvarPlanoGerado() {
         val carreiraParaSalvar = carreiraProntaParaSalvar
 
@@ -256,24 +244,6 @@ class CarreiraViewModel(
         }
     }
 
-    // ================================================================
-    // 🔹 MÉTODO 'save' ANTIGO (REMOVIDO)
-    // ================================================================
-
-    /* // REMOVIDO - Este método é ineficiente.
-    // Ele busca vários dados da API que não são usados.
-    // Use 'salvarPlanoGerado()' em vez dele.
-
-    fun save(carreira: Carreira) {
-        // ... código antigo e problemático ...
-    }
-    */
-
-
-    // ================================================================
-    // 🔹 OUTROS MÉTODOS CRUD (getById, delete, etc.)
-    // ================================================================
-
     fun getById(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.value = true
@@ -291,6 +261,25 @@ class CarreiraViewModel(
             } catch (e: Exception) {
                 Log.e("CarreiraViewModel", "💥 Falha ao buscar carreira", e)
                 _error.value = "Falha ao buscar carreira: ${e.message}"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun getCarreiraByUsuario(userId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
+            try {
+                val response = carreiraApi.getByUsuario(userId).execute()
+                if (response.isSuccessful) {
+                    _carreira.value = response.body()
+                } else {
+                    _error.value = "Erro ao buscar carreira do usuário: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Falha ao buscar carreira do usuário: ${e.message}"
             } finally {
                 _loading.value = false
             }
@@ -404,6 +393,81 @@ class CarreiraViewModel(
                 }
             } catch (e: Exception) {
                 _error.value = "Erro ao carregar profissões: ${e.localizedMessage}"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun getProfissaoById(profissaoId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
+            try {
+                val response = profissaoApi.getById(profissaoId).execute()
+                if (response.isSuccessful) {
+                    val prof = response.body()
+                    prof?.let {
+                        _profissoes.value = _profissoes.value.toMutableList().apply {
+                            removeAll { it.id == prof.id } // remove antigo, se houver
+                            add(prof) // adiciona a profissão buscada
+                        }
+                    }
+                } else {
+                    _error.value = "Erro ao buscar profissão: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Falha ao buscar profissão: ${e.message}"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun getGraduacaoById(graduacaoId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
+            try {
+                val response = graduacaoApi.getById(graduacaoId).execute()
+                if (response.isSuccessful) {
+                    val grad = response.body()
+                    grad?.let {
+                        _graduacoes.value = _graduacoes.value.toMutableList().apply {
+                            removeAll { it.id == grad.id } // remove antiga, se houver
+                            add(grad) // adiciona a graduação buscada
+                        }
+                    }
+                } else {
+                    _error.value = "Erro ao buscar graduação: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Falha ao buscar graduação: ${e.message}"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun getPosGraduacaoById(posId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.value = true
+            _error.value = null
+            try {
+                val response = posGraduacaoApi.getById(posId).execute()
+                if (response.isSuccessful) {
+                    val pos = response.body()
+                    pos?.let {
+                        _posGraduacoes.value = _posGraduacoes.value.toMutableList().apply {
+                            removeAll { it.id == pos.id } // remove antiga, se houver
+                            add(pos) // adiciona a pós-graduação buscada
+                        }
+                    }
+                } else {
+                    _error.value = "Erro ao buscar pós-graduação: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Falha ao buscar pós-graduação: ${e.message}"
             } finally {
                 _loading.value = false
             }
