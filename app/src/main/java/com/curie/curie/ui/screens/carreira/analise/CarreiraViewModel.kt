@@ -80,6 +80,15 @@ class CarreiraViewModel(
     private val _profissoes = MutableStateFlow<List<Profissao>>(emptyList())
     val profissoes: StateFlow<List<Profissao>> = _profissoes
 
+    private val _profissao = MutableStateFlow<Profissao?>(null)
+    val profissao: StateFlow<Profissao?> = _profissao
+
+    private val _graduacao = MutableStateFlow<Graduacao?>(null)
+    val graduacao: StateFlow<Graduacao?> = _graduacao
+
+    private val _posGraduacao = MutableStateFlow<PosGraduacao?>(null)
+    val posGraduacao: StateFlow<PosGraduacao?> = _posGraduacao
+
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
 
@@ -406,13 +415,7 @@ class CarreiraViewModel(
             try {
                 val response = profissaoApi.getById(profissaoId).execute()
                 if (response.isSuccessful) {
-                    val prof = response.body()
-                    prof?.let {
-                        _profissoes.value = _profissoes.value.toMutableList().apply {
-                            removeAll { it.id == prof.id } // remove antigo, se houver
-                            add(prof) // adiciona a profissão buscada
-                        }
-                    }
+                    _profissao.value = response.body()
                 } else {
                     _error.value = "Erro ao buscar profissão: ${response.code()}"
                 }
@@ -431,13 +434,7 @@ class CarreiraViewModel(
             try {
                 val response = graduacaoApi.getById(graduacaoId).execute()
                 if (response.isSuccessful) {
-                    val grad = response.body()
-                    grad?.let {
-                        _graduacoes.value = _graduacoes.value.toMutableList().apply {
-                            removeAll { it.id == grad.id } // remove antiga, se houver
-                            add(grad) // adiciona a graduação buscada
-                        }
-                    }
+                    _graduacao.value = response.body()
                 } else {
                     _error.value = "Erro ao buscar graduação: ${response.code()}"
                 }
@@ -456,13 +453,7 @@ class CarreiraViewModel(
             try {
                 val response = posGraduacaoApi.getById(posId).execute()
                 if (response.isSuccessful) {
-                    val pos = response.body()
-                    pos?.let {
-                        _posGraduacoes.value = _posGraduacoes.value.toMutableList().apply {
-                            removeAll { it.id == pos.id } // remove antiga, se houver
-                            add(pos) // adiciona a pós-graduação buscada
-                        }
-                    }
+                    _posGraduacao.value = response.body()
                 } else {
                     _error.value = "Erro ao buscar pós-graduação: ${response.code()}"
                 }
