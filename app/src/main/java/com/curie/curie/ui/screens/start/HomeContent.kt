@@ -56,7 +56,7 @@ fun HomeContent(
     forcaEducacional: String,
     fraquezaEducacional: String,
     profissao: Profissao?,
-    graducacao: Graduacao?,
+    graduacao: Graduacao?,
     posGraduacao: PosGraduacao?
     ) {
     val proximaMeta = metas
@@ -281,7 +281,7 @@ fun HomeContent(
                         )
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        if (profissao != null && graducacao != null && posGraduacao != null) {
+                        if (profissao != null && graduacao != null && posGraduacao != null) {
 
                             Text(
                                 text = "Profissão escolhida: ${profissao.nome}",
@@ -296,7 +296,7 @@ fun HomeContent(
                             Spacer(modifier = Modifier.height(12.dp))
 
                             Text(
-                                text = "Graduação: ${graducacao.nome}",
+                                text = "Graduação: ${graduacao.nome}",
                                 fontSize = 16.sp,
                                 color = Color.White
                             )
@@ -308,7 +308,7 @@ fun HomeContent(
                             Spacer(modifier = Modifier.height(12.dp))
 
                             Text(
-                                text = "Área da carreira: ${graducacao.areaCarreira.nome}",
+                                text = "Área da carreira: ${graduacao.areaCarreira.nome}",
                                 fontSize = 16.sp,
                                 color = Color(0xFFB8C4FF)
                             )
@@ -395,7 +395,7 @@ fun PreviewHomeContent() {
         forcaEducacional = "Aprendizado rápido e lógica forte.",
         fraquezaEducacional = "Dificuldade em delegar tarefas.",
         profissao = fakeProfissao,
-        graducacao = fakeGraduacao,
+        graduacao = fakeGraduacao,
         posGraduacao = fakePosGraduacao
     )
 }

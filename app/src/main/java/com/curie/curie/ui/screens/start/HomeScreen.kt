@@ -1,3 +1,6 @@
+package com.curie.curie.ui.screens.start
+
+import CarreiraViewModelFactory
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
@@ -16,7 +19,8 @@ import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.carreira.analise.CarreiraViewModel
 import com.curie.curie.ui.screens.carreira.analise.PerfilViewModel
 import com.curie.curie.ui.screens.carreira.analise.PerfilViewModelFactory
-import com.curie.curie.ui.screens.start.HomeContent
+import com.curie.curie.ui.screens.perfil.UserViewModel
+import com.curie.curie.ui.screens.perfil.UserViewModelFactory
 import com.curie.curie.ui.screens.tarefa.TarefaViewModel
 import com.curie.curie.ui.screens.tarefa.TarefaViewModelFactory
 import com.curie.curie.ui.screens.tarefa.meta.MetaViewModel
@@ -25,11 +29,8 @@ import com.curie.curie.ui.screens.tarefa.meta.MetaViewModelFactory
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    userId: Long,
-    username: String,
     tokenStorage: TokenStorage,
-    geminiClient: GeminiClient,
-    onLogout: () -> Unit
+    geminiClient: GeminiClient
 ) {
     //-----------------------------------------------------------
     // FACTORIES DOS VIEWMODELS
@@ -66,16 +67,22 @@ fun HomeScreen(
     val graduacao by carreiraViewModel.graduacao.collectAsStateWithLifecycle()
     val posGraduacao by carreiraViewModel.posGraduacao.collectAsStateWithLifecycle()
 
+    val userViewModel: UserViewModel = viewModel(
+        factory = UserViewModelFactory(tokenStorage)
+    )
+    val user by userViewModel.user.collectAsStateWithLifecycle()
+
     //-----------------------------------------------------------
     // BUSCAR DADOS
     //-----------------------------------------------------------
     LaunchedEffect(carreira) {
-        tarefaViewModel.getByUsuario(userId)
-        metaViewModel.getByUsuario(userId)
-        carreiraViewModel.getCarreiraByUsuario(userId)
-        perfilViewModel.getMaisRecente(userId)
-
-        // Busca os objetos completos somente se os IDs existirem
+        tokenStorage.getUserId()?.let {
+            tarefaViewModel.getByUsuario(it)
+            metaViewModel.getByUsuario(it)
+            carreiraViewModel.getCarreiraByUsuario(it)
+            perfilViewModel.getMaisRecente(it)
+            userViewModel.getById(it)
+        }
         carreira?.profissaoId?.let { carreiraViewModel.getProfissaoById(it) }
         carreira?.graduacaoId?.let { carreiraViewModel.getGraduacaoById(it) }
         carreira?.posGraduacaoId?.let { carreiraViewModel.getPosGraduacaoById(it) }
@@ -117,7 +124,7 @@ fun HomeScreen(
     // CONTEÚDO FINAL
     //-----------------------------------------------------------
     HomeContent(
-        userName = username,
+        userName = user?.nome,
         tarefas = tarefas,
         metas = metas,
         descricaoPerfil = descricaoPerfil,
@@ -125,6 +132,6 @@ fun HomeScreen(
         fraquezaEducacional = fraquezaEducacional,
         profissao = profissao,
         posGraduacao = posGraduacao,
-        graducacao = graduacao
+        graduacao = graduacao
     )
 }

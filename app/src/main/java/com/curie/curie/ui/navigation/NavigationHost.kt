@@ -221,11 +221,8 @@ fun NavigationHost(
 
             composable("home") {
                 HomeScreen(
-                    userId = userId,
                     tokenStorage = tokenStorage,
-                    onLogout = {
-                        authViewModel.logout()
-                    }
+                    geminiClient = geminiClient
                 )
             }
 
