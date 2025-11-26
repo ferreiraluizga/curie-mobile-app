@@ -1,5 +1,6 @@
 package com.curie.curie.ui.navigation
 
+import PerfilScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,7 +48,6 @@ import com.curie.curie.ui.screens.chat.ChatScreen
 import com.curie.curie.ui.screens.chat.ChatViewModel
 import com.curie.curie.ui.screens.chat.Constants
 import com.curie.curie.ui.screens.perfil.EditarPerfilScreen
-import com.curie.curie.ui.screens.perfil.PerfilScreen
 import com.curie.curie.ui.screens.start.HomeScreen
 import com.curie.curie.ui.screens.tarefa.TarefaScreen
 import com.curie.curie.ui.theme.BlueNavy
@@ -237,6 +237,10 @@ fun NavigationHost(
                     tokenStorage = tokenStorage,
                     onEditClick = { id ->
                         navController.navigate("editarPerfil/$id")
+                    },
+                    onLogoutClick = {
+                        tokenStorage.clearAll()   // limpar token
+                        authViewModel.logout()
                     }
                 )
             }

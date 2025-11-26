@@ -19,6 +19,6 @@ interface CarreiraApi {
     @DELETE("carreira/delete/{id}")
     fun delete(@Path("id") id: Long?): Call<Void>
 
-    @GET("carreira/usuario/{userId}")
+    @GET("carreira/usuario/{userId}/mais-recente")
     fun getByUsuario(@Path("userId") userId: Long): Call<Carreira>
 }
