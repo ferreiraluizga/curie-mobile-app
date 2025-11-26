@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Estrutura para tabela `areas_carreira`
 --
 
-CREATE IF NOT EXISTS TABLE `areas_carreira` (
+CREATE TABLE IF NOT EXISTS `areas_carreira` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `nome` varchar(255) NOT NULL
@@ -39,7 +39,7 @@ CREATE IF NOT EXISTS TABLE `areas_carreira` (
 -- Estrutura para tabela `areas_conhecimento`
 --
 
-CREATE IF NOT EXISTS TABLE `areas_conhecimento` (
+CREATE TABLE IF NOT EXISTS `areas_conhecimento` (
   `id` int(11) NOT NULL,
   `materias` varchar(255) NOT NULL,
   `nome` varchar(255) NOT NULL
@@ -51,7 +51,7 @@ CREATE IF NOT EXISTS TABLE `areas_conhecimento` (
 -- Estrutura para tabela `assinaturas`
 --
 
-CREATE IF NOT EXISTS TABLE `assinaturas` (
+CREATE TABLE IF NOT EXISTS `assinaturas` (
   `id` int(11) NOT NULL,
   `cpf` varchar(255) NOT NULL,
   `data_compra` datetime(6) NOT NULL,
@@ -66,7 +66,7 @@ CREATE IF NOT EXISTS TABLE `assinaturas` (
 -- Estrutura para tabela `carreiras`
 --
 
-CREATE IF NOT EXISTS TABLE `carreiras` (
+CREATE TABLE IF NOT EXISTS `carreiras` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `graduacao_id` int(11) NOT NULL,
@@ -81,7 +81,7 @@ CREATE IF NOT EXISTS TABLE `carreiras` (
 -- Estrutura para tabela `comportamento`
 --
 
-CREATE IF NOT EXISTS TABLE `comportamento` (
+CREATE TABLE IF NOT EXISTS `comportamento` (
   `id` int(11) NOT NULL,
   `aprendizagem` varchar(255) NOT NULL,
   `caracteristicas` varchar(255) NOT NULL,
@@ -95,7 +95,7 @@ CREATE IF NOT EXISTS TABLE `comportamento` (
 -- Estrutura para tabela `equipes`
 --
 
-CREATE IF NOT EXISTS TABLE `equipes` (
+CREATE TABLE IF NOT EXISTS `equipes` (
   `id` int(11) NOT NULL,
   `assinatura_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -106,7 +106,7 @@ CREATE IF NOT EXISTS TABLE `equipes` (
 -- Estrutura para tabela `graduacoes`
 --
 
-CREATE IF NOT EXISTS TABLE `graduacoes` (
+CREATE TABLE IF NOT EXISTS `graduacoes` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `duracao` int(11) NOT NULL,
@@ -120,7 +120,7 @@ CREATE IF NOT EXISTS TABLE `graduacoes` (
 -- Estrutura para tabela `membros_equipe`
 --
 
-CREATE IF NOT EXISTS TABLE `membros_equipe` (
+CREATE TABLE IF NOT EXISTS `membros_equipe` (
   `id` int(11) NOT NULL,
   `equipe_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -132,7 +132,7 @@ CREATE IF NOT EXISTS TABLE `membros_equipe` (
 -- Estrutura para tabela `metas`
 --
 
-CREATE IF NOT EXISTS TABLE `metas` (
+CREATE TABLE IF NOT EXISTS `metas` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `fim` datetime(6) NOT NULL,
@@ -149,7 +149,7 @@ CREATE IF NOT EXISTS TABLE `metas` (
 -- Estrutura para tabela `perfis`
 --
 
-CREATE IF NOT EXISTS TABLE `perfis` (
+CREATE TABLE IF NOT EXISTS `perfis` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `comportamento_id` int(11) DEFAULT NULL,
@@ -165,7 +165,7 @@ CREATE IF NOT EXISTS TABLE `perfis` (
 -- Estrutura para tabela `pos_graduacoes`
 --
 
-CREATE IF NOT EXISTS TABLE `pos_graduacoes` (
+CREATE TABLE IF NOT EXISTS `pos_graduacoes` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `duracao` int(11) NOT NULL,
@@ -179,7 +179,7 @@ CREATE IF NOT EXISTS TABLE `pos_graduacoes` (
 -- Estrutura para tabela `profissoes`
 --
 
-CREATE IF NOT EXISTS TABLE `profissoes` (
+CREATE TABLE IF NOT EXISTS `profissoes` (
   `id` int(11) NOT NULL,
   `demanda` enum('alta','baixa','media') NOT NULL,
   `descricao` varchar(255) NOT NULL,
@@ -193,7 +193,7 @@ CREATE IF NOT EXISTS TABLE `profissoes` (
 -- Estrutura para tabela `roles`
 --
 
-CREATE IF NOT EXISTS TABLE `roles` (
+CREATE TABLE IF NOT EXISTS `roles` (
   `role_id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -204,7 +204,7 @@ CREATE IF NOT EXISTS TABLE `roles` (
 -- Estrutura para tabela `tarefas`
 --
 
-CREATE IF NOT EXISTS TABLE `tarefas` (
+CREATE TABLE IF NOT EXISTS `tarefas` (
   `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
   `prazo` datetime(6) NOT NULL,
@@ -219,7 +219,7 @@ CREATE IF NOT EXISTS TABLE `tarefas` (
 -- Estrutura para tabela `temperamento`
 --
 
-CREATE IF NOT EXISTS TABLE `temperamento` (
+CREATE TABLE IF NOT EXISTS `temperamento` (
   `id` int(11) NOT NULL,
   `forca_aprendizado` varchar(255) NOT NULL,
   `fraqueza_aprendizado` varchar(255) NOT NULL,
@@ -232,7 +232,7 @@ CREATE IF NOT EXISTS TABLE `temperamento` (
 -- Estrutura para tabela `tipos_assinatura`
 --
 
-CREATE IF NOT EXISTS TABLE `tipos_assinatura` (
+CREATE TABLE IF NOT EXISTS `tipos_assinatura` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `nome` varchar(255) NOT NULL,
@@ -246,7 +246,7 @@ CREATE IF NOT EXISTS TABLE `tipos_assinatura` (
 -- Estrutura para tabela `tipo_comportamento`
 --
 
-CREATE IF NOT EXISTS TABLE `tipo_comportamento` (
+CREATE TABLE IF NOT EXISTS `tipo_comportamento` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `nome` varchar(255) NOT NULL
@@ -258,7 +258,7 @@ CREATE IF NOT EXISTS TABLE `tipo_comportamento` (
 -- Estrutura para tabela `tipo_temperamento`
 --
 
-CREATE IF NOT EXISTS TABLE `tipo_temperamento` (
+CREATE TABLE IF NOT EXISTS `tipo_temperamento` (
   `id` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `nome` varchar(255) NOT NULL
@@ -270,7 +270,7 @@ CREATE IF NOT EXISTS TABLE `tipo_temperamento` (
 -- Estrutura para tabela `users`
 --
 
-CREATE IF NOT EXISTS TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `created_at` datetime(6) NOT NULL DEFAULT current_timestamp(6),
   `descricao` varchar(255) NOT NULL,
@@ -288,7 +288,7 @@ CREATE IF NOT EXISTS TABLE `users` (
 -- Estrutura para tabela `users_roles`
 --
 
-CREATE IF NOT EXISTS TABLE `users_roles` (
+CREATE TABLE IF NOT EXISTS `users_roles` (
   `user_id` int(11) NOT NULL,
   `role_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
