@@ -20,27 +20,37 @@ public class CarreiraMapper {
     }
 
     public Carreira toEntity(CarreiraRequest dto) {
+
         Carreira carreira = new Carreira();
 
+        // 🔵 Apenas seta os IDs — sem carregar do banco no mapper
         User user = new User();
-        user.setId(dto.user().getId());
+        user.setId(Math.toIntExact(dto.userId()));
 
-        Profissao profissao = new Profissao();
-        profissao.setId(dto.profissao().getId());
+        Profissao profissao = null;
+        if (dto.profissaoId() != null) {
+            profissao = new Profissao();
+            profissao.setId(Math.toIntExact(dto.profissaoId()));
+        }
 
-        Graduacao graduacao = new Graduacao();
-        graduacao.setId(dto.graduacao().getId());
+        Graduacao graduacao = null;
+        if (dto.graduacaoId() != null) {
+            graduacao = new Graduacao();
+            graduacao.setId(Math.toIntExact(dto.graduacaoId()));
+        }
 
-        PosGraduacao posGraduacao = new PosGraduacao();
-        posGraduacao.setId(dto.posGraduacao().getId());
+        PosGraduacao pos = null;
+        if (dto.posGraduacaoId() != null) {
+            pos = new PosGraduacao();
+            pos.setId(Math.toIntExact(dto.posGraduacaoId()));
+        }
 
         carreira.setUser(user);
         carreira.setDescricao(dto.descricao());
         carreira.setProfissao(profissao);
         carreira.setGraduacao(graduacao);
-        carreira.setPosGraduacao(posGraduacao);
+        carreira.setPosGraduacao(pos);
 
         return carreira;
     }
-
 }

@@ -23,8 +23,8 @@ public class CarreiraService {
     private final CarreiraMapper carreiraMapper;
 
     public CarreiraResponse save(CarreiraRequest dto) {
-        if (isMaximoCarreiras(dto.user().getId().longValue())) {
-            carreiraRepository.deleteByUsuario(dto.user().getId().longValue());
+        if (isMaximoCarreiras(dto.userId().longValue())) {
+            carreiraRepository.deleteByUsuario(dto.userId().longValue());
         }
         Carreira carreira = carreiraMapper.toEntity(dto);
         return carreiraMapper.toResponseDTO(carreiraRepository.save(carreira));

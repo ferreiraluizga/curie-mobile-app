@@ -5,5 +5,5 @@ import com.curie.curieapp.entities.Comportamento;
 import com.curie.curieapp.entities.Temperamento;
 import com.curie.curieapp.entities.User;
 
-public record PerfilRequest(User user, String descricao, Comportamento comportamento, Temperamento temperamento, AreaConhecimento forca, AreaConhecimento fraqueza) {
+public record PerfilRequest(Long userId, String descricao, Long comportamentoId, Long temperamentoId, Long forcaId, Long fraquezaId) {
 }

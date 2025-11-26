@@ -2,7 +2,7 @@ package com.curie.curieapp.service;
 
 import com.curie.curieapp.dto.request.PerfilRequest;
 import com.curie.curieapp.dto.response.PerfilResponse;
-import com.curie.curieapp.entities.Perfil;
+import com.curie.curieapp.entities.*;
 import com.curie.curieapp.mapper.PerfilMapper;
 import com.curie.curieapp.repository.ComportamentoRepository;
 import com.curie.curieapp.repository.PerfilRepository;
@@ -30,7 +30,7 @@ public class PerfilService {
     private final PerfilMapper perfilMapper;
 
     public PerfilResponse save(PerfilRequest dto) {
-        Long userId = dto.user().getId().longValue();
+        Long userId = dto.userId().longValue();
         List<Perfil> perfisUsuario = perfilRepository.getByUsuario(userId);
 
         if (perfisUsuario.size() >= 3) {
@@ -71,28 +71,49 @@ public class PerfilService {
         Perfil perfilExistente = perfilRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Perfil não encontrado para atualização: " + id));
 
-        // Atualiza campos relevantes somente se não forem nulos
+        // Atualiza descrição
         if (dto.descricao() != null)
             perfilExistente.setDescricao(dto.descricao());
 
-        if (dto.comportamento() != null)
-            perfilExistente.setComportamento(dto.comportamento());
+        // Comportamento
+        if (dto.comportamentoId() != null) {
+            Comportamento comportamento = new Comportamento();
+            comportamento.setId(Math.toIntExact(dto.comportamentoId()));
+            perfilExistente.setComportamento(comportamento);
+        }
 
-        if (dto.temperamento() != null)
-            perfilExistente.setTemperamento(dto.temperamento());
+        // Temperamento
+        if (dto.temperamentoId() != null) {
+            Temperamento temperamento = new Temperamento();
+            temperamento.setId(Math.toIntExact(dto.temperamentoId()));
+            perfilExistente.setTemperamento(temperamento);
+        }
 
-        if (dto.forca() != null)
-            perfilExistente.setForca(dto.forca());
+        // Força
+        if (dto.forcaId() != null) {
+            AreaConhecimento forca = new AreaConhecimento();
+            forca.setId(Math.toIntExact(dto.forcaId()));
+            perfilExistente.setForca(forca);
+        }
 
-        if (dto.fraqueza() != null)
-            perfilExistente.setFraqueza(dto.fraqueza());
+        // Fraqueza
+        if (dto.fraquezaId() != null) {
+            AreaConhecimento fraqueza = new AreaConhecimento();
+            fraqueza.setId(Math.toIntExact(dto.fraquezaId()));
+            perfilExistente.setFraqueza(fraqueza);
+        }
 
-        if (dto.user() != null)
-            perfilExistente.setUser(dto.user());
+        // User
+        if (dto.userId() != null) {
+            User user = new User();
+            user.setId(Math.toIntExact(dto.userId()));
+            perfilExistente.setUser(user);
+        }
 
         Perfil atualizado = perfilRepository.save(perfilExistente);
         return perfilMapper.toResponseDTO(atualizado);
     }
+
 
     public void delete(Long id) {
         perfilRepository.deleteById(id);

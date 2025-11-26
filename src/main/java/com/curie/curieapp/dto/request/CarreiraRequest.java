@@ -5,5 +5,5 @@ import com.curie.curieapp.entities.PosGraduacao;
 import com.curie.curieapp.entities.Profissao;
 import com.curie.curieapp.entities.User;
 
-public record CarreiraRequest(User user, String descricao, Profissao profissao, Graduacao graduacao, PosGraduacao posGraduacao) {
+public record CarreiraRequest(Long userId, String descricao, Long profissaoId, Long graduacaoId, Long posGraduacaoId) {
 }
