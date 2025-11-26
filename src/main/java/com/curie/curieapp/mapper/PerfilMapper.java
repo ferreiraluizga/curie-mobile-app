@@ -14,10 +14,11 @@ public class PerfilMapper {
                 perfil.getId(),
                 perfil.getUser(),
                 perfil.getDescricao(),
-                perfil.getComportamento(),
-                perfil.getTemperamento(),
-                perfil.getForca(),
-                perfil.getFraqueza()
+                // CORRIGIDO: Mapeando o ID (pode ser null)
+                perfil.getComportamento() != null ? perfil.getComportamento().getId() : null,
+                perfil.getTemperamento() != null ? perfil.getTemperamento().getId() : null,
+                perfil.getForca() != null ? perfil.getForca().getId() : null,
+                perfil.getFraqueza() != null ? perfil.getFraqueza().getId() : null
         );
     }
 

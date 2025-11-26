@@ -13,9 +13,10 @@ public class CarreiraMapper {
                 carreira.getId(),
                 carreira.getUser(),
                 carreira.getDescricao(),
-                carreira.getProfissao(),
-                carreira.getGraduacao(),
-                carreira.getPosGraduacao()
+                // CORRIGIDO: Mapeando o ID (pode ser null)
+                carreira.getProfissao() != null ? carreira.getProfissao().getId() : null,
+                carreira.getGraduacao() != null ? carreira.getGraduacao().getId() : null,
+                carreira.getPosGraduacao() != null ? carreira.getPosGraduacao().getId() : null
         );
     }
 
