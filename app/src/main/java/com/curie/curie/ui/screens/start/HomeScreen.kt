@@ -48,6 +48,10 @@ fun HomeScreen(
     val carreiraViewModel: CarreiraViewModel = viewModel(factory = carreiraFactory)
     val perfilViewModel: PerfilViewModel = viewModel(factory = perfilFactory)
 
+    val userViewModel: UserViewModel = viewModel(
+        factory = UserViewModelFactory(tokenStorage)
+    )
+
     //-----------------------------------------------------------
     // ESTADOS (flow → compose)
     //-----------------------------------------------------------
@@ -67,33 +71,44 @@ fun HomeScreen(
     val graduacao by carreiraViewModel.graduacao.collectAsStateWithLifecycle()
     val posGraduacao by carreiraViewModel.posGraduacao.collectAsStateWithLifecycle()
 
-    val userViewModel: UserViewModel = viewModel(
-        factory = UserViewModelFactory(tokenStorage)
-    )
     val user by userViewModel.user.collectAsStateWithLifecycle()
 
     //-----------------------------------------------------------
     // BUSCAR DADOS
     //-----------------------------------------------------------
-    LaunchedEffect(carreira) {
-        tokenStorage.getUserId()?.let {
-            tarefaViewModel.getByUsuario(it)
-            metaViewModel.getByUsuario(it)
-            carreiraViewModel.getCarreiraByUsuario(it)
-            perfilViewModel.getMaisRecente(it)
-            userViewModel.getById(it)
+    val userId = tokenStorage.getUserId()
+
+    // 1. Efeito para buscar todos os dados de usuário ao carregar a tela
+    // Depende apenas do userId (que é estático após o login)
+    LaunchedEffect(userId) {
+        if (userId != null) {
+            tarefaViewModel.getByUsuario(userId)
+            metaViewModel.getByUsuario(userId)
+            carreiraViewModel.getCarreiraByUsuario(userId)
+            perfilViewModel.getMaisRecente(userId)
+            userViewModel.getById(userId)
         }
-        carreira?.profissaoId?.let { carreiraViewModel.getProfissaoById(it) }
-        carreira?.graduacaoId?.let { carreiraViewModel.getGraduacaoById(it) }
-        carreira?.posGraduacaoId?.let { carreiraViewModel.getPosGraduacaoById(it) }
+    }
+
+    // 2. Efeito para buscar detalhes do plano de carreira (Profissão/Graduação/Pós)
+    // Depende do objeto 'carreira' ter sido carregado (ou de ter mudado)
+    LaunchedEffect(carreira) {
+        if (carreira != null) {
+            // Só executa se a carreira foi encontrada (não é nula)
+            carreira!!.profissaoId?.let { carreiraViewModel.getProfissaoById(it) }
+            carreira!!.graduacaoId?.let { carreiraViewModel.getGraduacaoById(it) }
+            carreira!!.posGraduacaoId?.let { carreiraViewModel.getPosGraduacaoById(it) }
+        }
+        // Se 'carreira' for null, significa que o usuário não tem plano salvo.
+        // Neste caso, 'profissao', 'graduacao' e 'posGraduacao' permanecerão null,
+        // e a UI exibirá a mensagem de que o plano não foi realizado.
     }
 
     //-----------------------------------------------------------
     // LOADING GERAL
     //-----------------------------------------------------------
-    if (tarefasLoading || metasLoading || carreiraLoading || perfilLoading ||
-        profissao == null || graduacao == null || posGraduacao == null
-    ) {
+    // Simplificado para checar apenas o loading dos dados principais.
+    if (tarefasLoading || metasLoading || carreiraLoading || perfilLoading || user == null) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
