@@ -43,6 +43,7 @@ data class Pergunta(val texto: String, val alternativas: List<Alternativa>)
 fun TesteVocacionalScreen(
     userId: Long,
     onBack: () -> Unit,
+    onConcluir: () -> Unit,
     tokenStorage: TokenStorage
 ) {
     // --- FACTORIES ---
@@ -191,7 +192,7 @@ fun TesteVocacionalScreen(
                 Alternativa("Focar totalmente na solução e agir rápido.", "A"), // Gestão/Eng.
                 Alternativa("Manter a calma e seguir o plano.", "D"), // Ciências/Organização
                 Alternativa("Motivar o grupo e manter o clima leve.", "C"), // Social/Comunicação
-                Alternativa("Parar um instante e refletir no sentido da tarefa.", "D") // Filosofia/Humanas
+                Alternativa("Parar um instante e refletir no sentido da tarefa.", "B") // Filosofia/Humanas
             )
         ),
         Pergunta(
@@ -583,7 +584,7 @@ fun TesteVocacionalScreen(
                     tipo = letraFinal,
                     recomendacao = areas,
                     descricao = descricao,
-                    onConcluir = onBack
+                    onConcluir = onConcluir
                 )
             }
         }

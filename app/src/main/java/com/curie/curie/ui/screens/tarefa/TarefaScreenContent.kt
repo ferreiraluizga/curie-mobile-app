@@ -20,7 +20,6 @@ import com.curie.curie.data.model.enums.Status
 import com.curie.curie.ui.components.tarefa.*
 import com.curie.curie.ui.components.tarefa.meta.MetaDialog
 import com.curie.curie.ui.theme.BlueNavy
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,14 +35,15 @@ fun TarefaScreenContent(
     onDeleteMeta: (Meta) -> Unit = {},
     onSaveMeta: (Meta) -> Unit = {}
 ) {
-    // --- Estados ---
     var selectedTarefa by remember { mutableStateOf<Tarefa?>(null) }
     var showTarefaActionDialog by remember { mutableStateOf(false) }
-    var tarefaDialogTarefa by remember { mutableStateOf<Tarefa?>(null) } // null = nenhum diálogo aberto
+    var tarefaDialogTarefa by remember { mutableStateOf<Tarefa?>(null) }
+
+    var selectedTab by remember { mutableStateOf("Tarefas") }
+
     var showCreateMetaDialog by remember { mutableStateOf(false) }
     var editMeta by remember { mutableStateOf<Meta?>(null) }
     var showEditMetaDialog by remember { mutableStateOf(false) }
-    var selectedTab by remember { mutableStateOf("Tarefas") }
 
     Scaffold(
         topBar = {
@@ -57,9 +57,8 @@ fun TarefaScreenContent(
             FloatingActionButton(
                 onClick = {
                     if (selectedTab == "Tarefas") {
-                        // Criar nova tarefa com id 0L
                         tarefaDialogTarefa = Tarefa(
-                            id = 0L,  // id 0 significa nova tarefa
+                            id = 0L,
                             userId = userId,
                             nome = "",
                             prazo = "",
@@ -67,6 +66,16 @@ fun TarefaScreenContent(
                             status = Status.pendente
                         )
                     } else {
+                        editMeta = Meta(
+                            id = 0L,
+                            userId = userId,
+                            objetivo = "",
+                            descricao = "",
+                            inicio = "",
+                            fim = "",
+                            prioridade = Prioridade.baixa,
+                            status = Status.pendente
+                        )
                         showCreateMetaDialog = true
                     }
                 },
@@ -74,63 +83,60 @@ fun TarefaScreenContent(
                 containerColor = BlueNavy,
                 contentColor = Color.White
             ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Adicionar item",
-                    modifier = Modifier.size(28.dp)
-                )
+                Icon(Icons.Default.Add, "Adicionar item")
             }
         }
     ) { padding ->
-        Box(
+        Column(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
+                .padding(horizontal = 16.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 0.dp)
-            ) {
-                WeekCalendar()
-                Spacer(Modifier.height(16.dp))
+            WeekCalendar()
+            Spacer(Modifier.height(16.dp))
 
-                TabsSection(
-                    selectedTab = selectedTab,
-                    onTabSelected = { selectedTab = it }
-                )
-                Spacer(Modifier.height(16.dp))
+            TabsSection(
+                selectedTab = selectedTab,
+                onTabSelected = { selectedTab = it }
+            )
 
-                when (selectedTab) {
-                    "Tarefas" -> LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(tarefas) { tarefa ->
-                            TarefaItem(
-                                tarefa = tarefa,
-                                onClick = {
-                                    selectedTarefa = tarefa
-                                    showTarefaActionDialog = true
-                                },
-                                onEdit = { tarefaDialogTarefa = it },
-                                onDelete = { onDeleteTarefa(it) }
-                            )
-                        }
+            Spacer(Modifier.height(16.dp))
+
+            when (selectedTab) {
+
+                "Tarefas" -> LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(tarefas) { tarefa ->
+                        TarefaItem(
+                            tarefa = tarefa,
+                            onClick = {
+                                selectedTarefa = tarefa
+                                showTarefaActionDialog = true
+                            },
+                            onEdit = { tarefaDialogTarefa = it },
+                            onDelete = onDeleteTarefa
+                        )
                     }
-                    "Metas" -> MetaContent(
-                        metas = metas,
-                        userId = userId,
-                        onEdit = onEditMeta,
-                        onDelete = onDeleteMeta,
-                        onSave = onSaveMeta
-                    )
                 }
+
+                "Metas" -> MetaContent(
+                    metas = metas,
+                    userId = userId,
+                    onEdit = {
+                        editMeta = it
+                        showEditMetaDialog = true
+                    },
+                    onDelete = onDeleteMeta,
+                    onSave = onSaveMeta
+                )
             }
         }
     }
 
-    // --- DIALOG DE AÇÃO DA TAREFA ---
+    // --- AÇÃO AO CLICAR EM UMA TAREFA ---
     if (showTarefaActionDialog && selectedTarefa != null) {
         AlertDialog(
             onDismissRequest = { showTarefaActionDialog = false },
@@ -140,7 +146,6 @@ fun TarefaScreenContent(
                 TextButton(
                     onClick = {
                         showTarefaActionDialog = false
-                        // Mantemos o id original da tarefa para editar
                         tarefaDialogTarefa = selectedTarefa
                         selectedTarefa = null
                     }
@@ -149,7 +154,7 @@ fun TarefaScreenContent(
             dismissButton = {
                 TextButton(
                     onClick = {
-                        selectedTarefa?.let { onDeleteTarefa(it) }
+                        selectedTarefa?.let(onDeleteTarefa)
                         showTarefaActionDialog = false
                         selectedTarefa = null
                     }
@@ -158,39 +163,40 @@ fun TarefaScreenContent(
         )
     }
 
-    // --- DIALOG DE CRIAÇÃO / EDIÇÃO DE TAREFA ---
+    // --- CRIAÇÃO / EDIÇÃO DE TAREFA ---
     if (tarefaDialogTarefa != null) {
         TarefaDialog(
             tarefa = tarefaDialogTarefa,
             userId = userId,
             onDismiss = { tarefaDialogTarefa = null },
-            onSave = { tarefa ->
-                onSaveTarefa(tarefa)
+            onSave = {
+                onSaveTarefa(it)
                 tarefaDialogTarefa = null
             }
         )
     }
 
-    // --- DIALOGS DE META ---
-    if (showCreateMetaDialog) {
+    // --- DIALOG PARA CRIAR META ---
+    if (showCreateMetaDialog && editMeta != null) {
         MetaDialog(
-            meta = null,
+            meta = editMeta,
             userId = userId,
             onDismiss = { showCreateMetaDialog = false },
-            onSave = { meta ->
-                onSaveMeta(meta)
+            onSave = {
+                onSaveMeta(it)
                 showCreateMetaDialog = false
             }
         )
     }
 
+    // --- DIALOG PARA EDITAR META ---
     if (showEditMetaDialog && editMeta != null) {
         MetaDialog(
             meta = editMeta,
             userId = userId,
             onDismiss = { showEditMetaDialog = false },
-            onSave = { meta ->
-                onSaveMeta(meta)
+            onSave = {
+                onSaveMeta(it)
                 showEditMetaDialog = false
             }
         )

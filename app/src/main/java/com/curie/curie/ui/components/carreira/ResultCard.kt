@@ -75,7 +75,8 @@ fun ResultCard(
                 ),
                 border = BorderStroke(1.dp, color),
                 shape = RoundedCornerShape(24.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = false
             ) {
                 Text(text = buttonText, fontSize = 14.sp)
             }

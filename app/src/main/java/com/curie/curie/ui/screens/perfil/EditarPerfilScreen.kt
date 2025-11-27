@@ -144,37 +144,8 @@ fun EditarPerfilScreen(
                 shape = RoundedCornerShape(12.dp)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedTextField(
-                value = editableUser!!.nascimento ?: "",
-                onValueChange = { editableUser = editableUser!!.copy(nascimento = it) },
-                label = { Text("Data de nascimento (AAAA-MM-DD)") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedTextField(
-                value = editableUser!!.password ?: "",
-                onValueChange = { editableUser = editableUser!!.copy(password = it) },
-                label = { Text("Senha") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    val image =
-                        if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(imageVector = image, contentDescription = null)
-                    }
-                }
-            )
-
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 🔹 Botão de salvar
             Button(
                 onClick = {
                     editableUser?.let {
@@ -198,9 +169,6 @@ fun EditarPerfilScreen(
                     Text("Salvar", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
-        } else if (loading) {
-            Spacer(modifier = Modifier.height(60.dp))
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
         // 🔻 Erro

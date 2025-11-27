@@ -33,7 +33,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun WelcomeScreen(
-    onContinueClick: () -> Unit = {}
+    onLoginClick: () -> Unit = {},
+    onRegisterClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -65,7 +66,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.padding(100.dp))
 
             Button(
-                onClick = onContinueClick,
+                onClick = onLoginClick,
                 shape = RoundedCornerShape(32.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
@@ -81,7 +82,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.padding(25.dp))
 
             OutlinedButton(
-                onClick = onContinueClick,
+                onClick = onRegisterClick,
                 shape = RoundedCornerShape(32.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.Transparent,

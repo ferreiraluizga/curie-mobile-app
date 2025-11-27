@@ -4,44 +4,43 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge // Já está OK
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import androidx.compose.material3.Surface // Adicionado para demonstração
-import androidx.compose.foundation.layout.fillMaxSize // Adicionado para demonstração
-import androidx.compose.foundation.layout.WindowInsets // Necessário para insets
-import androidx.compose.foundation.layout.safeDrawing // Necessário para insets
-import androidx.compose.foundation.layout.windowInsetsPadding // Necessário para insets
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.curie.curie.data.api.TokenStorage
 import com.curie.curie.ui.screens.start.StartScreen
+import com.curie.curie.ui.theme.BlueNavy
 import com.curie.curie.ui.theme.CurieTheme
 
 class MainActivity : ComponentActivity() {
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 1. CHAME A FUNÇÃO enableEdgeToEdge()
+        // Habilita edge-to-edge moderno
         enableEdgeToEdge()
+
+        // ⭐ CONFIGURA A STATUS BAR SEM ACCOMPANIST
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // Cor do fundo da status bar
+        window.statusBarColor = BlueNavy.toArgb()
+
+        // Cor dos ícones da status bar
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false // ícones brancos
 
         val tokenStorage = TokenStorage(this)
 
         setContent {
             CurieTheme {
-
-                // 2. REMOVA O CÓDIGO OBOSLETO
-                // O código abaixo foi removido pois causa o warning e é substituído por enableEdgeToEdge:
-                /*
-                val systemUiController = rememberSystemUiController()
-                systemUiController.setSystemBarsColor(
-                    color = BlueNavy,
-                    darkIcons = false
-                )
-                */
-
-                // 3. ENVOLVA SEU CONTEÚDO PARA RESPEITAR AS BARRAS DO SISTEMA
-                // Isso garante que o conteúdo interativo (como botões e campos) não fique escondido sob as barras de navegação ou status.
                 Surface(
-                    modifier = androidx.compose.ui.Modifier
+                    modifier = Modifier
                         .fillMaxSize()
                         .windowInsetsPadding(WindowInsets.safeDrawing)
                 ) {

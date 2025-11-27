@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun CurieTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) DarkColors else LightColors
+    // Sempre usa o tema claro
+    val colors = LightColors
 
     MaterialTheme(
         colorScheme = colors,

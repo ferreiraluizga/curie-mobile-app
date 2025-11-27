@@ -45,7 +45,8 @@ data class Pergunta(val texto: String, val alternativas: List<Alternativa>)
 fun TesteComportamentoScreen(
     userId: Long,
     onBack: () -> Unit,
-    tokenStorage: TokenStorage
+    tokenStorage: TokenStorage,
+    onConcluir: () -> Unit
 ) {
     // --- FACTORIES ---
     val comportamentoFactory = remember { ComportamentoViewModelFactory(tokenStorage) }
@@ -371,7 +372,7 @@ fun TesteComportamentoScreen(
                         ResultadoComportamentoCompleto(
                             tipo = resultado ?: "Indefinido",
                             comportamento = comportamentoSalvo!!,
-                            onConcluir = onBack
+                            onConcluir = onConcluir
                         )
                     }
                 }

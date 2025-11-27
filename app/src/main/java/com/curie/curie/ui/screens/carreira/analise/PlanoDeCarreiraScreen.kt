@@ -105,7 +105,7 @@ fun PlanoDeCarreiraScreen(
                                     Perfil(
                                         id = null,
                                         userId = tokenStorage.getUserId(),
-                                        descricao = "Análise de Perfil",
+                                        descricao = resumo,
                                         comportamentoId = tokenStorage.getComportamentoId(),
                                         temperamentoId = tokenStorage.getTemperamentoId(),
                                         forcaId = tokenStorage.getForcaEducacionalId(),

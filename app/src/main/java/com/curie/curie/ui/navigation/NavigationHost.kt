@@ -170,7 +170,8 @@ fun NavigationHost(
                 TesteComportamentoScreen(
                     userId = userId,
                     tokenStorage = tokenStorage,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onConcluir = { navController.navigate("carreira") }
                 )
             }
             composable("instrucoesComportamento") {
@@ -183,7 +184,8 @@ fun NavigationHost(
                 TesteTemperamentoScreen(
                     userId = userId,
                     tokenStorage = tokenStorage,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onConcluir = { navController.navigate("carreira") }
                 )
             }
             composable("instrucoesTemperamento") {
@@ -196,7 +198,8 @@ fun NavigationHost(
                 TesteVocacionalScreen(
                     userId = userId,
                     tokenStorage = tokenStorage,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onConcluir = { navController.navigate("carreira") }
                 )
             }
             composable("instrucoesVocacional") {
@@ -211,7 +214,7 @@ fun NavigationHost(
                     geminiClient = geminiClient, // 🚨 PASSAR O CLIENTE
                     onPlanoSalvo = {
                         // Volta para o Dashboard ou Home após salvar
-                        navController.popBackStack("carreira", inclusive = false)
+                        navController.popBackStack("home", inclusive = false)
                     },
                     onBack = {
                         navController.popBackStack()

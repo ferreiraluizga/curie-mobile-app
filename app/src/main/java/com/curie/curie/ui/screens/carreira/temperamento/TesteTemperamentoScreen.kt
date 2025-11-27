@@ -39,7 +39,8 @@ data class Pergunta(val texto: String, val alternativas: List<Alternativa>)
 fun TesteTemperamentoScreen(
     userId: Long,
     onBack: () -> Unit,
-    tokenStorage: TokenStorage
+    tokenStorage: TokenStorage,
+    onConcluir: () -> Unit
 ) {
     val temperamentoFactory = remember { TemperamentoViewModelFactory(tokenStorage) }
     val temperamentoViewModel: TemperamentoViewModel = viewModel(factory = temperamentoFactory)
@@ -388,7 +389,7 @@ fun TesteTemperamentoScreen(
                         ResultadoTemperamentoCompleto(
                             tipo = resultado ?: "Indefinido",
                             temperamento = temperamentoSalvo!!,
-                            onConcluir = onBack
+                            onConcluir = onConcluir
                         )
                     }
                 }

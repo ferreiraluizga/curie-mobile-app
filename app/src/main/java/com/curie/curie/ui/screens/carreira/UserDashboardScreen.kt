@@ -232,14 +232,14 @@ fun UserDashboardScreen(
                         description = "Você tem afinidade com: ${vocacionalStatus.resultDescription}",
                         icon = Icons.Outlined.Book,
                         color = Color(0xFFB39DDB),
-                        buttonText = "Ver resultado",
+                        buttonText = "Concluído",
                         onClick = onVocacionalClick
                     )
                 } else {
                     TestCard(
                         title = "Teste Vocacional",
                         description = "Descubra suas áreas de afinidade profissional.",
-                        questions = "17 perguntas",
+                        questions = "12 perguntas",
                         buttonText = "Explorar carreiras",
                         icon = Icons.Outlined.Book,
                         buttonColor = Color(0xFFB39DDB),
@@ -257,14 +257,14 @@ fun UserDashboardScreen(
                         description = "Seu comportamento predominante é ${comportamentalStatus.resultDescription}",
                         icon = Icons.Outlined.BarChart,
                         color = BlueNavy,
-                        buttonText = "Ver resultado",
+                        buttonText = "Concluído",
                         onClick = onComportamentalClick
                     )
                 } else {
                     TestCard(
                         title = "Teste Comportamental",
                         description = "Entenda seu estilo de estudo e organização.",
-                        questions = "15 perguntas",
+                        questions = "13 perguntas",
                         buttonText = "Fazer teste",
                         icon = Icons.Outlined.BarChart,
                         buttonColor = BlueNavy,
@@ -281,14 +281,14 @@ fun UserDashboardScreen(
                         description = "Seu temperamento é ${temperamentoStatus.resultDescription}",
                         icon = Icons.Outlined.Psychology,
                         color = BlueNavy,
-                        buttonText = "Ver resultado",
+                        buttonText = "Concluído",
                         onClick = onTemperamentoClick
                     )
                 } else {
                     TestCard(
                         title = "Teste de Temperamento",
                         description = "Descubra como reage em diferentes situações.",
-                        questions = "17 perguntas",
+                        questions = "14 perguntas",
                         buttonText = "Iniciar teste",
                         icon = Icons.Outlined.Psychology,
                         buttonColor = BlueNavy,

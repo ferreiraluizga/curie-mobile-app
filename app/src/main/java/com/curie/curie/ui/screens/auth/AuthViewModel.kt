@@ -103,6 +103,10 @@ class AuthViewModel(
         }
     }
 
+    fun restoreSession(userId: Long) {
+        _authState.value = AuthState.Success(userId)
+    }
+
     fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
             tokenStorage.clearAll()

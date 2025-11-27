@@ -25,11 +25,9 @@ fun MetaContent(
     onDelete: (Meta) -> Unit = {},
     onSave: (Meta) -> Unit = {}
 ) {
-    // Estados locais para edição de metas
     var showEditDialog by remember { mutableStateOf(false) }
     var editMeta by remember { mutableStateOf<Meta?>(null) }
 
-    // Lista de metas exibidas
     if (metas.isEmpty()) {
         Text("Nenhuma meta cadastrada.")
     } else {
@@ -50,7 +48,6 @@ fun MetaContent(
         }
     }
 
-    // Diálogo de edição de meta
     if (showEditDialog && editMeta != null) {
         MetaDialog(
             meta = editMeta,
