@@ -35,29 +35,28 @@ fun TarefaScreenContent(
     onDeleteMeta: (Meta) -> Unit = {},
     onSaveMeta: (Meta) -> Unit = {}
 ) {
-    var selectedTarefa by remember { mutableStateOf<Tarefa?>(null) }
-    var showTarefaActionDialog by remember { mutableStateOf(false) }
-    var tarefaDialogTarefa by remember { mutableStateOf<Tarefa?>(null) }
-
+    // Estados internos
     var selectedTab by remember { mutableStateOf("Tarefas") }
 
-    var showCreateMetaDialog by remember { mutableStateOf(false) }
-    var editMeta by remember { mutableStateOf<Meta?>(null) }
-    var showEditMetaDialog by remember { mutableStateOf(false) }
+    var showTarefaDialog by remember { mutableStateOf(false) }
+    var tarefaDialogData by remember { mutableStateOf<Tarefa?>(null) }
+
+    var showMetaDialog by remember { mutableStateOf(false) }
+    var metaDialogData by remember { mutableStateOf<Meta?>(null) }
+
+    var showActionDialog by remember { mutableStateOf(false) }
+    var selectedTarefa by remember { mutableStateOf<Tarefa?>(null) }
 
     Scaffold(
         topBar = {
             var query by remember { mutableStateOf("") }
-            TarefaTopBar(
-                query = query,
-                onQueryChange = { query = it }
-            )
+            TarefaTopBar(query = query, onQueryChange = { query = it })
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
                     if (selectedTab == "Tarefas") {
-                        tarefaDialogTarefa = Tarefa(
+                        tarefaDialogData = Tarefa(
                             id = 0L,
                             userId = userId,
                             nome = "",
@@ -65,8 +64,10 @@ fun TarefaScreenContent(
                             prioridade = Prioridade.baixa,
                             status = Status.pendente
                         )
+                        showTarefaDialog = true
+
                     } else {
-                        editMeta = Meta(
+                        metaDialogData = Meta(
                             id = 0L,
                             userId = userId,
                             objetivo = "",
@@ -76,7 +77,7 @@ fun TarefaScreenContent(
                             prioridade = Prioridade.baixa,
                             status = Status.pendente
                         )
-                        showCreateMetaDialog = true
+                        showMetaDialog = true
                     }
                 },
                 shape = CircleShape,
@@ -87,6 +88,7 @@ fun TarefaScreenContent(
             }
         }
     ) { padding ->
+
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -105,99 +107,108 @@ fun TarefaScreenContent(
 
             when (selectedTab) {
 
-                "Tarefas" -> LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(tarefas) { tarefa ->
-                        TarefaItem(
-                            tarefa = tarefa,
-                            onClick = {
-                                selectedTarefa = tarefa
-                                showTarefaActionDialog = true
-                            },
-                            onEdit = { tarefaDialogTarefa = it },
-                            onDelete = onDeleteTarefa
+                "Tarefas" -> {
+                    if (tarefas.isEmpty()) {
+                        Text(
+                            text = "Nenhuma tarefa cadastrada.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
                         )
+                    } else {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(tarefas) { tarefa ->
+                                TarefaItem(
+                                    tarefa = tarefa,
+                                    onClick = {
+                                        selectedTarefa = tarefa
+                                        showActionDialog = true
+                                    },
+                                    onEdit = { tarefaToEdit ->
+                                        tarefaDialogData = tarefaToEdit.copy()
+                                        showTarefaDialog = true
+                                    },
+                                    onDelete = onDeleteTarefa
+                                )
+                            }
+                        }
                     }
                 }
 
-                "Metas" -> MetaContent(
-                    metas = metas,
-                    userId = userId,
-                    onEdit = {
-                        editMeta = it
-                        showEditMetaDialog = true
-                    },
-                    onDelete = onDeleteMeta,
-                    onSave = onSaveMeta
-                )
+                "Metas" -> {
+                    MetaContent(
+                        metas = metas,
+                        userId = userId,
+                        onEdit = { meta ->
+                            metaDialogData = meta.copy()
+                            showMetaDialog = true
+                        },
+                        onDelete = onDeleteMeta,
+                        onSave = onSaveMeta
+                    )
+                }
             }
         }
     }
 
-    // --- AÇÃO AO CLICAR EM UMA TAREFA ---
-    if (showTarefaActionDialog && selectedTarefa != null) {
+    // ---------- ACTION DIALOG PARA TAREFA ----------
+    if (showActionDialog && selectedTarefa != null) {
         AlertDialog(
-            onDismissRequest = { showTarefaActionDialog = false },
-            title = { Text("O que deseja fazer?") },
-            text = { Text("Escolha uma ação para a tarefa selecionada.") },
+            onDismissRequest = { showActionDialog = false },
+            title = { Text("Ação para a tarefa") },
+            text = { Text("Selecione o que deseja fazer com esta tarefa.") },
             confirmButton = {
-                TextButton(
-                    onClick = {
-                        showTarefaActionDialog = false
-                        tarefaDialogTarefa = selectedTarefa
-                        selectedTarefa = null
-                    }
-                ) { Text("Editar") }
+                TextButton(onClick = {
+                    tarefaDialogData = selectedTarefa!!.copy()
+                    showTarefaDialog = true
+                    showActionDialog = false
+                }) {
+                    Text("Editar")
+                }
             },
             dismissButton = {
-                TextButton(
-                    onClick = {
-                        selectedTarefa?.let(onDeleteTarefa)
-                        showTarefaActionDialog = false
-                        selectedTarefa = null
-                    }
-                ) { Text("Excluir") }
+                TextButton(onClick = {
+                    onDeleteTarefa(selectedTarefa!!)
+                    showActionDialog = false
+                }) {
+                    Text("Excluir")
+                }
             }
         )
     }
 
-    // --- CRIAÇÃO / EDIÇÃO DE TAREFA ---
-    if (tarefaDialogTarefa != null) {
+    // ---------- DIÁLOGO DE TAREFA ----------
+    if (showTarefaDialog && tarefaDialogData != null) {
         TarefaDialog(
-            tarefa = tarefaDialogTarefa,
+            tarefa = tarefaDialogData,
             userId = userId,
-            onDismiss = { tarefaDialogTarefa = null },
-            onSave = {
-                onSaveTarefa(it)
-                tarefaDialogTarefa = null
+            onDismiss = { showTarefaDialog = false },
+            onSave = { updatedTarefa ->
+                if (updatedTarefa.id == 0L)
+                    onSaveTarefa(updatedTarefa)     // CREATE
+                else
+                    onEditTarefa(updatedTarefa)     // UPDATE
+
+                showTarefaDialog = false
             }
         )
     }
 
-    // --- DIALOG PARA CRIAR META ---
-    if (showCreateMetaDialog && editMeta != null) {
+    // ---------- DIÁLOGO DE META ----------
+    if (showMetaDialog && metaDialogData != null) {
         MetaDialog(
-            meta = editMeta,
+            meta = metaDialogData,
             userId = userId,
-            onDismiss = { showCreateMetaDialog = false },
-            onSave = {
-                onSaveMeta(it)
-                showCreateMetaDialog = false
-            }
-        )
-    }
+            onDismiss = { showMetaDialog = false },
+            onSave = { updatedMeta ->
+                if (updatedMeta.id == 0L)
+                    onSaveMeta(updatedMeta)       // CREATE
+                else
+                    onEditMeta(updatedMeta)       // UPDATE
 
-    // --- DIALOG PARA EDITAR META ---
-    if (showEditMetaDialog && editMeta != null) {
-        MetaDialog(
-            meta = editMeta,
-            userId = userId,
-            onDismiss = { showEditMetaDialog = false },
-            onSave = {
-                onSaveMeta(it)
-                showEditMetaDialog = false
+                showMetaDialog = false
             }
         )
     }

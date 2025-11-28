@@ -3,6 +3,7 @@ package com.curie.curie.ui.components.tarefa.meta
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -76,7 +77,8 @@ fun MetaItem(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White),
+            .background(Color.White)
+            .clickable { onEdit(meta) },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
@@ -108,7 +110,7 @@ fun MetaItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "$formattedInicioDate - $formattedInicioDate",
+                        text = "$formattedInicioDate - $formattedFimDate",
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Start,
                         color = Color.Gray,

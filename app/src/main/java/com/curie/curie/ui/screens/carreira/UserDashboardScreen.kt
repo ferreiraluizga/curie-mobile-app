@@ -239,7 +239,7 @@ fun UserDashboardScreen(
                     TestCard(
                         title = "Teste Vocacional",
                         description = "Descubra suas áreas de afinidade profissional.",
-                        questions = "12 perguntas",
+                        questions = "18 perguntas",
                         buttonText = "Explorar carreiras",
                         icon = Icons.Outlined.Book,
                         buttonColor = Color(0xFFB39DDB),

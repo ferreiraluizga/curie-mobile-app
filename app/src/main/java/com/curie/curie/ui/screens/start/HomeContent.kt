@@ -43,6 +43,25 @@ fun parseIsoDate(date: String?): LocalDate {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun formatIsoToBrazil(date: String?): String {
+    if (date.isNullOrBlank()) return "Sem data"
+
+    return try {
+        // Tenta converter ISO completo "yyyy-MM-ddTHH:mm:ss"
+        val parsed = LocalDateTime.parse(date).toLocalDate()
+        parsed.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    } catch (e: Exception) {
+        try {
+            // Tenta converter "yyyy-MM-dd"
+            val parsed = LocalDate.parse(date.substring(0, 10))
+            parsed.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        } catch (e2: Exception) {
+            "Sem data"
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeContent(
     userName: String?,
@@ -214,7 +233,7 @@ fun HomeContent(
                                 Spacer(Modifier.width(6.dp))
 
                                 Text(
-                                    text = data ?: "Sem data",
+                                    text = formatIsoToBrazil(data),
                                     color = Color.White,
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Medium
@@ -306,6 +325,8 @@ fun HomeContent(
                     }
                 }
             }
+
+            item { Spacer(Modifier.height(4.dp)) }
         }
     }
 }

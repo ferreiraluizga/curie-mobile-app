@@ -1,6 +1,7 @@
 package com.curie.curie.ui.components.tarefa
 
-import androidx.compose.foundation.background
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -22,15 +23,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.curie.curie.ui.theme.BlueNavy
-import com.curie.curie.ui.theme.Shapes
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerField(
@@ -43,20 +39,16 @@ fun DatePickerField(
 
     var selectedDate by remember { mutableStateOf("") }
 
-    // Formatadores
-    val inputFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val displayFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val displayFormatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val parseFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-    // Atualiza display quando recebe valor inicial (edição)
     LaunchedEffect(initialValue) {
         if (initialValue.isNotBlank()) {
-            val rawDate = initialValue.substringBefore("T") // evita crash
+            val raw = initialValue.substringBefore("T")
             try {
-                val parsed = inputFormatter.parse(rawDate)
-                selectedDate = displayFormatter.format(parsed!!)
-            } catch (_: Exception) {
-                selectedDate = ""
-            }
+                val date = java.time.LocalDate.parse(raw)
+                selectedDate = date.format(displayFormatter)
+            } catch (_: Exception) { }
         }
     }
 
@@ -70,13 +62,16 @@ fun DatePickerField(
                         val millis = datePickerState.selectedDateMillis
 
                         if (millis != null) {
-                            val formatted = inputFormatter.format(Date(millis))
-                            val finalValue = "${formatted}T00:00"
 
-                            // exibir amigável (dd/MM/yyyy)
-                            selectedDate = displayFormatter.format(Date(millis))
+                            // ❗ INTERPRETA EM UTC, NÃO NO FUSO DO SISTEMA
+                            val localDate = java.time.Instant.ofEpochMilli(millis)
+                                .atZone(java.time.ZoneOffset.UTC)
+                                .toLocalDate()
 
-                            onDateSelected(finalValue)
+                            val finalIso = localDate.format(parseFormatter) + "T00:00:00"
+                            selectedDate = localDate.format(displayFormatter)
+
+                            onDateSelected(finalIso)
                         }
                     }
                 ) {
@@ -109,14 +104,12 @@ fun DatePickerField(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(4.dp, Shapes.medium, clip = true)
-            .background(Color.White, Shapes.medium)
             .clickable { showDialog = true },
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = Color.Transparent,
-            focusedContainerColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = BlueNavy
+            unfocusedIndicatorColor = BlueNavy,
+            focusedIndicatorColor = BlueNavy,
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White
         )
     )
 }

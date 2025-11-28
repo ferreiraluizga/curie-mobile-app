@@ -32,16 +32,6 @@ class MainActivity : ComponentActivity() {
         // Edge-to-edge oficial
         enableEdgeToEdge()
 
-        // Define fundo das system bars
-        window.statusBarColor = BlueNavy.toArgb()
-        window.navigationBarColor = BlueNavy.toArgb()
-
-        // ⭐ Define ícones brancos
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = false      // ícones brancos
-            isAppearanceLightNavigationBars = false  // ícones brancos
-        }
-
         val tokenStorage = TokenStorage(this)
 
         setContent {

@@ -47,7 +47,12 @@ import com.curie.curie.ui.screens.carreira.vocacional.TesteVocacionalScreen
 import com.curie.curie.ui.screens.chat.ChatScreen
 import com.curie.curie.ui.screens.chat.ChatViewModel
 import com.curie.curie.ui.screens.chat.Constants
+import com.curie.curie.ui.screens.perfil.AssinaturaScreen
+import com.curie.curie.ui.screens.perfil.ConfigScreen
 import com.curie.curie.ui.screens.perfil.EditarPerfilScreen
+import com.curie.curie.ui.screens.perfil.EquipeScreen
+import com.curie.curie.ui.screens.perfil.SobreScreen
+import com.curie.curie.ui.screens.perfil.SuporteScreen
 import com.curie.curie.ui.screens.start.HomeScreen
 import com.curie.curie.ui.screens.tarefa.TarefaScreen
 import com.curie.curie.ui.theme.BlueNavy
@@ -241,6 +246,9 @@ fun NavigationHost(
                     onEditClick = { id ->
                         navController.navigate("editarPerfil/$id")
                     },
+                    onOptionClick = { route ->
+                        navController.navigate(route)
+                    },
                     onLogoutClick = {
                         tokenStorage.clearAll()   // limpar token
                         authViewModel.logout()
@@ -259,7 +267,31 @@ fun NavigationHost(
                     }
                 )
             }
-
+            composable("config") {
+                ConfigScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("assinatura") {
+                AssinaturaScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("equipe") {
+                EquipeScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("suporte") {
+                SuporteScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("sobre") {
+                SobreScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
         }
     }
 }
